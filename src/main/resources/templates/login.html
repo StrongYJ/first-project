@@ -4,25 +4,59 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .main {
+            margin: auto;
+            width: 250px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border: 1px solid lightgrey;
+            border-radius: 5px;
+        }
+
+        .logo {
+            margin-top: 0px;
+            margin-bottom: 40px;
+        }
+
+        #login {
+            width: 100%;
+            background-color: skyblue;
+            border-color: transparent;
+            color: white;
+        }
+
+        .account {
+            display: block;
+            margin-bottom: 3px;
+            padding: 3px;
+            border: 1px solid lightgray;
+            border-radius: 3px;
+        }
+    </style>
+    <title>Admin Login</title>
 </head>
 <body>
-    <h3><span th:if="${loginFailed}">로그인실패</span></h3>
-    <form action="/admin/login" method="post">
-        <table>
-            <tbody>
-                <tr>
-                    <td>아이디</td>
-                    <th><input type="text" name="id" id=""></th>
-                </tr>
-                <tr>
-                    <td>비밀번호</td>
-                    <th><input type="password" name="pwd" id=""></th>
-                </tr>
-            </tbody>
-            
-        </table>
-        <button type="submit">로그인</button>
+    <form th:action=@{/admin/login} method="post">
+        <div class="main">
+            <h2 class="logo">관리자 로그인</h2>
+            <span th:if="${param.loginFailed}" style="color: red;">로그인 실패</span>
+            <div class="container" th:object="${data}">
+                <input type="text" placeholder="ID" id="id" class="account" th:field="*{id}">
+                <input type="password" placeholder="Password" id="password" class="account" th:field="*{pwd}">
+                <button id="login" class="account">login</button>
+            </div>
+        </div>   
     </form>
 </body>
 </html>
