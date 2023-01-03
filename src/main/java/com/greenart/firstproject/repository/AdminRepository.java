@@ -7,5 +7,6 @@ import com.greenart.firstproject.entity.AdminEntity;
 
 @Repository
 public interface AdminRepository extends JpaRepository<AdminEntity, Long> {
-    
+    Long countByidAndPwd(String id, String pwd);
+    AdminEntity findByIdAndPwd(String id, String pwd);
 }
