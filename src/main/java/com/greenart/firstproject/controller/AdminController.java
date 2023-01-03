@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.greenart.firstproject.service.AdminService;
 import com.greenart.firstproject.vo.AdminLoginVO;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -25,12 +26,13 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public String postAdminLogin(AdminLoginVO data, RedirectAttributes reat) {
+    public String postAdminLogin(AdminLoginVO data, RedirectAttributes reat, HttpSession session) {
         if(adminService.loginCheckIdAndPwd(data) == false) {
             reat.addAttribute("loginFailed", true);
             return "redirect:/admin/login";
         }
         if(adminService.isSuper(data)) {
+            session.setAttribute("superAdmin", data.getId());
             return "redirect:/admin/main";
         }
         reat.addAttribute("id", adminService.getMarketId(data));
@@ -38,7 +40,16 @@ public class AdminController {
     }
 
     @GetMapping("/main")
-    public String getSuperAdminMain() {
+    public String getSuperAdminMain(HttpSession session) {
+        if(session.getAttribute("superAdmin") == null) {
+            return "redirect:/admin/login";
+        }
         return "superadmin/main";
+    }
+
+    @GetMapping("/logout")
+    public String adminLogout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/admin/login";
     }
 }
