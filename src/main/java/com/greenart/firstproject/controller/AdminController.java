@@ -7,15 +7,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.greenart.firstproject.config.MySessionkeys;
 import com.greenart.firstproject.service.AdminService;
-import com.greenart.firstproject.vo.AdminLoginVO;
+import com.greenart.firstproject.vo.adminVOs.AdminLoginVO;
+import com.greenart.firstproject.vo.adminVOs.ProductAddVO;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@Slf4j
 public class AdminController {
     private final AdminService adminService;
 
@@ -32,7 +37,7 @@ public class AdminController {
             return "redirect:/admin/login";
         }
         if(adminService.isSuper(data)) {
-            session.setAttribute("superAdmin", data.getId());
+            session.setAttribute(MySessionkeys.SUPER_ADMIN_KEY, data.getId());
             return "redirect:/admin/main";
         }
         reat.addAttribute("id", adminService.getMarketId(data));
@@ -41,7 +46,7 @@ public class AdminController {
 
     @GetMapping("/main")
     public String getSuperAdminMain(HttpSession session) {
-        if(session.getAttribute("superAdmin") == null) {
+        if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
             return "redirect:/admin/login";
         }
         return "superadmin/main";
@@ -52,4 +57,28 @@ public class AdminController {
         session.invalidate();
         return "redirect:/admin/login";
     }
+
+    @GetMapping("/product/add")
+    public String getProductAdd(Model model, HttpSession session) {
+        if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
+            return "redirect:/admin/login";
+        }
+        model.addAttribute("product", new ProductAddVO());
+        return "superadmin/productadd";
+    }
+
+    @PostMapping("/product/add")
+    public String postProductAdd(ProductAddVO prod, HttpSession session, RedirectAttributes reat) {
+        if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
+            return "redirect:/admin/login";
+        }
+        if(adminService.productSave(prod) == false) {
+            reat.addAttribute("save", "fail");
+            return "redirect:/admin/product/add";
+        }
+        reat.addAttribute("save", "success");
+        adminService.productSave(prod);
+        return "redirect:/admin/main";
+    }
+    
 }
