@@ -50,7 +50,6 @@
     <form th:action=@{/admin/login} method="post">
         <div class="main">
             <h2 class="logo">관리자 로그인</h2>
-            <span th:if="${param.loginFailed}" style="color: red;">로그인 실패</span>
             <div class="container" th:object="${data}">
                 <input type="text" placeholder="ID" id="id" class="account" th:field="*{id}">
                 <input type="password" placeholder="Password" id="password" class="account" th:field="*{pwd}">
@@ -58,5 +57,11 @@
             </div>
         </div>   
     </form>
+    <script th:inline="javascript">
+        const loginFail = `[[${param.loginFailed}]]`;
+        if(loginFail === `["true"]`) {
+            alert("아이디 또는 비밀번호가 잘못되었습니다.");
+        }
+    </script>
 </body>
 </html>
