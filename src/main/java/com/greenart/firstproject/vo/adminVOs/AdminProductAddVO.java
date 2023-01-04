@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Data;
 
 @Data
-public class ProductAddVO {
+public class AdminProductAddVO {
     private String name;
     private String type;
     private Double level;

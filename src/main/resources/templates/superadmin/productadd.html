@@ -87,9 +87,14 @@
                 <input type="file" class="form-control" id="inputGroupFile01" name="detailImg" accept=".jpg, .png" required>
             </div>
             <button type="submit" class="btn btn-primary" style="margin-top: 10px;">등록</button>
-            <span th:if="${param.save == 'fail'}" style="color: red;">등록 실패</span>
         </div>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+        const productAddSave = `[[${param.save}]]`;
+        if(productAddSave === `["fail"]`) {
+            alert('등록실패');
+        }
+    </script>
 </body>
 </html>

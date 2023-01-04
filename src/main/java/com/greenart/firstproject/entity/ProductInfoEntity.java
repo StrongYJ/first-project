@@ -4,7 +4,7 @@ package com.greenart.firstproject.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.greenart.firstproject.vo.adminVOs.ProductAddVO;
+import com.greenart.firstproject.vo.adminVOs.AdminProductAddVO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -64,7 +64,9 @@ public class ProductInfoEntity {
     @OneToMany(mappedBy = "product")
     List<OptionInfoEntity> options = new ArrayList<>();
 
-    public ProductInfoEntity(ProductAddVO prdAddVO, String img, String detailImg) {
+    public ProductInfoEntity() {};
+
+    public ProductInfoEntity(AdminProductAddVO prdAddVO, String img, String detailImg) {
         this.name = prdAddVO.getName();
         this.type = prdAddVO.getType();
         this.level = prdAddVO.getLevel();

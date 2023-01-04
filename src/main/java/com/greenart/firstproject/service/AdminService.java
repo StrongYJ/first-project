@@ -2,8 +2,11 @@ package com.greenart.firstproject.service;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +17,7 @@ import com.greenart.firstproject.repository.AdminRepository;
 import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.vo.adminVOs.AdminLoginVO;
-import com.greenart.firstproject.vo.adminVOs.ProductAddVO;
+import com.greenart.firstproject.vo.adminVOs.AdminProductAddVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,12 +49,18 @@ public class AdminService {
         return findByIdAndPwd.getMarketInfo().getSeq();
     }
 
-    public Boolean productSave(ProductAddVO prod) {
+    public Boolean isInvaildImageExt(AdminProductAddVO prod) {
         String basicImgExt = extractImageExt(prod.getBasicImg());
         String detailImgExt = extractImageExt(prod.getDetailImg());
         if(basicImgExt == null || detailImgExt == null) {
-            return false;
+            return true;
         }
+        return false;
+    }
+    
+    public void productSave(AdminProductAddVO prod) {
+        String basicImgExt = extractImageExt(prod.getBasicImg());
+        String detailImgExt = extractImageExt(prod.getDetailImg());
         String newBasicName = UUID.randomUUID().toString() + "." + basicImgExt;
         String newDetailName = UUID.randomUUID().toString() + "." + detailImgExt;
         try {
@@ -62,9 +71,19 @@ public class AdminService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        productRepo.save(new ProductInfoEntity(prod, newBasicName, newDetailName));
-        
-        return true;
+        productRepo.save(new ProductInfoEntity(prod, newBasicName, newDetailName));   
+    }
+
+    public Page<ProductInfoEntity> getProductsPage(Pageable pageable) {
+        return productRepo.findAll(pageable);
+    }
+
+    public ProductInfoEntity getProductById(Long id) {
+        Optional<ProductInfoEntity> findByIdProduct = productRepo.findById(id);
+        if(findByIdProduct.isPresent()) {
+            return findByIdProduct.get();
+        }
+        return null;
     }
 
     private static String extractImageExt(MultipartFile img) {
