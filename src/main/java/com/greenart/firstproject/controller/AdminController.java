@@ -14,16 +14,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.greenart.firstproject.config.MySessionkeys;
 import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.service.AdminService;
-import com.greenart.firstproject.vo.adminVOs.AdminLoginVO;
-import com.greenart.firstproject.vo.adminVOs.AdminProductAddVO;
+import com.greenart.firstproject.vo.superadmin.AdminLoginVO;
+import com.greenart.firstproject.vo.superadmin.AdminUpdateProductVO;
+import com.greenart.firstproject.vo.superadmin.AdminAddProductVO;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@Slf4j
 public class AdminController {
     private final AdminService adminService;
 
@@ -36,7 +39,7 @@ public class AdminController {
     @PostMapping("/login")
     public String postAdminLogin(AdminLoginVO data, RedirectAttributes reat, HttpSession session) {
         if(adminService.loginCheckIdAndPwd(data) == false) {
-            reat.addAttribute("loginFailed", true);
+            reat.addFlashAttribute("loginFailed", true);
             return "redirect:/admin/login";
         }
         if(adminService.isSuper(data)) {
@@ -52,7 +55,7 @@ public class AdminController {
         if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
             return "redirect:/admin/login";
         }
-        model.addAttribute("products", adminService.getProductsPage(pageable));
+        model.addAttribute("products", adminService.getMainProductsPage(pageable));
         return "superadmin/main";
     }
 
@@ -67,20 +70,20 @@ public class AdminController {
         if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
             return "redirect:/admin/login";
         }
-        model.addAttribute("product", new AdminProductAddVO());
+        model.addAttribute("product", new AdminAddProductVO());
         return "superadmin/productadd";
     }
 
     @PostMapping("/product/add")
-    public String postProductAdd(AdminProductAddVO prod, HttpSession session, RedirectAttributes reat) {
+    public String postProductAdd(AdminAddProductVO prod, HttpSession session, RedirectAttributes reat) {
         if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
             return "redirect:/admin/login";
         }
-        if(adminService.isInvaildImageExt(prod)) {
-            reat.addAttribute("save", "fail");
+        if(adminService.isInvalidProductAdd(prod)) {
+            reat.addFlashAttribute("isProductSaved", "fail");
             return "redirect:/admin/product/add";
         }
-        reat.addAttribute("save", "success");
+        reat.addFlashAttribute("isProductSaved", "success");
         adminService.productSave(prod);
         return "redirect:/admin/main";
     }
@@ -90,12 +93,39 @@ public class AdminController {
         if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
             return "redirect:/admin/login";
         }
-        ProductInfoEntity product = adminService.getProductById(id);
+        AdminUpdateProductVO product = adminService.getProductById(id);
         if(product == null) {
             return "redirect:/admin/main";
         }
         model.addAttribute("product", product);
-        return "superadmin/productupdate";
+        return "superadmin/productDetailInfo";
     }
-    
+
+    @GetMapping("/products/{id}/edit")
+    public String getProductUpdate(@PathVariable Long id, HttpSession session, RedirectAttributes reat, Model model) {
+        if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
+            return "redirect:/admin/login";
+        }
+        AdminUpdateProductVO product = adminService.getProductById(id);
+        if(product == null) {
+            return "redirect:/admin/main";
+        }
+        model.addAttribute("product", product);
+        return "superadmin/productEdit";
+    }
+
+    @PostMapping("/products/{id}/edit")
+    public String postProductUpdate(@PathVariable Long id, AdminUpdateProductVO data, HttpSession session, RedirectAttributes reat) {
+        if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
+            return "redirect:/admin/login";
+        }
+        data.setSeq(id);
+        reat.addAttribute("id", id);
+        if(adminService.isInvalidProductUpdate(data)) {
+            reat.addFlashAttribute("isProductSaved", "fail");
+            return "redirect:/admin/products/{id}";
+        }
+        adminService.productUpdate(data);
+        return "redirect:/admin/products/{id}";
+    }
 }

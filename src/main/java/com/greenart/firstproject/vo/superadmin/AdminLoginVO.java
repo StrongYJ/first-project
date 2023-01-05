@@ -1,4 +1,4 @@
-package com.greenart.firstproject.vo.adminVOs;
+package com.greenart.firstproject.vo.superadmin;
 
 import lombok.Data;
 

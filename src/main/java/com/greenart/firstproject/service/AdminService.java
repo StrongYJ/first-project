@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +17,10 @@ import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.repository.AdminRepository;
 import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
-import com.greenart.firstproject.vo.adminVOs.AdminLoginVO;
-import com.greenart.firstproject.vo.adminVOs.AdminProductAddVO;
+import com.greenart.firstproject.vo.superadmin.AdminLoginVO;
+import com.greenart.firstproject.vo.superadmin.AdminAddProductVO;
+import com.greenart.firstproject.vo.superadmin.AdminMainProductInfoVO;
+import com.greenart.firstproject.vo.superadmin.AdminUpdateProductVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -49,39 +52,125 @@ public class AdminService {
         return findByIdAndPwd.getMarketInfo().getSeq();
     }
 
-    public Boolean isInvaildImageExt(AdminProductAddVO prod) {
-        String basicImgExt = extractImageExt(prod.getBasicImg());
-        String detailImgExt = extractImageExt(prod.getDetailImg());
-        if(basicImgExt == null || detailImgExt == null) {
+    public Boolean isInvalidProductAdd(AdminAddProductVO data) {
+        if(
+            data.getBasicImg() == null || data.getDetailImg() == null || data.getLevel() == null ||
+            data.getManufacturer() == null || data.getName() == null || data.getRaw() == null ||
+            data.getSoda() == null || data.getSour() == null || data.getSubName() == null ||
+            data.getSweetness() == null || data.getType() == null
+        ) {
+            return true;
+        }
+        if(
+            (data.getLevel() < 0 || data.getLevel() > 100) ||
+            (data.getSoda() < 0 || data.getSoda() > 3) ||
+            (data.getSour() < 0 || data.getSour() > 3) ||
+            (data.getSweetness() < 0 || data.getSweetness() > 3)
+        ) {
+            return true;
+        }
+        if(data.getName().isBlank() || data.getSubName().isBlank() || data.getManufacturer().isBlank()) {
+            return true;
+        }
+        if(extractImageExt(data.getBasicImg()) == null || extractImageExt(data.getDetailImg()) == null) {
             return true;
         }
         return false;
     }
+
+    public Boolean isInvalidProductUpdate(AdminUpdateProductVO data) {
+        if(productRepo.findById(data.getSeq()).isPresent() == false) {
+            return true;
+        }
+        if(
+            data.getLevel() == null ||
+            data.getManufacturer() == null || data.getName() == null || data.getRaw() == null ||
+            data.getSoda() == null || data.getSour() == null || data.getSubName() == null ||
+            data.getSweetness() == null || data.getType() == null
+        ) {
+            return true;
+        }
+        if(
+            (data.getLevel() < 0 || data.getLevel() > 100) ||
+            (data.getSoda() < 0 || data.getSoda() > 3) ||
+            (data.getSour() < 0 || data.getSour() > 3) ||
+            (data.getSweetness() < 0 || data.getSweetness() > 3)
+        ) {
+            return true;
+        }
+        if(data.getName().isBlank() || data.getSubName().isBlank() || data.getManufacturer().isBlank()) {
+            return true;
+        }
+        if(!data.getBasicImg().isEmpty()) {
+            if(extractImageExt(data.getBasicImg()) == null) {
+                return true;
+            }
+        }
+        if(!data.getDetailImg().isEmpty()) {
+            if(extractImageExt(data.getDetailImg()) == null) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     
-    public void productSave(AdminProductAddVO prod) {
-        String basicImgExt = extractImageExt(prod.getBasicImg());
-        String detailImgExt = extractImageExt(prod.getDetailImg());
+    public void productSave(AdminAddProductVO data) {
+        String basicImgExt = extractImageExt(data.getBasicImg());
+        String detailImgExt = extractImageExt(data.getDetailImg());
         String newBasicName = UUID.randomUUID().toString() + "." + basicImgExt;
         String newDetailName = UUID.randomUUID().toString() + "." + detailImgExt;
         try {
-            prod.getBasicImg().transferTo(Paths.get(FilePath.PRODUCT_BASIC_IMAGE).resolve(newBasicName));
-            prod.getDetailImg().transferTo(Paths.get(FilePath.PRODUCT_DETAIL_IMAGE).resolve(newDetailName));
+            data.getBasicImg().transferTo(Paths.get(FilePath.PRODUCT_BASIC_IMAGE).resolve(newBasicName));
+            data.getDetailImg().transferTo(Paths.get(FilePath.PRODUCT_DETAIL_IMAGE).resolve(newDetailName));
         } catch (IllegalStateException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        productRepo.save(new ProductInfoEntity(prod, newBasicName, newDetailName));   
+        productRepo.save(
+            ProductInfoEntity.builder()
+            .adminProductInfoVO(data)
+            .basicImg(newBasicName)
+            .detailImg(newDetailName)
+            .build()
+            );   
+    }
+    public void productUpdate(AdminUpdateProductVO data) {
+        ProductInfoEntity product = productRepo.findById(data.getSeq()).get();
+        if(!data.getBasicImg().isEmpty()) {
+            try {
+                data.getBasicImg().transferTo(Paths.get(FilePath.PRODUCT_BASIC_IMAGE).resolve(product.getImg()));
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(!data.getDetailImg().isEmpty()) {
+            try {
+                data.getDetailImg().transferTo(Paths.get(FilePath.PRODUCT_DETAIL_IMAGE).resolve(product.getDetailImg()));
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        product.updateProductInfo(data);
+        productRepo.save(product);
     }
 
-    public Page<ProductInfoEntity> getProductsPage(Pageable pageable) {
-        return productRepo.findAll(pageable);
+    public Page<AdminMainProductInfoVO> getMainProductsPage(Pageable pageable) {
+        Page<AdminMainProductInfoVO> data = productRepo.findAll(pageable).map(AdminMainProductInfoVO::fromEntity);
+
+        return data;
     }
 
-    public ProductInfoEntity getProductById(Long id) {
+    public AdminUpdateProductVO getProductById(Long id) {
         Optional<ProductInfoEntity> findByIdProduct = productRepo.findById(id);
         if(findByIdProduct.isPresent()) {
-            return findByIdProduct.get();
+            ProductInfoEntity productInfoEntity = findByIdProduct.get();
+            return AdminUpdateProductVO.fromEntity(productInfoEntity);
         }
         return null;
     }
@@ -89,9 +178,6 @@ public class AdminService {
     private static String extractImageExt(MultipartFile img) {
         if(img.getContentType().contains("image/jpeg")) {
             return "jpg";
-        }
-        else if(img.getContentType().contains("image/png")) {
-            return "png";
         }
         return null;
     }

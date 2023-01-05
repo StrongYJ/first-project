@@ -1,11 +1,17 @@
-package com.greenart.firstproject.vo.adminVOs;
+package com.greenart.firstproject.vo.superadmin;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class AdminProductAddVO {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class AdminAddProductVO {
     private String name;
     private String type;
     private Double level;
@@ -18,4 +24,6 @@ public class AdminProductAddVO {
     private String manufacturer;
     private MultipartFile basicImg;
     private MultipartFile detailImg;
+    private String basicImgPath;
+    private String detailImgPath;
 }

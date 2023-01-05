@@ -4,7 +4,8 @@ package com.greenart.firstproject.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.greenart.firstproject.vo.adminVOs.AdminProductAddVO;
+import com.greenart.firstproject.vo.superadmin.AdminAddProductVO;
+import com.greenart.firstproject.vo.superadmin.AdminUpdateProductVO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,12 +14,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Getter @Setter
 @Table(name = "product_info")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductInfoEntity {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,20 +68,32 @@ public class ProductInfoEntity {
     @OneToMany(mappedBy = "product")
     List<OptionInfoEntity> options = new ArrayList<>();
 
-    public ProductInfoEntity() {};
-
-    public ProductInfoEntity(AdminProductAddVO prdAddVO, String img, String detailImg) {
-        this.name = prdAddVO.getName();
-        this.type = prdAddVO.getType();
-        this.level = prdAddVO.getLevel();
-        this.sweetness = prdAddVO.getSweetness();
-        this.sour = prdAddVO.getSour();
-        this.soda = prdAddVO.getSoda();
-        this.raw = prdAddVO.getRaw();
-        this.subName = prdAddVO.getSubName();
-        this.detailContent = (prdAddVO.getDetailContent().isBlank() ? null : prdAddVO.getDetailContent());
-        this.manufacturer = prdAddVO.getManufacturer();
-        this.img = img;
+    @Builder
+    public ProductInfoEntity(AdminAddProductVO adminProductInfoVO, String basicImg, String detailImg) {
+        this.name = adminProductInfoVO.getName();
+        this.type = adminProductInfoVO.getType();
+        this.level = adminProductInfoVO.getLevel();
+        this.sweetness = adminProductInfoVO.getSweetness();
+        this.sour = adminProductInfoVO.getSour();
+        this.soda = adminProductInfoVO.getSoda();
+        this.raw = adminProductInfoVO.getRaw();
+        this.subName = adminProductInfoVO.getSubName();
+        this.detailContent = (adminProductInfoVO.getDetailContent().isBlank() ? null : adminProductInfoVO.getDetailContent());
+        this.manufacturer = adminProductInfoVO.getManufacturer();
+        this.img = basicImg;
         this.detailImg = detailImg;
+    }
+    
+    public void updateProductInfo(AdminUpdateProductVO data) {
+        this.name = data.getName();
+        this.type = data.getType();
+        this.level = data.getLevel();
+        this.sweetness = data.getSweetness();
+        this.sour = data.getSour();
+        this.soda = data.getSoda();
+        this.raw = data.getRaw();
+        this.subName = data.getSubName();
+        this.detailContent = data.getDetailContent();
+        this.manufacturer = data.getManufacturer();
     }
 }
