@@ -13,22 +13,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Table(name = "market_stock")
 @Getter @Setter
-@Table(name = "option_info")
-public class OptionInfoEntity {
+public class MarketStockEntity {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "oi_seq")        
+    @Column(name = "ms_seq")
     private Long seq;
     
-    @Column(name = "oi_option")     
-    private String option;
+    @Column(name = "ms_stock")
+    private Integer stock;
     
-    @Column(name = "oi_price")      
-    private Integer price;
+    @JoinColumn(name = "ms_mi_seq")
+    @ManyToOne(fetch = FetchType.LAZY) // 일대다연결
+    private MarketInfoEntity market;
     
-    @JoinColumn(name = "oi_pi_seq") 
-    @ManyToOne(fetch = FetchType.LAZY) // Lazy를 기본으로 해야 조인할때 최적화, eager하지말고(한번에 됨)
-    ProductInfoEntity product;
-    
+    @JoinColumn(name = "ms_oi_seq")
+    @ManyToOne(fetch = FetchType.LAZY) // 일대다연결
+    private OptionInfoEntity option;
+
+    @Override
+    public String toString() {
+        return ""+stock;
+    }
 }
