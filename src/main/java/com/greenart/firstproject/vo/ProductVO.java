@@ -38,7 +38,7 @@ public class ProductVO {
                         .subName(p.getSubName())
                         .detailImg(p.getDetailImg())
                         .detailContent(p.getDetailContent())
-                        .manufacturer(p.getManu())
+                        .manufacturer(p.getManufacturer())
                         .build();
 
             // .cateSeq(b.getCateSeq())
