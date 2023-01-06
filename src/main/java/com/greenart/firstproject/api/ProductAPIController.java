@@ -25,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 // @RequiredArgsConstructor
 public class ProductAPIController {
     @Autowired ProductInfoRepository piRepo;
+
+    // 전체제품
     @GetMapping("/all")
     public ResponseEntity<Map<String, Object>> getAllProducts(Pageable pageable) {
         Map<String, Object> map = new LinkedHashMap<String, Object>();
@@ -32,10 +34,25 @@ public class ProductAPIController {
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
+    // 카테고리조회
     @GetMapping("/category")
     public ResponseEntity<Map<String, Object>> getCategoryProducts(@RequestParam String type, Pageable pageable) {
         Map<String,Object> map = new LinkedHashMap<String, Object>();
         map.put("list", piRepo.findByType(type, pageable));
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
+    }
+
+    // 카테고리별 제품조회
+    @GetMapping("/category/{id}")
+    public ResponseEntity<Map<String, Object>> gettCategoryProducts(@PathVariable String id, Pageable pageable) {
+        Map<String,Object> map = new LinkedHashMap<String, Object>();
+        map.put("list", piRepo.findByType(id, pageable));
+        return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
+    }
+
+    // 검색
+    @GetMapping("/search")
+    public ResponseEntity<Map<String, Object>> searchProduct(@RequestParam String name, Pageable pageable) {
+
     }
 }
