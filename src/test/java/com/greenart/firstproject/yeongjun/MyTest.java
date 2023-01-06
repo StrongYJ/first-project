@@ -16,6 +16,7 @@ import com.greenart.firstproject.vo.UserJoinVO;
 @Transactional
 class MyTest {
     
+<<<<<<< HEAD
     @Autowired
     private UserRepository utestRepo;
     
@@ -26,6 +27,11 @@ class MyTest {
     //     UserEntity b = new UserEntity(a);
     //     utestRepo.save(b);
     // }
+=======
+    @Test
+    void test() {
+    }
+>>>>>>> mydev
 }
 // "name":"들어가라",
 // "email":"young@service.com",

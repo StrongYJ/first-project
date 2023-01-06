@@ -7,16 +7,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.greenart.firstproject.config.MySessionkeys;
 import com.greenart.firstproject.service.AdminService;
-import com.greenart.firstproject.vo.AdminLoginVO;
+import com.greenart.firstproject.vo.superadmin.AdminLoginVO;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
+
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
-public class AdminController {
+public class AdminLoginController {
     private final AdminService adminService;
 
     @GetMapping("/login")
@@ -28,28 +30,14 @@ public class AdminController {
     @PostMapping("/login")
     public String postAdminLogin(AdminLoginVO data, RedirectAttributes reat, HttpSession session) {
         if(adminService.loginCheckIdAndPwd(data) == false) {
-            reat.addAttribute("loginFailed", true);
+            reat.addFlashAttribute("loginFailed", true);
             return "redirect:/admin/login";
         }
         if(adminService.isSuper(data)) {
-            session.setAttribute("superAdmin", data.getId());
-            return "redirect:/admin/main";
+            session.setAttribute(MySessionkeys.SUPER_ADMIN_KEY, data.getId());
+            return "redirect:/admin/super/main";
         }
-        reat.addAttribute("id", adminService.getMarketId(data));
-        return "redirect:/admin/local/{id}";
-    }
-
-    @GetMapping("/main")
-    public String getSuperAdminMain(HttpSession session) {
-        if(session.getAttribute("superAdmin") == null) {
-            return "redirect:/admin/login";
-        }
-        return "superadmin/main";
-    }
-
-    @GetMapping("/logout")
-    public String adminLogout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/admin/login";
+        reat.addAttribute("seq", adminService.getMarketSeq(data));
+        return "redirect:/admin/local/{seq}";
     }
 }

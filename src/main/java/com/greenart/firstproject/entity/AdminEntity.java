@@ -9,12 +9,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "admin")
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AdminEntity {
     
     @Column(name = "admin_seq")
@@ -33,5 +35,5 @@ public class AdminEntity {
     @JoinColumn(name = "admin_mi_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private MarketInfoEntity marketInfo;
-    
+
 }
