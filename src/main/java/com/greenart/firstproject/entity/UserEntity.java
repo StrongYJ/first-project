@@ -3,17 +3,25 @@ package com.greenart.firstproject.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.greenart.firstproject.vo.UserJoinVO;
+import com.greenart.firstproject.vo.UserLoginVO;
+import com.greenart.firstproject.vo.UserUpdateVO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
-@Entity(name = "user_info")
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "user_info")
 public class UserEntity {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,9 +55,22 @@ public class UserEntity {
     @Column(name = "ui_reg_dt") 
     private LocalDateTime regDt;
 
-    // public UserEntity fromCreateUserVO(CreateUserVO data) {
-    //     UserEntity newUser = new UserEntity();
-    //     newUser.setEmail(data.getEmail());
-    //     return newUser;
-    // }
+    @Builder
+    public UserEntity(UserJoinVO data) {
+        this.name = data.getName();
+        this.email = data.getEmail();
+        this.pwd = data.getPwd();
+        this.nickname = data.getNickname();
+        this.birth = data.getBirth();
+        this.phone = data.getPhone();
+        this.address = data.getAddress();
+        this.status = 1;
+        this.regDt = LocalDateTime.now();
+    }
+
+    public void updateUser(UserUpdateVO data) {
+        this.pwd = data.getPwd();
+        this.nickname = data.getNickname();
+        this.address = data.getAddress();
+    }
 }
