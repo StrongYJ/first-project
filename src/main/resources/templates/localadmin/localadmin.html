@@ -9,7 +9,16 @@
 <body>
     <h1>지역관리자 관리페이지</h1>
     <h2 th:text="${marketName}"></h2>
-    <h5 th:each="op : ${optionList}" th:text="|${op.product.name} - ${op.option}|"></h5>
-    <!-- 타임리프 리터럴 -->
+    <table>
+        <tbody>
+            <tr th:each="lm : ${list}">
+                <td th:text="${lm}"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <!-- <h5 th:each="op : ${optionList}" th:text="|${op.product.name} - ${op.option}|"></h5> -->
+
+
 </body>
 </html>

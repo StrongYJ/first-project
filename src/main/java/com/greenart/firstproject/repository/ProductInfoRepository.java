@@ -13,4 +13,5 @@ import com.greenart.firstproject.entity.ProductInfoEntity;
 public interface ProductInfoRepository extends JpaRepository<ProductInfoEntity, Long>{
     public Page<ProductInfoEntity> findAll(Pageable pageable);
     public List<ProductInfoEntity> findByType(String type, Pageable pageable);
+    List<ProductInfoEntity> findByName(String name);
 }
