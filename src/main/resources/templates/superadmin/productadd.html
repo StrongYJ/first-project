@@ -17,16 +17,16 @@
           <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" th:href="@{/admin/main}">메인</a>
+                <a class="nav-link active" aria-current="page" th:href="@{/admin/super/main}">메인</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link disabled" th:href="@{/admin/product/add}">제품추가</a>
+                <a class="nav-link disabled" th:href="@{/admin/super/product/add}">제품추가</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" th:href="@{/admin/users}">회원내역</a>
+                <a class="nav-link" th:href="@{/admin/super/users}">회원내역</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" th:href="@{/admin/logout}">로그아웃</a>
+                <a class="nav-link" th:href="@{/admin/super/logout}">로그아웃</a>
               </li>
             </ul>
             <form class="d-flex" role="search">
@@ -36,7 +36,7 @@
           </div>
         </div>
     </nav>
-    <form th:action=@{/admin/product/add} th:object="${product}" enctype="multipart/form-data" method="post">
+    <form th:action th:object="${product}" enctype="multipart/form-data" method="post">
         <div class="container" style="margin-top: 20px;">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{name}" required>

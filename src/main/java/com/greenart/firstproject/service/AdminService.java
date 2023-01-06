@@ -2,6 +2,7 @@ package com.greenart.firstproject.service;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -20,6 +21,7 @@ import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.vo.superadmin.AdminLoginVO;
 import com.greenart.firstproject.vo.superadmin.AdminAddProductVO;
 import com.greenart.firstproject.vo.superadmin.AdminMainProductInfoVO;
+import com.greenart.firstproject.vo.superadmin.AdminOptionVO;
 import com.greenart.firstproject.vo.superadmin.AdminUpdateProductVO;
 
 import lombok.RequiredArgsConstructor;
@@ -47,7 +49,7 @@ public class AdminService {
         return false;
     }
 
-    public Long getMarketId(AdminLoginVO data) {
+    public Long getMarketSeq(AdminLoginVO data) {
         AdminEntity findByIdAndPwd = adminRepo.findByIdAndPwd(data.getId(), data.getPwd());
         return findByIdAndPwd.getMarketInfo().getSeq();
     }
@@ -160,19 +162,33 @@ public class AdminService {
         productRepo.save(product);
     }
 
+    public String productDelete(Long seq) {
+        Optional<ProductInfoEntity> findById = productRepo.findById(seq);
+        if(findById.isPresent()) {
+            ProductInfoEntity product = findById.get();
+            productRepo.delete(product);
+            return "제품이 성공적으로 삭제되었습니다.";
+        }
+        return "제품 정보를 삭제하지 못했습니다.";
+    }
+
     public Page<AdminMainProductInfoVO> getMainProductsPage(Pageable pageable) {
         Page<AdminMainProductInfoVO> data = productRepo.findAll(pageable).map(AdminMainProductInfoVO::fromEntity);
 
         return data;
     }
 
-    public AdminUpdateProductVO getProductById(Long id) {
+    public AdminUpdateProductVO getProductBySeq(Long id) {
         Optional<ProductInfoEntity> findByIdProduct = productRepo.findById(id);
         if(findByIdProduct.isPresent()) {
             ProductInfoEntity productInfoEntity = findByIdProduct.get();
             return AdminUpdateProductVO.fromEntity(productInfoEntity);
         }
         return null;
+    }
+
+    public List<AdminOptionVO> getOptionsByProductSeq(Long seq) {
+        return productRepo.findById(seq).get().getOptions().stream().map(AdminOptionVO::fromEntity).toList();
     }
 
     private static String extractImageExt(MultipartFile img) {

@@ -25,7 +25,7 @@ public class OptionInfoEntity {
     private String option;
     
     @Column(name = "oi_price")      
-    private Long price;
+    private Integer price;
     
     @JoinColumn(name = "oi_pi_seq") 
     @ManyToOne(fetch = FetchType.LAZY) // Lazy를 기본으로 해야 조인할때 최적화, eager하지말고(한번에 됨)
