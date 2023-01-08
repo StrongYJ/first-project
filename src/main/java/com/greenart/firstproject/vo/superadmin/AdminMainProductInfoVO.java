@@ -22,7 +22,6 @@ public class AdminMainProductInfoVO {
         .seq(product.getSeq())
         .name(product.getName())
         .type(product.getType())
-        .stock(null)
         .build();
     }
 }

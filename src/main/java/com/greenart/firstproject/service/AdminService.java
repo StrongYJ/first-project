@@ -1,11 +1,12 @@
 package com.greenart.firstproject.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.greenart.firstproject.config.FilePath;
 import com.greenart.firstproject.entity.AdminEntity;
+import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.repository.AdminRepository;
 import com.greenart.firstproject.repository.MarketInfoRepository;
+import com.greenart.firstproject.repository.MarketStockRepository;
+import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.vo.superadmin.AdminLoginVO;
 import com.greenart.firstproject.vo.superadmin.AdminAddProductVO;
@@ -31,8 +35,9 @@ import lombok.RequiredArgsConstructor;
 public class AdminService {
     
     private final AdminRepository adminRepo;
-    private final MarketInfoRepository marketInfoRepo;
     private final ProductInfoRepository productRepo;
+    private final OptionInfoRepository optionRepo;
+    private final MarketStockRepository stockRepo;
 
     public Boolean loginCheckIdAndPwd(AdminLoginVO data) {
         if(adminRepo.countByidAndPwd(data.getId(), data.getPwd()) > 0) {
@@ -120,11 +125,11 @@ public class AdminService {
     public void productSave(AdminAddProductVO data) {
         String basicImgExt = extractImageExt(data.getBasicImg());
         String detailImgExt = extractImageExt(data.getDetailImg());
-        String newBasicName = UUID.randomUUID().toString() + "." + basicImgExt;
-        String newDetailName = UUID.randomUUID().toString() + "." + detailImgExt;
+        String newBasicName = "basic_" + UUID.randomUUID().toString() + "." + basicImgExt;
+        String newDetailName = "detail_" + UUID.randomUUID().toString() + "." + detailImgExt;
         try {
-            data.getBasicImg().transferTo(Paths.get(FilePath.PRODUCT_BASIC_IMAGE).resolve(newBasicName));
-            data.getDetailImg().transferTo(Paths.get(FilePath.PRODUCT_DETAIL_IMAGE).resolve(newDetailName));
+            data.getBasicImg().transferTo(Paths.get(FilePath.PRODUCT_IMAGES).resolve(newBasicName));
+            data.getDetailImg().transferTo(Paths.get(FilePath.PRODUCT_IMAGES).resolve(newDetailName));
         } catch (IllegalStateException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -142,7 +147,7 @@ public class AdminService {
         ProductInfoEntity product = productRepo.findById(data.getSeq()).get();
         if(!data.getBasicImg().isEmpty()) {
             try {
-                data.getBasicImg().transferTo(Paths.get(FilePath.PRODUCT_BASIC_IMAGE).resolve(product.getImg()));
+                data.getBasicImg().transferTo(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getImg()));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -151,7 +156,7 @@ public class AdminService {
         }
         if(!data.getDetailImg().isEmpty()) {
             try {
-                data.getDetailImg().transferTo(Paths.get(FilePath.PRODUCT_DETAIL_IMAGE).resolve(product.getDetailImg()));
+                data.getDetailImg().transferTo(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getDetailImg()));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -166,6 +171,8 @@ public class AdminService {
         Optional<ProductInfoEntity> findById = productRepo.findById(seq);
         if(findById.isPresent()) {
             ProductInfoEntity product = findById.get();
+            new File(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getImg()).toString()).delete();
+            new File(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getDetailImg()).toString()).delete();
             productRepo.delete(product);
             return "제품이 성공적으로 삭제되었습니다.";
         }
@@ -188,7 +195,34 @@ public class AdminService {
     }
 
     public List<AdminOptionVO> getOptionsByProductSeq(Long seq) {
-        return productRepo.findById(seq).get().getOptions().stream().map(AdminOptionVO::fromEntity).toList();
+        ProductInfoEntity productInfoEntity = productRepo.findById(seq).get();
+        List<OptionInfoEntity> options = optionRepo.findByProduct(productInfoEntity);
+        List<AdminOptionVO> result = options.stream().map(o -> 
+            new AdminOptionVO(
+                o.getSeq(), o.getOption(), o.getPrice(),
+                stockRepo.findByOption(o).stream().collect(Collectors.summingInt(s -> s.getStock()))
+                )
+            ).toList();
+        return result;
+    }
+
+    public String getProductName(Long seq) {
+        Optional<ProductInfoEntity> findById = productRepo.findById(seq);
+        if(findById.isPresent()) {
+            return findById.get().getName();
+        }
+        return null;
+    }
+
+    public String addProductOption(Long seq, AdminOptionVO optionVO) {
+        Optional<ProductInfoEntity> findById = productRepo.findById(seq);
+        if(findById.isPresent()) {
+            ProductInfoEntity productInfoEntity = findById.get();
+            optionRepo.save(new OptionInfoEntity(optionVO, productInfoEntity));
+            return "추가되었습니다.";
+        }
+
+        return "추가 실패";
     }
 
     private static String extractImageExt(MultipartFile img) {
@@ -197,4 +231,5 @@ public class AdminService {
         }
         return null;
     }
+
 }

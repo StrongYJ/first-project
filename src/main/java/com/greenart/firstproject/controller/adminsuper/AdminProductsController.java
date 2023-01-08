@@ -1,10 +1,11 @@
-package com.greenart.firstproject.controller.superadmin;
+package com.greenart.firstproject.controller.adminsuper;
 
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,6 +83,19 @@ public class AdminProductsController {
         // }
         List<AdminOptionVO> options = adminService.getOptionsByProductSeq(seq);
         model.addAttribute("options", options);
+        model.addAttribute("addOption", new AdminOptionVO());
+        model.addAttribute("productName", adminService.getProductName(seq));
         return "superadmin/productOptions";
+    }
+
+    @PostMapping("/{seq}/options")
+    public String postProductOptionAdd(@PathVariable Long seq, HttpSession session, @ModelAttribute AdminOptionVO optionVO, RedirectAttributes reat) {
+        // if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
+        //     return "redirect:/admin/login";
+        // }
+        String msg = adminService.addProductOption(seq, optionVO);
+        reat.addAttribute("seq", seq);
+        reat.addFlashAttribute("msg", msg);
+        return "redirect:/admin/super/products/{seq}/options";
     }
 }

@@ -65,8 +65,6 @@ public class ProductInfoEntity {
     @Column(name = "pi_manu")           
     private String manufacturer;
 
-    @OneToMany(mappedBy = "product")
-    List<OptionInfoEntity> options = new ArrayList<>();
 
     @Builder
     public ProductInfoEntity(AdminAddProductVO adminProductInfoVO, String basicImg, String detailImg) {

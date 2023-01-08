@@ -1,4 +1,4 @@
-package com.greenart.firstproject.controller.superadmin;
+package com.greenart.firstproject.controller.adminsuper;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;

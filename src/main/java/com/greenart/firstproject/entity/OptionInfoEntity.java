@@ -1,5 +1,8 @@
 package com.greenart.firstproject.entity;
 
+
+import com.greenart.firstproject.vo.superadmin.AdminOptionVO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,4 +37,11 @@ public class OptionInfoEntity {
     @ManyToOne(fetch = FetchType.LAZY) // Lazy를 기본으로 해야 조인할때 최적화, eager하지말고(한번에 됨)
     ProductInfoEntity product;
     
+
+    @Builder
+    public OptionInfoEntity(AdminOptionVO vo, ProductInfoEntity product) {
+        this.option = vo.getName();
+        this.price = vo.getPrice();
+        this.product = product;
+    }
 }

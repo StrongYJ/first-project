@@ -37,7 +37,7 @@
         </div>
     </nav>
     <form th:action th:object="${product}" enctype="multipart/form-data" method="post">
-        <div class="container" style="margin-top: 20px;">
+        <div class="container my-3">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{name}" required>
                 <label for="floatingInput">제품이름</label>

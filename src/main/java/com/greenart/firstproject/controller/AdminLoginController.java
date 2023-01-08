@@ -24,7 +24,7 @@ public class AdminLoginController {
     @GetMapping("/login")
     public String adminLogin(Model model) {
         model.addAttribute("data", new AdminLoginVO());
-        return "login";
+        return "adminLogin";
     }
 
     @PostMapping("/login")
