@@ -14,17 +14,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class AdminOptionVO {
-    private Long seq;
+    private Long seq; // OptionInfo seq
     private String name;
     private Integer price;
-    private Integer totalStock;
+    private Integer totalStock; // 재고 합
 
-    public static AdminOptionVO fromEntity(OptionInfoEntity entity) {
-        return AdminOptionVO.builder()
-            .seq(entity.getSeq())
-            .name(entity.getOption())
-            .price(entity.getPrice())
-            .totalStock(0)
-            .build();
-    }
+    // public static AdminOptionVO fromEntity(OptionInfoEntity entity) {
+    //     return AdminOptionVO.builder()
+    //         .seq(entity.getSeq())
+    //         .name(entity.getOption())
+    //         .price(entity.getPrice())
+    //         .totalStock(0)
+    //         .build();
+    // }
 }

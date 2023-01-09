@@ -2,6 +2,7 @@ package com.greenart.firstproject.entity;
 
 
 import com.greenart.firstproject.vo.superadmin.AdminOptionVO;
+import com.greenart.firstproject.vo.superadmin.AdminUpdateOptionVO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,5 +44,10 @@ public class OptionInfoEntity {
         this.option = vo.getName();
         this.price = vo.getPrice();
         this.product = product;
+    }
+
+    public void modifyNameAndPrice(String name, Integer price) {
+        this.option = name;
+        this.price = price;
     }
 }

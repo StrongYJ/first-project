@@ -60,4 +60,13 @@ public class AdminMainController {
         adminService.productSave(prod);
         return "redirect:/admin/super/main";
     }
+
+    @GetMapping("/users")
+    public String getUsers(HttpSession session, Pageable pageable, Model model) {
+        if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
+            return "redirect:/admin/login";
+        }
+
+        return "superadmin/users";
+    }
 }

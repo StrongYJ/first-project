@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.greenart.firstproject.config.FilePath;
@@ -26,11 +27,13 @@ import com.greenart.firstproject.vo.superadmin.AdminLoginVO;
 import com.greenart.firstproject.vo.superadmin.AdminAddProductVO;
 import com.greenart.firstproject.vo.superadmin.AdminMainProductInfoVO;
 import com.greenart.firstproject.vo.superadmin.AdminOptionVO;
+import com.greenart.firstproject.vo.superadmin.AdminUpdateOptionVO;
 import com.greenart.firstproject.vo.superadmin.AdminUpdateProductVO;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdminService {
     
@@ -225,11 +228,42 @@ public class AdminService {
         return "추가 실패";
     }
 
+    public Long deleteProductOptionByOptionSeq(Long seq) {
+        Optional<OptionInfoEntity> findById = optionRepo.findById(seq);
+        if(findById.isPresent()) {
+            OptionInfoEntity option = findById.get();
+            ProductInfoEntity product = option.getProduct();
+            if(product != null) {
+                Long productSeq = product.getSeq();
+                optionRepo.delete(option);
+                return productSeq;
+            }
+        }
+        return null;
+    }
+
+    public Long updateOption(AdminUpdateOptionVO data, Long optionSeq) {
+        Optional<OptionInfoEntity> findById = optionRepo.findById(optionSeq);
+        if(findById.isPresent()) {
+            OptionInfoEntity option = findById.get();
+            ProductInfoEntity product = option.getProduct();
+            if(product == null) {
+                return null;
+            }
+            option.modifyNameAndPrice(data.getName(), data.getPrice());
+            optionRepo.save(option);
+            return product.getSeq();
+        }
+        return null;
+    }
+
+
     private static String extractImageExt(MultipartFile img) {
         if(img.getContentType().contains("image/jpeg")) {
             return "jpg";
         }
         return null;
     }
+
 
 }

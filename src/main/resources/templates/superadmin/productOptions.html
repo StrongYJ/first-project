@@ -39,14 +39,25 @@
     <div class="container my-3 d-grid gap-3">
         <th:block th:each="option : ${options}">
             <div class="card">
-                <div class="card-header" th:text="${optionStat.count}">
+                <div class="card-header" th:text="|${productName} ${optionStat.count}번째 옵션|">
                     Featured
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${option.name}"></h5>
-                    <p class="card-text" th:text="|가격: ${option.price}|"></p>
+                  <form th:action="@{/admin/super/options/{seq}/modify(seq=${option.seq})}" method="post">
+                    <label for="inputPassword" class="col-lg-1 col-form-label" style="padding-right: 0px; width: 5%; font-size: 1.25rem; font-weight: 500;">이름</label>
+                        <div class="col-lg-11">
+                          <input type="text" class="form-control form-control-lg" id="inputPassword" name="name" th:value="${option.name}" required>
+                        </div>
+                    <label for="inputPassword" class="col-sm-1 col-form-label" style="padding-right: 0px; width: 5%;">가격</label>
+                        <div class="col-sm-2">
+                          <input type="number" class="form-control" id="inputPassword" name="price" th:value="${option.price}" min="0" max="2147483647" required>
+                        </div>
                     <p class="card-text" th:text="|재고: ${option.totalStock}|"></p>
-                    <a href="#" class="btn btn-primary">수정</a>
+                    <div>
+                      <button type="submit" class="btn btn-primary" >수정</button>
+                      <button type="button" class="btn btn-primary" style="float: right;" th:onclick="|deleteOption(${option.seq})|">삭제</button>
+                    </div>
+                  </form>
                 </div>
             </div>
         </th:block>
@@ -65,7 +76,7 @@
                     <div class="mb-3 row">
                         <label for="inputPassword" class="col-sm-1 col-form-label" style="padding-right: 0px; width: 5%;">가격</label>
                         <div class="col-sm-2">
-                          <input type="number" class="form-control" id="inputPassword" th:field="*{price}" min="0" required>
+                          <input type="number" class="form-control" id="inputPassword" th:field="*{price}" min="0" max="2147483647" required>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">추가</button>
@@ -78,6 +89,13 @@
         const optionAddMsg = `[[${msg}]]`;
         if(optionAddMsg !== `null`) {
           alert(optionAddMsg);
+        }
+
+        function deleteOption(seq) {
+          if(confirm("삭제하시겠습니까?")) {
+            location.href = `/admin/super/options/${seq}/delete`;
+            return;
+          }
         }
     </script>
 </body>

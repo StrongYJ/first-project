@@ -11,6 +11,5 @@ import com.greenart.firstproject.entity.ProductInfoEntity;
 @Repository
 public interface OptionInfoRepository extends JpaRepository<OptionInfoEntity, Long>{
     List<OptionInfoEntity> findByOptionAndPrice(String option, Integer price);
-
     List<OptionInfoEntity> findByProduct(ProductInfoEntity product);
 }
