@@ -1,28 +1,17 @@
 package com.greenart.firstproject.yeongjun;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.greenart.firstproject.entity.MarketStockEntity;
-import com.greenart.firstproject.entity.OptionInfoEntity;
-import com.greenart.firstproject.entity.ProductInfoEntity;
-import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.MarketStockRepository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.repository.UserRepository;
-<<<<<<< HEAD
-import com.greenart.firstproject.vo.UserJoinVO;
-import com.greenart.firstproject.vo.superadmin.AdminOptionVO;
 
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
@@ -30,9 +19,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-=======
-import com.greenart.firstproject.vo.user.UserJoinVO;
->>>>>>> yeong
 
 @SpringBootTest
 @Transactional
