@@ -27,10 +27,6 @@ public class ProductService {
     public Object findProductDetail(ProductVO productVO) {
         return piRepo.findBySeq(productVO.getSeq());
     }
-    // public List<ProductVO> searchProduts(String keyword) {
-    //     return piRepo.findAllSearch(keyword).stream()
-    //         .map(ProductVO::new).collect(Collectors.toList());
-    // }
     public List<ProductVO> searchProducts(String keyword) {
         List<ProductInfoEntity> productInfoEntity = piRepo.findByNameContaining(keyword);
         List<ProductVO> productVOlList = new ArrayList<>();

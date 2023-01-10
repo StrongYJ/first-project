@@ -55,7 +55,7 @@ public class ProductAPIController {
     public ResponseEntity<Map<String, Object>> searchProducts(@RequestParam(value="keyword") String keyword) {
         List<ProductVO> productVOs = piService.searchProducts(keyword);
         Map<String,Object> map = new LinkedHashMap<String, Object>();
-        map.put("postList", productVOs);
+        map.put("productList", productVOs);
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
 
