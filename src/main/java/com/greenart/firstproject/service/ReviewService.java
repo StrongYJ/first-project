@@ -26,7 +26,7 @@ public class ReviewService {
     public Map<String, Object> getReview(Long piSeq, ReviewVO data){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         List<ReviewEntity> list = reviewRepo.findByProductSeq(piSeq);
-        if(list == null){
+        if(list.isEmpty()){
             resultMap.put("status", false);
             resultMap.put("message", "등록된 리뷰가 없습니다.");
             resultMap.put("code", HttpStatus.NOT_FOUND);
