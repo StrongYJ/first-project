@@ -1,20 +1,12 @@
 package com.greenart.firstproject.yeongjun;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.greenart.firstproject.entity.MarketStockEntity;
-import com.greenart.firstproject.entity.OptionInfoEntity;
-import com.greenart.firstproject.entity.ProductInfoEntity;
-import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.MarketStockRepository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
