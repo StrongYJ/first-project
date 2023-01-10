@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.UserRepository;
-import com.greenart.firstproject.vo.UserJoinVO;
-import com.greenart.firstproject.vo.UserLoginVO;
-import com.greenart.firstproject.vo.UserUpdateVO;
+import com.greenart.firstproject.vo.user.UserJoinVO;
+import com.greenart.firstproject.vo.user.UserLoginVO;
+import com.greenart.firstproject.vo.user.UserUpdateVO;
 
 import lombok.RequiredArgsConstructor;
 

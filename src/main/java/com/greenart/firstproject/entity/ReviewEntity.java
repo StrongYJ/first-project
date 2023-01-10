@@ -1,5 +1,18 @@
 package com.greenart.firstproject.entity;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Getter;
+
 @Getter
 @Entity
 @Table(name = "review_info")
@@ -17,10 +30,12 @@ public class ReviewEntity {
     @Column(name = "ri_reg_dt") 
     private LocalDateTime regDt;
 
-    @Column(name = "ri_ui_seq") 
-    private Long uiSeq;
+    @JoinColumn(name = "ri_ui_seq")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UserEntity user;
 
-    @Column(name = "ri_oi_seq") 
-    private Long oiSeq;
+    @JoinColumn(name = "ri_oi_seq")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private OptionInfoEntity option;
     
 }

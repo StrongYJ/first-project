@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.UserRepository;
-import com.greenart.firstproject.vo.UserJoinVO;
+import com.greenart.firstproject.vo.user.UserJoinVO;
 
 @SpringBootTest
 @Transactional

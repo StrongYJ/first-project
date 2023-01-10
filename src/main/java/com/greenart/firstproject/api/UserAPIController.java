@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.service.UserService;
-import com.greenart.firstproject.vo.UserJoinVO;
-import com.greenart.firstproject.vo.UserLoginVO;
-import com.greenart.firstproject.vo.UserUpdateVO;
+import com.greenart.firstproject.vo.user.UserJoinVO;
+import com.greenart.firstproject.vo.user.UserLoginVO;
+import com.greenart.firstproject.vo.user.UserUpdateVO;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

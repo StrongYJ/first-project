@@ -1,4 +1,8 @@
-package com.greenart.firstproject.entity;
+package com.greenart.firstproject.vo;
+
+import java.time.LocalDateTime;
+
+import lombok.Getter;
 
 @Getter
 public class ReviewVO {
