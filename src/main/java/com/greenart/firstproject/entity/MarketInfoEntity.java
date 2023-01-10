@@ -24,6 +24,9 @@ public class MarketInfoEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seq;
 
+    @Column(name = "mi_name")
+    private String name;
+
     @Column(name = "mi_adress")
     private String address;
 
