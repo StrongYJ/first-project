@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.greenart.firstproject.entity.ProductInfoEntity;
@@ -16,4 +17,8 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfoEntity, 
     public List<ProductInfoEntity> findByType(String type, Pageable pageable); // 카테고리별제품조회용
     public List<ProductInfoEntity> findBySeq(Long seq); // 상품번호로 상품조회(상세페이지)
     // public Page<ProductVO> findByType(ProductVO)
+    // @Query(value = "SELECT b FROM product_info b WHERE pi_name LIKE %:keyword%"
+    // )
+    // List<ProductInfoEntity> findAllSearch(String keyword);
+    List<ProductInfoEntity> findByNameContaining(String keyword);
 }

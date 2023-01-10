@@ -1,14 +1,17 @@
 package com.greenart.firstproject.api;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.service.ProductService;
@@ -47,13 +50,14 @@ public class ProductAPIController {
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
 
-    // 카테고리 조회
-    // @GetMapping("/categories")
-    // public ResponseEntity<Map<String, Object>> getAllCategories() {
-    //     Map<String,Object> map = new LinkedHashMap<String, Object>();
-    //     map.put("list", map);
-    // }
-
+    // 검색기능
+    @GetMapping("/search")
+    public ResponseEntity<Map<String, Object>> searchProducts(@RequestParam(value="keyword") String keyword) {
+        List<ProductVO> productVOs = piService.searchProducts(keyword);
+        Map<String,Object> map = new LinkedHashMap<String, Object>();
+        map.put("postList", productVOs);
+        return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
+    }
 
 
 }
