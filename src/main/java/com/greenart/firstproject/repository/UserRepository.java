@@ -5,10 +5,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.vo.superadmin.AdminUserVO;
 
+@Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long>{
     public Integer countByEmail(String eamil);
     public UserEntity findByEmailAndPwd(String eamil, String pwd);

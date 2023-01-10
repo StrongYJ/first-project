@@ -1,4 +1,4 @@
-package com.greenart.firstproject.vo;
+package com.greenart.firstproject.vo.user;
 
 import java.time.LocalDate;
 

@@ -20,6 +20,7 @@ import com.greenart.firstproject.repository.MarketStockRepository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.repository.UserRepository;
+<<<<<<< HEAD
 import com.greenart.firstproject.vo.UserJoinVO;
 import com.greenart.firstproject.vo.superadmin.AdminOptionVO;
 
@@ -29,6 +30,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+=======
+import com.greenart.firstproject.vo.user.UserJoinVO;
+>>>>>>> yeong
 
 @SpringBootTest
 @Transactional

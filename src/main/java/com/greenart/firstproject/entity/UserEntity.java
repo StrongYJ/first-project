@@ -3,9 +3,8 @@ package com.greenart.firstproject.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.greenart.firstproject.vo.UserJoinVO;
-import com.greenart.firstproject.vo.UserLoginVO;
-import com.greenart.firstproject.vo.UserUpdateVO;
+import com.greenart.firstproject.vo.user.UserJoinVO;
+import com.greenart.firstproject.vo.user.UserUpdateVO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
