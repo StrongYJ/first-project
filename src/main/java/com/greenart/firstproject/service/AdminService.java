@@ -23,12 +23,14 @@ import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.MarketStockRepository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
+import com.greenart.firstproject.repository.UserRepository;
 import com.greenart.firstproject.vo.superadmin.AdminLoginVO;
 import com.greenart.firstproject.vo.superadmin.AdminAddProductVO;
 import com.greenart.firstproject.vo.superadmin.AdminMainProductInfoVO;
 import com.greenart.firstproject.vo.superadmin.AdminOptionVO;
 import com.greenart.firstproject.vo.superadmin.AdminUpdateOptionVO;
 import com.greenart.firstproject.vo.superadmin.AdminUpdateProductVO;
+import com.greenart.firstproject.vo.superadmin.AdminUserVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,6 +43,7 @@ public class AdminService {
     private final ProductInfoRepository productRepo;
     private final OptionInfoRepository optionRepo;
     private final MarketStockRepository stockRepo;
+    private final UserRepository userRepo;
 
     public Boolean loginCheckIdAndPwd(AdminLoginVO data) {
         if(adminRepo.countByidAndPwd(data.getId(), data.getPwd()) > 0) {
@@ -257,6 +260,13 @@ public class AdminService {
         return null;
     }
 
+    public Page<AdminUserVO> getAllUsers(Pageable pageable) {
+        return userRepo.findAdminUserVOAll(pageable);
+    }
+
+    public AdminUserVO getUserInfoBySeq(Long seq) {
+        return userRepo.findAdminUserVOBySeq(seq);
+    }
 
     private static String extractImageExt(MultipartFile img) {
         if(img.getContentType().contains("image/jpeg")) {

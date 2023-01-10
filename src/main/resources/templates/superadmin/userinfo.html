@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>Product Add</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand">관리자</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" th:href="@{/admin/super/main}">메인</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/super/product/add}">제품추가</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/super/users}">회원내역</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/super/logout}">로그아웃</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+    <div class="container my-3 d-grid gap-3" th:object="${user}">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{email}" disabled readonly>
+            <label for="floatingInput">이메일</label>
+        </div>  
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{nickname}" disabled readonly>
+            <label for="floatingInput">닉네임</label>
+        </div>  
+        <div class="form-floating mb-3">
+            <input type="text" step="0.01" min="0" max="100" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{name}" disabled readonly>
+            <label for="floatingInput">이름</label>
+        </div>  
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" min="0" max="3" id="floatingInput" placeholder="name@example.com" th:field="*{birth}" disabled readonly>
+            <label for="floatingInput">생일</label>
+        </div>  
+        <div class="form-floating mb-3">
+            <input type="tel" class="form-control" min="0" max="3" id="floatingInput" placeholder="name@example.com" th:field="*{phone}" disabled readonly>
+            <label for="floatingInput">전화번호</label>
+        </div>  
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{regDt}" disabled readonly>
+            <label for="floatingInput">가입일</label>
+        </div>  
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control w-25" id="floatingInput" placeholder="name@example.com" th:field="*{statusToString}" disabled readonly>
+            <label for="floatingInput">회원상태</label>
+            <button type="button" class="btn btn-danger">Danger</button>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
+</html>

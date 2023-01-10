@@ -6,6 +6,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -28,6 +29,7 @@ public class AdminMainController {
         if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
             return "redirect:/admin/login";
         }
+        
         model.addAttribute("products", adminService.getMainProductsPage(pageable));
         return "superadmin/main";
     }
@@ -62,11 +64,21 @@ public class AdminMainController {
     }
 
     @GetMapping("/users")
-    public String getUsers(HttpSession session, Pageable pageable, Model model) {
+    public String getUsers(HttpSession session, @PageableDefault(sort = "seq", direction = Direction.DESC, size = 15) Pageable pageable, Model model) {
         if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
             return "redirect:/admin/login";
         }
-
+        model.addAttribute("changeStatus", "status");
+        model.addAttribute("users", adminService.getAllUsers(pageable));
         return "superadmin/users";
+    }
+
+    @GetMapping("/users/{seq}")
+    public String getUserDetailInfo(@PathVariable Long seq, HttpSession session, Model model) {
+        if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
+            return "redirect:/admin/login";
+        }
+        model.addAttribute("user", adminService.getUserInfoBySeq(seq));
+        return "superadmin/userinfo";
     }
 }
