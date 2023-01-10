@@ -23,48 +23,21 @@ public class ProductVO {
     private String detailImg;
     private String detailContent;
     private String manufacturer;
-
-    public static ProductVO fromEntity(ProductInfoEntity p) { 
-        return ProductVO.builder()
-                        .seq(p.getSeq())
-                        .name(p.getName())
-                        .type(p.getType())
-                        .level(p.getLevel())
-                        .sweetness(p.getSweetness())
-                        .sour(p.getSour())
-                        .soda(p.getSoda())
-                        .raw(p.getRaw())
-                        .img(p.getImg())
-                        .subName(p.getSubName())
-                        .detailImg(p.getDetailImg())
-                        .detailContent(p.getDetailContent())
-                        .manufacturer(p.getManu())
-                        .build();
-
-            // .cateSeq(b.getCateSeq())
-            // .wiSeq(b.getWiSeq())
-            // .title(b.getTitle())
-            // .price(b.getPrice())
-            // .publisher(b.getPublisher())
-            // .publishDt(b.getPublishDt())
-            // .deliveryPrice(b.getDeliveryPrice())
-            // .contentTitle(b.getContentTitle())
-            // .contentText(b.getContentText())
-            // .imageUri("/api/book/image/basic/" + b.getImgSeq())
-            // .detailImageUri(b.getDImgSeq() == null ? null : ("/api/book/image/detail/" + b.getDImgSeq()))
-            // .build();
+    
+    public ProductVO(ProductInfoEntity entity) {
+        this.seq=entity.getSeq();
+        this.name=entity.getName();
+        this.type=entity.getType();
+        this.level=entity.getLevel();
+        this.sweetness=entity.getSweetness();
+        this.sour=entity.getSour();
+        this.soda=entity.getSoda();
+        this.raw=entity.getRaw();
+        this.img=entity.getImg();
+        this.subName=entity.getSubName();
+        this.detailImg=entity.getDetailImg();
+        this.detailContent=entity.getDetailContent();
+        this.manufacturer=entity.getManu();
     }
 }
-// seq
-// name
-// type
-// level
-// sweetness
-// sour
-// soda
-// raw
-// img
-// subName
-// detailImg
-// detailContent
-// manu
+
