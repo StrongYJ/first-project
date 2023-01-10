@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.service.ProductService;
+import com.greenart.firstproject.vo.ProductVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,6 +39,21 @@ public class ProductAPIController {
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
 
+    // 상품번호로 상품조회(상세페이지)
+    @GetMapping("/detail/{seq}")
+    public ResponseEntity<Map<String, Object>> getProductDetail(@PathVariable Long seq) {
+        Map<String,Object> map = new LinkedHashMap<String, Object>();
+        map.put("detailInfo", piService.findProductDetail(ProductVO.builder().seq(seq).build()));
+        return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
+    }
+
     // 카테고리 조회
-    
+    // @GetMapping("/categories")
+    // public ResponseEntity<Map<String, Object>> getAllCategories() {
+    //     Map<String,Object> map = new LinkedHashMap<String, Object>();
+    //     map.put("list", map);
+    // }
+
+
+
 }

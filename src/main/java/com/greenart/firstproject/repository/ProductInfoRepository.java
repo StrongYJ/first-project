@@ -8,9 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.greenart.firstproject.entity.ProductInfoEntity;
+import com.greenart.firstproject.vo.ProductVO;
 
 @Repository
 public interface ProductInfoRepository extends JpaRepository<ProductInfoEntity, Long>{
-    public Page<ProductInfoEntity> findAll(Pageable pageable);
-    public List<ProductInfoEntity> findByType(String type, Pageable pageable);
+    public Page<ProductInfoEntity> findAll(Pageable pageable); // 전체조회용
+    public List<ProductInfoEntity> findByType(String type, Pageable pageable); // 카테고리별제품조회용
+    public List<ProductInfoEntity> findBySeq(Long seq); // 상품번호로 상품조회(상세페이지)
+    // public Page<ProductVO> findByType(ProductVO)
 }
