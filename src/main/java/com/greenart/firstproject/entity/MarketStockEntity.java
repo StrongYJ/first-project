@@ -1,5 +1,6 @@
 package com.greenart.firstproject.entity;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,4 +37,5 @@ public class MarketStockEntity {
     public String toString() {
         return ""+stock;
     }
+
 }
