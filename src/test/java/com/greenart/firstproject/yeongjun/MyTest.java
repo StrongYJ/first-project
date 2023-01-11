@@ -2,17 +2,19 @@ package com.greenart.firstproject.yeongjun;
 
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.greenart.firstproject.entity.CartInfoEntity;
+import com.greenart.firstproject.repository.CartInfoRepository;
 import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.MarketStockRepository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.repository.UserRepository;
-import com.greenart.firstproject.vo.superadmin.AdminOptionVO;
 
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
@@ -20,7 +22,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.greenart.firstproject.vo.user.UserJoinVO;
 
 @SpringBootTest
 @Transactional
@@ -32,6 +33,7 @@ class MyTest {
     @Autowired private MarketStockRepository stockRepo;
     @Autowired private MarketInfoRepository marketRepo;
     @Autowired private ProductInfoRepository productRepo;
+    @Autowired private CartInfoRepository cartRepo;
 
     @Autowired
     private EntityManager em;
@@ -76,7 +78,6 @@ class MyTest {
         }
     }
 
-
     private class TestClass {
         String title;
         Integer stock;
@@ -91,6 +92,11 @@ class MyTest {
         public String toString() {
             return "TestClass [title=" + title + ", stock=" + stock + "]" +"\n";
         }
+    }
+
+    @Test
+    void testCart() {
+        Assertions.assertThat(cartRepo.findByUserAndOptionSeq(utestRepo.findById(1L).get(), 2L)).isNotNull();
     }
     
 }

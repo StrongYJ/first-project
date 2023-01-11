@@ -18,6 +18,7 @@ import com.greenart.firstproject.config.FilePath;
 import com.greenart.firstproject.entity.AdminEntity;
 import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
+import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.AdminRepository;
 import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.MarketStockRepository;
@@ -273,6 +274,15 @@ public class AdminService {
             return "jpg";
         }
         return null;
+    }
+
+    public void changeUserStatus(Long seq, Integer status) {
+        Optional<UserEntity> findById = userRepo.findById(seq);
+        if(findById.isPresent()) {
+            UserEntity userEntity = findById.get();
+            userEntity.changeStatus(status);
+            userRepo.save(userEntity);
+        }
     }
 
 

@@ -60,7 +60,8 @@
         <div class="form-floating mb-3">
             <input type="text" class="form-control w-25" id="floatingInput" placeholder="name@example.com" th:field="*{statusToString}" disabled readonly style="display: inline-block;">
             <label for="floatingInput">회원상태</label>
-            <button type="button" class="btn btn-danger">Danger</button>
+            <a th:if="${user.status == 1}" class="btn btn-danger" th:href="@{/admin/super/users/{seq}/2(seq=${user.seq})}" role="button">회원정지</a>
+            <a th:if="${user.status == 2}" class="btn btn-primary" th:href="@{/admin/super/users/{seq}/1(seq=${user.seq})}" role="button">회원복구</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>

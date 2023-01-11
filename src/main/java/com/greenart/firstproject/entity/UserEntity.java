@@ -72,4 +72,10 @@ public class UserEntity {
         this.nickname = data.getNickname();
         this.address = data.getAddress();
     }
+
+    public void changeStatus(Integer status) {
+        if(status == 1 || status == 2) {
+            this.status = status;
+        }
+    }
 }
