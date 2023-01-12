@@ -9,12 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.greenart.firstproject.entity.CartInfoEntity;
+import com.greenart.firstproject.entity.ReviewEntity;
 import com.greenart.firstproject.repository.CartInfoRepository;
 import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.MarketStockRepository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
+import com.greenart.firstproject.repository.ReviewRepository;
 import com.greenart.firstproject.repository.UserRepository;
+import com.greenart.firstproject.vo.review.ReviewVO;
 
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
@@ -34,6 +37,7 @@ class MyTest {
     @Autowired private MarketInfoRepository marketRepo;
     @Autowired private ProductInfoRepository productRepo;
     @Autowired private CartInfoRepository cartRepo;
+    @Autowired private ReviewRepository reviewRepo;
 
     @Autowired
     private EntityManager em;
@@ -97,6 +101,15 @@ class MyTest {
     @Test
     void testCart() {
         Assertions.assertThat(cartRepo.findByUserAndOptionSeq(utestRepo.findById(1L).get(), 2L)).isNotNull();
+    }
+
+    @Test
+    void reviewTest() {
+        List<ReviewVO> list = reviewRepo.findVOByProductSeq(1L);
+        Assertions.assertThat(list.size()).isEqualTo(4);
+        for(var a : list) {
+            log.info("data={}",a);
+        }
     }
     
 }
