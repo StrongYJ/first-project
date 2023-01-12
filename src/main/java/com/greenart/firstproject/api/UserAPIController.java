@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.greenart.firstproject.config.MySessionkeys;
 import com.greenart.firstproject.service.UserService;
 import com.greenart.firstproject.vo.user.UserJoinVO;
 import com.greenart.firstproject.vo.user.UserLoginVO;
@@ -36,15 +37,15 @@ public class UserAPIController {
     @PostMapping("/login")
     public ResponseEntity<Object> userLogin(@RequestBody UserLoginVO data, HttpSession session){
         Map<String, Object> resultMap = userService.loginUser(data);
-        session.setAttribute("loginUser", resultMap.get("loginUser"));
+        session.setAttribute(MySessionkeys.USER_LOGIN_KEY, resultMap.get(MySessionkeys.USER_LOGIN_KEY));
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
     @PutMapping("/login/update")
     public ResponseEntity<Object> userUpdate(@RequestBody UserUpdateVO data, HttpSession session){
         Map<String, Object> resultMap = userService.modifyUser(data);
-        session.getAttribute("loginUser");
-        if(resultMap.get("loginUser") == null){
+        session.getAttribute(MySessionkeys.USER_LOGIN_KEY);
+        if(resultMap.get(MySessionkeys.USER_LOGIN_KEY) == null){
             session.invalidate();
         }
         return new ResponseEntity<>(resultMap, (HttpStatus)resultMap.get("code"));
@@ -53,7 +54,7 @@ public class UserAPIController {
     @DeleteMapping("/login/delete")
     public ResponseEntity<Object> userDelete(@RequestBody UserUpdateVO data, HttpSession session){
         Map<String, Object> resultMap = userService.deleteUser(data);
-        session.getAttribute("loginUser");
+        session.getAttribute(MySessionkeys.USER_LOGIN_KEY);
         session.invalidate();
         return new ResponseEntity<>(resultMap, (HttpStatus)resultMap.get("code"));
     }

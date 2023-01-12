@@ -13,10 +13,21 @@ import com.greenart.firstproject.entity.ReviewEntity;
 @Repository
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Long>{
     List<ReviewEntity> findByOption(OptionInfoEntity option);
-    @Query("select r from ReviewEntity r join r.option o where o.product.seq = :productSeq")
-    List<ReviewEntity> findByProductSeq(@Param("productSeq") Long productSeq);
+    @Query(value = "select a.* from review_info a join option_info b on a.ri_oi_seq = b.oi_seq where b.oi_pi_seq = :piSeq", nativeQuery = true)
+    List<ReviewEntity> findByProductReview(@Param("piSeq") Long piSeq);
+    // @Query(value = "select ui_nickname as nickname, ri_grade as grade, ri_content as content, ri_reg_dt as regDt, oi_option as option from review_info a join option_info b on a.ri_oi_seq = b.oi_seq join user_info d on d.ui_seq = a.ri_ui_seq join product_info c on b.oi_pi_seq = c.pi_seq where pi_seq = :piSeq", nativeQuery = true)
+    // List<ReviewVO> findByProductReview(@Param("piSeq") Long piSeq);
 }
+
 /*
+ * select r from ReviewEntity r inner join r.option o where o.product = :product
+ * 
+ * select ui_nickname, ri_grade, ri_content, ri_reg_dt, oi_option from review_info a
+join option_info b on a.ri_oi_seq = b.oi_seq
+join user_info d on d.ui_seq = a.ri_ui_seq
+join product_info c on b.oi_pi_seq = c.pi_seq where pi_seq = 1;
+
+ * select r.grade, r.content, r.regDt, o.option from ReviewEntity r inner join OptionInfoEntity o on r.oiSeq = o.seq inner join ProductInfoEntity p on o.seq = :p.seq 
  * 리뷰에 옵션 FK가 있음
  * 내가 필요한건 제품의 seq
  * 옵션 번호를 따라가서 제품seq를 찾아야함

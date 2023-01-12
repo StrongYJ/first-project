@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.service.ReviewService;
-import com.greenart.firstproject.vo.ReviewVO;
 
-import io.micrometer.common.lang.Nullable;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,8 +18,8 @@ public class ReviewAPIController {
     private final ReviewService reviewService;
 
     @GetMapping("/reviewList")
-    public Map<String, Object> getReview(@RequestParam @Nullable Long piSeq,ReviewVO data){
-        Map<String, Object> resultMap = reviewService.getReview(piSeq, data);
+    public Map<String, Object> getReview(@RequestParam Long piSeq){
+        Map<String, Object> resultMap = reviewService.getReview(piSeq);
         return resultMap;
     }
 }
