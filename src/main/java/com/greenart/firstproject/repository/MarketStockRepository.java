@@ -15,13 +15,10 @@ import com.greenart.firstproject.vo.localadmin.MarketOptionStockVO;
 
 @Repository
 public interface MarketStockRepository extends JpaRepository<MarketStockEntity,Long>{
-<<<<<<< HEAD
     List<MarketStockEntity> findByMarket(MarketInfoEntity market);
     List<MarketStockEntity> findByOption(OptionInfoEntity option);
-=======
     MarketStockEntity findBySeq(Long seq);
     Page<MarketStockEntity> findAll(Pageable pageable);
     MarketStockEntity findBySeqAndStock(Long seq, Integer stock);
->>>>>>> hyeonju
 }
                         
