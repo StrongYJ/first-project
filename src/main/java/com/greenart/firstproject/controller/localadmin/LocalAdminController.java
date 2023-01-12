@@ -35,12 +35,13 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/admin/local")
+@RequestMapping("/admin/local/")
 @RequiredArgsConstructor
 public class LocalAdminController {
     private final MarketInfoRepository marketRepo;
     private final MarketStockRepository stockRepo;
     private final LocalAdminService localService;
+    private final OptionInfoRepository optionRepo;
     // 지역관리자 로그인 부산1 대구2 대전3 서울4    
     // /admin/local/{id}
 
@@ -127,6 +128,18 @@ public class LocalAdminController {
 
             return "/localadmin/localadmin";
     }
+    @GetMapping("/stock")
+    public String getLocalStock(@RequestParam Long stock_no, Model model) {
+        model.addAttribute("market_stock", localService.getStockInfo(stock_no));
+        return "/localadmin/stock";
+    }
+
+    // @GetMapping("/stock/{seq}")
+    // public String getStockInfo(HttpSession session) {
+    //     if(session.getAttribute(MySessionkeys.LOCAL_ADMIN_KEY) == null) {
+
+    //     }
+    // }
 
 
 
