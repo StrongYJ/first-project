@@ -19,6 +19,5 @@ public interface MarketStockRepository extends JpaRepository<MarketStockEntity,L
     List<MarketStockEntity> findByOption(OptionInfoEntity option);
     MarketStockEntity findBySeq(Long seq);
     Page<MarketStockEntity> findAll(Pageable pageable);
-    MarketStockEntity findBySeqAndStock(Long seq, Integer stock);
 }
                         

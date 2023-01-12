@@ -38,4 +38,8 @@ public class MarketStockEntity {
         return ""+stock;
     }
 
+    public MarketStockEntity get() {
+        return null;
+    }
+
 }

@@ -35,5 +35,8 @@ public class LocalAdminService {
         Page<LocalMarketOptionStockVO> optionList = optionRepo.getOptionList(seq, pageable);
         return optionList;
     }
+    public MarketStockEntity getStockInfo(Long stock_no) {
+        return stockRepo.findBySeq(stock_no);
 
+    }
 }

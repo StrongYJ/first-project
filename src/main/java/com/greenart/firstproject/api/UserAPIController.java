@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,5 +58,13 @@ public class UserAPIController {
         return new ResponseEntity<>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
+    // 로그인을해서. 쿠폰페이지로 가면 내가 가지고 있는 쿠폰이 조회된다.
+    @GetMapping("/coupons")
+    public ResponseEntity<Object> userCoupon(@RequestBody UserLoginVO data, HttpSession session) {
+        Map<String, Object> resultMap = userService.loginUser(data);
+        
+        session.setAttribute("loginUser", resultMap.get("loginUser"));
+        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+    }
     
 }
