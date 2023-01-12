@@ -59,5 +59,8 @@ public class ProductAPIController {
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
 
+    // 상품번호로 조회 + 옵션까지 같이
+    @GetMapping("/detail")
+
 
 }
