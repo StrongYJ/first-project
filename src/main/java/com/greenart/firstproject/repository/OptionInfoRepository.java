@@ -18,14 +18,16 @@ import com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO;
 public interface OptionInfoRepository extends JpaRepository<OptionInfoEntity, Long>{
     List<OptionInfoEntity> findByOptionAndPrice(String option, Integer price);
     List<OptionInfoEntity> findByProduct(ProductInfoEntity product);
-
+    
     @Query(
-        value = "select new com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO(ms.market.seq, oi.product.name, oi.option, oi.price, ms.stock) from OptionInfoEntity oi left join MarketStockEntity ms on ms.option.seq = oi.seq and ms.market.seq = :marketInfoSeq"
+        value = "select new com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO(ms.seq, oi.product.name, oi.option, oi.price, ms.stock) from OptionInfoEntity oi left join MarketStockEntity ms on ms.option.seq = oi.seq and ms.market.seq = :marketInfoSeq"
         )
     List<LocalMarketOptionStockVO> getOptionList(@Param("marketInfoSeq") Long marketInfoSeq);
 
     @Query(
-        value = "select new com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO(ms.market.seq, oi.product.name, oi.option, oi.price, ms.stock) from OptionInfoEntity oi left join MarketStockEntity ms on ms.option.seq = oi.seq and ms.market.seq = :marketInfoSeq"
+        value = "select new com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO(ms.seq, oi.product.name, oi.option, oi.price, ms.stock) from OptionInfoEntity oi left join MarketStockEntity ms on ms.option.seq = oi.seq and ms.market.seq = :marketInfoSeq"
         )
 	Page<LocalMarketOptionStockVO> getOptionList(@Param("marketInfoSeq") Long seq, Pageable pageable);
+
+    public List<OptionInfoEntity> findBySeq(Long seq);
 }
