@@ -37,6 +37,8 @@ public class AdminLoginController {
             session.setAttribute(MySessionkeys.SUPER_ADMIN_KEY, data.getId());
             return "redirect:/admin/super/main";
         }
+        Long marketSeq = adminService.getMarketSeq(data);
+        session.setAttribute(MySessionkeys.LOCAL_ADMIN_KEY, marketSeq);
         reat.addAttribute("seq", adminService.getMarketSeq(data));
         return "redirect:/admin/local/{seq}";
     }

@@ -81,4 +81,14 @@ public class AdminMainController {
         model.addAttribute("user", adminService.getUserInfoBySeq(seq));
         return "superadmin/userinfo";
     }
+
+    @GetMapping("/users/{seq}/{status}")
+    public String getUserStatus(@PathVariable Long seq, @PathVariable Integer status, HttpSession session, RedirectAttributes reat) {
+        if(session.getAttribute(MySessionkeys.SUPER_ADMIN_KEY) == null) {
+            return "redirect:/admin/login";
+        }
+        adminService.changeUserStatus(seq, status);
+        reat.addAttribute("seq", seq);
+        return "redirect:/admin/super/users/{seq}";
+    }
 }
