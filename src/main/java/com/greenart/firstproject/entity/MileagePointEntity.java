@@ -19,13 +19,13 @@ import lombok.Getter;
 public class MileagePointEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mp_seq")
-    private Long mp_seq;
+    private Long mpSeq;
 
     @Column(name = "mp_price")
-    private Integer mp_price;
+    private Integer mpPrice;
 
     @Column(name = "mp_expiration_date")
-    private LocalDate mp_expiration_date;
+    private LocalDate mpExpiration_date;
 
     @JoinColumn(name = "mp_ui_seq")
     @ManyToOne(fetch = FetchType.LAZY)
