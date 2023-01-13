@@ -27,7 +27,7 @@ public class CartInfoEntity {
     private Long seq;
     
     @Column(name = "ci_stock")
-    private Integer stock;
+    private Integer quantity;
     
     @JoinColumn(name = "ci_ui_seq")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,16 +38,16 @@ public class CartInfoEntity {
     private OptionInfoEntity option;
 
     @Builder
-    public CartInfoEntity(Integer stock, UserEntity user, OptionInfoEntity option) {
-        this.stock = stock;
+    public CartInfoEntity(Integer quantity, UserEntity user, OptionInfoEntity option) {
+        this.quantity = quantity;
         this.user = user;
         this.option = option;
     }
-    public void setStock(Integer stock) {
-        this.stock = stock;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
-    public void addStock(Integer stock) {
-        this.stock += stock;
+    public void addQuantity(Integer quantity) {
+        this.quantity += quantity;
     }
 
 }    

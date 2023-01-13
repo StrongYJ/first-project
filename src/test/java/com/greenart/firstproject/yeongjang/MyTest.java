@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.greenart.firstproject.entity.ReviewEntity;
 import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.repository.ReviewRepository;
-import com.greenart.firstproject.vo.ReviewVO;
+import com.greenart.firstproject.vo.review.ReviewVO;
 
 import lombok.extern.slf4j.Slf4j;
 

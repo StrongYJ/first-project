@@ -13,6 +13,7 @@ import com.greenart.firstproject.vo.superadmin.AdminUserVO;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long>{
     public Integer countByEmail(String eamil);
+    public UserEntity findByEmail(String eamil);
     public UserEntity findByEmailAndPwd(String eamil, String pwd);
     public UserEntity findByPwd(String pwd);
     @Query(value = "SELECT new com.greenart.firstproject.vo.superadmin.AdminUserVO(u.seq, u.name, u.email, u.nickname, u.birth, u.phone, u.address, u.status, u.regDt) FROM UserEntity u")

@@ -31,14 +31,14 @@ public class CartService {
         Optional<CartInfoEntity> existInCart = cartRepo.findByUserAndOptionSeq(loginUser, data.getOptionSeq());
         if(existInCart.isEmpty()) {
             CartInfoEntity newCartInfo = CartInfoEntity.builder()
-                .stock(data.getStock())
+                .quantity(data.getQuantity())
                 .user(loginUser)
                 .option(optionRepo.findById(data.getOptionSeq()).orElseThrow())
                 .build();
             cartRepo.save(newCartInfo);
             return;
         }
-        existInCart.get().addStock(data.getStock());
+        existInCart.get().addQuantity(data.getQuantity());
         cartRepo.save(existInCart.get());
     }
 
@@ -58,9 +58,9 @@ public class CartService {
         return true; 
     }
 
-    public void cartSetStock(UserEntity loginUser, CartPlusMinusVO data) {
+    public void cartSetQuantity(UserEntity loginUser, CartPlusMinusVO data) {
         cartRepo.findByUserAndOptionSeq(loginUser, data.getOptionSeq()).ifPresent(c -> {
-                c.setStock(data.getStock());
+                c.setQuantity(data.getQuantity());
                 cartRepo.save(c);
             } 
         );
