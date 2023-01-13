@@ -60,7 +60,7 @@ public class ProductAPIController {
     }
 
     // 상품번호로 조회 + 옵션까지 같이
-    @GetMapping("/detail")
+    // @GetMapping("/detail")
 
 
 }

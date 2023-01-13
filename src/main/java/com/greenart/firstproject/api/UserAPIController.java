@@ -1,5 +1,6 @@
 package com.greenart.firstproject.api;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.config.MySessionkeys;
+import com.greenart.firstproject.entity.CouponInfoEntity;
+import com.greenart.firstproject.repository.CouponInfoRefository;
 import com.greenart.firstproject.service.UserService;
 import com.greenart.firstproject.vo.user.UserJoinVO;
 import com.greenart.firstproject.vo.user.UserLoginVO;
@@ -27,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class UserAPIController {
     
     private final UserService userService;
-    
+
     @PutMapping("/join")
     public ResponseEntity<Object> userJoin(@RequestBody UserJoinVO data){
         Map<String, Object> resultMap = userService.addUser(data);
@@ -59,13 +62,5 @@ public class UserAPIController {
         return new ResponseEntity<>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
-    // 로그인을해서. 쿠폰페이지로 가면 내가 가지고 있는 쿠폰이 조회된다.
-    @GetMapping("/coupons")
-    public ResponseEntity<Object> userCoupon(@RequestBody UserLoginVO data, HttpSession session) {
-        Map<String, Object> resultMap = userService.loginUser(data);
-        
-        session.setAttribute("loginUser", resultMap.get("loginUser"));
-        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
-    }
     
 }

@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -36,5 +37,6 @@ public class CouponInfoEntity {
     @JoinColumn(name = "cou_ui_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
+
 
 }
