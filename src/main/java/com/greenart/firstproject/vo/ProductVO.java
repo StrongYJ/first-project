@@ -1,5 +1,6 @@
 package com.greenart.firstproject.vo;
 
+import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
 
 import lombok.AllArgsConstructor;
@@ -23,6 +24,10 @@ public class ProductVO {
     private String detailImg;
     private String detailContent;
     private String manufacturer;
+
+    private String option;
+    private Integer price;
+    private ProductInfoEntity product;
     
     public ProductVO(ProductInfoEntity entity) {
         this.seq=entity.getSeq();
@@ -38,6 +43,24 @@ public class ProductVO {
         this.detailImg=entity.getDetailImg();
         this.detailContent=entity.getDetailContent();
         this.manufacturer=entity.getManufacturer();
+    }
+    public void ProductVoOptionVO(ProductInfoEntity pEntity, OptionInfoEntity oEntity) {
+        this.seq=pEntity.getSeq();
+        this.name=pEntity.getName();
+        this.type=pEntity.getType();
+        this.level=pEntity.getLevel();
+        this.sweetness=pEntity.getSweetness();
+        this.sour=pEntity.getSour();
+        this.soda=pEntity.getSoda();
+        this.raw=pEntity.getRaw();
+        this.img=pEntity.getImg();
+        this.subName=pEntity.getSubName();
+        this.detailImg=pEntity.getDetailImg();
+        this.detailContent=pEntity.getDetailContent();
+        this.manufacturer=pEntity.getManufacturer();
+        this.option=oEntity.getOption();
+        this.price=oEntity.getPrice();
+        this.product=oEntity.getProduct();
     }
 }
 

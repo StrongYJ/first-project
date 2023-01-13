@@ -1,6 +1,7 @@
 package com.greenart.firstproject.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,12 +15,12 @@ import com.greenart.firstproject.vo.ProductVO;
 @Repository
 public interface ProductInfoRepository extends JpaRepository<ProductInfoEntity, Long>{
     public Page<ProductInfoEntity> findAll(Pageable pageable);
-    public List<ProductInfoEntity> findByType(String type, Pageable pageable);
-    List<ProductInfoEntity> findByName(String name);
+    public Page<ProductInfoEntity> findByType(String type, Pageable pageable);
+    public Page<ProductInfoEntity> findByName(String name, Pageable pageable);
     public List<ProductInfoEntity> findBySeq(Long seq); // 상품번호로 상품조회(상세페이지)
     // public Page<ProductVO> findByType(ProductVO)
     // @Query(value = "SELECT b FROM product_info b WHERE pi_name LIKE %:keyword%"
     // )
     // List<ProductInfoEntity> findAllSearch(String keyword);
-    List<ProductInfoEntity> findByNameContaining(String keyword);
+    public List<ProductInfoEntity> findByNameContaining(String keyword);
 }

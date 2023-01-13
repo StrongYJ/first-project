@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,11 +41,12 @@ public class ProductAPIController {
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
 
-    // 상품번호로 상품조회(상세페이지)
+    // 상품번호로 상품조회(상세페이지) + 옵션추가
     @GetMapping("/detail/{seq}")
     public ResponseEntity<Map<String, Object>> getProductDetail(@PathVariable Long seq) {
         Map<String,Object> map = new LinkedHashMap<String, Object>();
         map.put("detailInfo", piService.findProductDetail(ProductVO.builder().seq(seq).build()));
+        // map.put("", )
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
 
