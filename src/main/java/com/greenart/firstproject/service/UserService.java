@@ -2,6 +2,7 @@ package com.greenart.firstproject.service;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +37,7 @@ public class UserService {
                 Pattern pwdPattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
                 Matcher pwdMatcher = pwdPattern.matcher(data.getPwd());
                 if(pwdMatcher.find()){
-                    Pattern phonePattern = Pattern.compile("^010(\\d{3}\\d{4})(\\d{4})$");
+                    Pattern phonePattern = Pattern.compile("^010(\\d{4})(\\d{4})$");
                     Matcher matcher = phonePattern.matcher(data.getPhone());
                     if(matcher.matches()) {
                         UserEntity newUser = new UserEntity(data);
@@ -97,45 +98,39 @@ public class UserService {
         return resultMap;
     }
 
-    public Map<String, Object> modifyUser(UserUpdateVO data){
+    public Map<String, Object> modifyUser(UserUpdateVO data, UserEntity loginUser){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        UserEntity loginUser = null;
-        loginUser = uRepo.findByEmailAndPwd(data.getEmail(), data.getPwd());
-        String pre_pwd = loginUser.getPwd();
-        if(loginUser.getPwd().equals(data.getPwd())){
-            loginUser.updateUser(data);
-            uRepo.save(loginUser);
-            resultMap.put("status", true);
-            resultMap.put("message", "수정이 완료 되었습니다.");
-            resultMap.put("code", HttpStatus.ACCEPTED);
-            if(pre_pwd.equals(loginUser.getPwd())){
-                resultMap.put("loginUser", null);
-            }
-        }
-        else{
+        Optional<UserEntity> findById = uRepo.findById(loginUser.getSeq());
+        if(findById.isEmpty()) {
             resultMap.put("status", false);
-            resultMap.put("message", "비밀번호가 일치하지 않습니다.");
+            resultMap.put("message", "만료된 세션입니다.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
+            return resultMap;
         }
+        UserEntity userEntity = findById.get();
+        userEntity.updateUser(data);
+        uRepo.save(userEntity);
+        resultMap.put("status", true);
+        resultMap.put("message", "수정이 완료 되었습니다.");
+        resultMap.put("code", HttpStatus.ACCEPTED);
         return resultMap;
     }
 
-    public Map<String, Object> deleteUser(UserUpdateVO data){
+    public Map<String, Object> deleteUser(UserEntity loginUser){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        UserEntity loginUser = null;
-        loginUser = uRepo.findByEmailAndPwd(data.getEmail(), data.getPwd());
-        if(loginUser.getPwd().equals(data.getPwd())){
-            uRepo.delete(loginUser);
-            resultMap.put("status", true);
-            resultMap.put("message", "탈퇴가 완료 되었습니다.");
-            resultMap.put("code", HttpStatus.ACCEPTED);
-            resultMap.put("loginUser", null);
-        }
-        else{
+        
+        if(loginUser == null){
             resultMap.put("status", false);
-            resultMap.put("message", "비밀번호가 일치하지 않습니다.");
-            resultMap.put("code", HttpStatus.BAD_REQUEST);
+            resultMap.put("message", "만료된 세션입니다.");
+            resultMap.put("code", HttpStatus.UNAUTHORIZED);
+            return resultMap;
         }
+        loginUser.changeStatus(3);
+        uRepo.save(loginUser);
+        resultMap.put("status", true);
+        resultMap.put("message", "탈퇴가 완료 되었습니다.");
+        resultMap.put("code", HttpStatus.ACCEPTED);
+        resultMap.put("loginUser", null);
         return resultMap;
     }
 }

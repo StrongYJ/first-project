@@ -74,8 +74,6 @@ public class UserEntity {
     }
 
     public void changeStatus(Integer status) {
-        if(status == 1 || status == 2) {
-            this.status = status;
-        }
+        this.status = status;
     }
 }
