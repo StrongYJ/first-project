@@ -23,7 +23,7 @@ public class ReviewVO {
     @Schema(description = "등록일")
     private LocalDateTime regDt;
     @Schema(description = "구매했던 제품의 옵션이름")
-    private String option;
+    private String optionName;
 
     public static ReviewVO fromEntity(ReviewEntity entity) {
         String nickname = entity.getUser() != null ? entity.getUser().getNickname() : "탈퇴한 유저";
@@ -32,7 +32,16 @@ public class ReviewVO {
             .grade(entity.getGrade())
             .content(entity.getContent())
             .regDt(entity.getRegDt())
-            .option(entity.getOption().getOption())
+            .optionName(entity.getOption().getOption())
             .build();
+    }
+
+    public ReviewVO(ReviewEntity entity) {
+        String nickname = entity.getUser() != null ? entity.getUser().getNickname() : "탈퇴한 유저";
+        this.nickname = nickname;
+        this.grade = entity.getGrade();
+        this.content = entity.getContent();
+        this.regDt = entity.getRegDt();
+        this.optionName = entity.getOption().getOption();
     }
 }

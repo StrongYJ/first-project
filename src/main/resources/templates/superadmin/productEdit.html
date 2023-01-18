@@ -20,7 +20,7 @@
                 <a class="nav-link active" aria-current="page" th:href="@{/admin/super/main}">메인</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" th:href="@{/admin/super/product/add}">제품추가</a>
+                <a class="nav-link" th:href="@{/admin/super/products/add}">제품추가</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" th:href="@{/admin/super/users}">회원내역</a>
@@ -39,41 +39,65 @@
     <form th:action enctype="multipart/form-data" method="post">
         <div class="container my-3" th:object="${product}">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{name}" required>
+                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{name}" th:errorclass="is-invalid" required>
                 <label for="floatingInput">제품이름</label>
+                <div class="invalid-feedback" th:errors="*{name}">
+                    제품 이름을 기입해주세요.
+                </div>
             </div>  
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" th:field="*{type}">
+                <option th:each="t : ${alcoholTypes}" th:value="${t}" th:text="${t.title}" th:selected="${t} == *{type}"></option>
+            </select>
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" th:field="*{raw}">
+                <option th:each="r : ${raws}" th:value="${r}" th:text="${r.title}" th:selected="${r} == *{raw}"></option>
+            </select>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{type}" required>
-                <label for="floatingInput">주종</label>
-            </div>  
-            <div class="form-floating mb-3">
-                <input type="number" step="0.01" min="0" max="100" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{level}" required>
+                <input type="number" step="0.01" min="0" max="100" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{level}" th:errorclass="is-invalid" required>
                 <label for="floatingInput">도수</label>
-            </div>  
+                <div class="invalid-feedback" th:errors="*{level}">
+                    0.0 ~ 100.0 사이로 기입하셔야합니다.
+                </div>
+            </div>
+            <div class="d-flex gap-5 mb-3">
+                <fieldset class="border p-2">
+                    <legend class="float-none w-auto p-2">단맛</legend>
+                    <div class="form-check form-check-inline" th:each="degree : ${degrees}">
+                        <input class="form-check-input" type="radio" th:field="*{sweetness}" th:value="${degree}" th:checked="${degree} == *{sweetness}" th:errorclass="is-invalid" required>
+                        <label class="form-check-label" for="inlineRadio1" th:text="${degree}">1</label>
+                        <div class="invalid-feedback" th:errors="*{sweetness}">
+                            단맛 오류
+                        </div>
+                    </div>
+                </fieldset>         
+                <fieldset class="border p-2">
+                    <legend class="float-none w-auto p-2">신맛</legend>
+                    <div class="form-check form-check-inline" th:each="degree : ${degrees}">
+                        <input class="form-check-input" type="radio" th:field="*{sour}" th:value="${degree}" th:checked="${degree} == *{sour}" th:errorclass="is-invalid" required>
+                        <label class="form-check-label" for="inlineRadio1" th:text="${degree}">1</label>
+                        <div class="invalid-feedback" th:errors="*{sour}">
+                            신맛 오류
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="border p-2">
+                    <legend class="float-none w-auto p-2">탄산</legend>
+                    <div class="form-check form-check-inline" th:each="degree : ${degrees}">
+                        <input class="form-check-input" type="radio" th:field="*{soda}" th:value="${degree}" th:checked="${degree} == *{soda}" th:errorclass="is-invalid" required>
+                        <label class="form-check-label" for="inlineRadio1" th:text="${degree}">1</label>
+                        <div class="invalid-feedback" th:errors="*{soda}">
+                            탄산 오류
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
             <div class="form-floating mb-3">
-                <input type="number" class="form-control" min="0" max="3" id="floatingInput" placeholder="name@example.com" th:field="*{sweetness}" required>
-                <label for="floatingInput">단맛</label>
-            </div>  
-            <div class="form-floating mb-3">
-                <input type="number" class="form-control" min="0" max="3" id="floatingInput" placeholder="name@example.com" th:field="*{sour}" required>
-                <label for="floatingInput">신맛</label>
-            </div>  
-            <div class="form-floating mb-3">
-                <input type="number" class="form-control" min="0" max="3" id="floatingInput" placeholder="name@example.com" th:field="*{soda}" required>
-                <label for="floatingInput">탄산</label>
-            </div>  
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{raw}" required>
-                <label for="floatingInput">원료</label>
-            </div>  
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{subName}" required>
-                <label for="floatingInput">부제목</label>
-            </div>    
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{manufacturer}" required>
+                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{manufacturer}" th:errorclass="is-invalid" required>
                 <label for="floatingInput">제조사 이름</label>
             </div> 
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{subName}" th:errorclass="is-invalid" required>
+                <label for="floatingInput">부제목</label>
+            </div>    
             <div class="form-floating">
                 <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" th:field="*{detailContent}"></textarea>
                 <label for="floatingTextarea2">상세설명 (생략가능)</label>

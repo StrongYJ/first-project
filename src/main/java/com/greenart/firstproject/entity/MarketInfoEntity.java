@@ -27,7 +27,7 @@ public class MarketInfoEntity {
     @Column(name = "mi_name")
     private String name;
 
-    @Column(name = "mi_adress")
+    @Column(name = "mi_address")
     private String address;
 
     @Column(name = "mi_lat")

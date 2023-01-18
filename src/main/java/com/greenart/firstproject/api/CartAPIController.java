@@ -85,7 +85,6 @@ public class CartAPIController {
     @Operation(summary = "장바구니 제품 삭제", description = "로그인 세션과 옵션 seq번호를 이용해서 장바구니 정보를 삭제합니다.")
     @ApiResponse(responseCode = "200", description = "성공 메세지", content = @Content)
     @ApiResponse(responseCode = "401", description = "로그인 되지 않은 유저가 접근시", content = @Content)
-    @ApiResponse(responseCode = "400", description = "존재하지 않는 seq번호", content = @Content)
     @DeleteMapping("")
     public ResponseEntity<Map<String, Object>> deleteCartInfo(
         HttpSession session,
@@ -99,11 +98,7 @@ public class CartAPIController {
             map.put("messege", "No Session");
             return new ResponseEntity<>(map, HttpStatus.UNAUTHORIZED);
         }
-        Boolean isDeleted = cartService.cartDelete((UserEntity) loginUser, optionSeq);
-        if(isDeleted == false){
-            map.put("message", "Wrong request");
-            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
-        }
+        cartService.cartDelete((UserEntity) loginUser, optionSeq);
         map.put("message", "Deleted");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }

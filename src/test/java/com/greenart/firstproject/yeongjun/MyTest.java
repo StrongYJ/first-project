@@ -2,14 +2,20 @@ package com.greenart.firstproject.yeongjun;
 
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.greenart.firstproject.entity.CartInfoEntity;
+import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.ReviewEntity;
+import com.greenart.firstproject.entity.enums.AlcoholType;
+import com.greenart.firstproject.entity.enums.RawMaterial;
 import com.greenart.firstproject.repository.CartInfoRepository;
 import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.MarketStockRepository;
@@ -100,18 +106,37 @@ class MyTest {
 
     @Test
     void testCart() {
-        Assertions.assertThat(cartRepo.findByUserAndOptionSeq(utestRepo.findById(1L).get(), 2L)).isNotNull();
+        assertThat(cartRepo.findByUserAndOptionSeq(utestRepo.findById(1L).get(), 2L)).isNotNull();
     }
 
     @Test
     void reviewTest() {
         List<ReviewVO> list = reviewRepo.findVOByProductSeq(1L);
-        Assertions.assertThat(list.size()).isEqualTo(4);
+        assertThat(list.size()).isEqualTo(4);
         for(var a : list) {
             log.info("data={}",a);
         }
     }
     
+    @Test
+    void enumMapTest() {
+        assertThat(AlcoholType.valueOfCode("takju")).isEqualTo(AlcoholType.TAKJU);
+        assertThat(AlcoholType.valueOfCode("wine")).isEqualTo(AlcoholType.WINE);
+        assertThat(AlcoholType.valueOfCode("chungju")).isEqualTo(AlcoholType.CHUNGJU);
+        assertThat(AlcoholType.valueOfCode("soju")).isEqualTo(AlcoholType.SOJU);
+        assertThat(RawMaterial.ETC).isEqualTo(RawMaterial.valueOfCode("etc"));
+        assertThat(RawMaterial.FLOWER).isEqualTo(RawMaterial.valueOfCode("flower"));
+        assertThat(RawMaterial.FRUIT_VEG).isEqualTo(RawMaterial.valueOfCode("fruit"));
+        assertThat(RawMaterial.HERB).isEqualTo(RawMaterial.valueOfCode("herb"));
+        assertThat(RawMaterial.GRAIN_NUT).isEqualTo(RawMaterial.valueOfCode("grain-nut"));
+    }
+
+    @Test
+    void findByType() {
+        Pageable pageable = PageRequest.of(0, 20);
+        Page<ProductInfoEntity> findByType = productRepo.findByType(AlcoholType.valueOfCode("takju"), pageable);
+        assertThat(findByType.getContent().size()).isEqualTo(3);
+    }
 }
 
 @Data

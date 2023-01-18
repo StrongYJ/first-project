@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.greenart.firstproject.entity.ProductInfoEntity;
+import com.greenart.firstproject.entity.enums.AlcoholType;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
-import com.greenart.firstproject.vo.OptionVO;
-import com.greenart.firstproject.vo.ProductVO;
+import com.greenart.firstproject.vo.product.OptionVO;
+import com.greenart.firstproject.vo.product.ProductVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,15 +23,18 @@ public class ProductService {
     private final ProductInfoRepository piRepo;
     private final OptionInfoRepository oiRepo;
 
-    public Object findAllProducts(Pageable pageable) {
+    public Page<ProductInfoEntity> findAllProducts(Pageable pageable) {
         return piRepo.findAll(pageable);
     }
-    public Object findByType(String type, Pageable pageable) {
+
+    public Page<ProductInfoEntity> findByType(AlcoholType type, Pageable pageable) {
         return piRepo.findByType(type, pageable);
     }
-    public Object findProductDetail(ProductVO productVO) {
-        return piRepo.findBySeq(productVO.getSeq());
+
+    public ProductInfoEntity findProductDetail(Long seq) {
+        return piRepo.findById(seq).orElseThrow();
     }
+    
     public List<ProductVO> searchProducts(String keyword) {
         List<ProductInfoEntity> productInfoEntity = piRepo.findByNameContaining(keyword);
         List<ProductVO> productVOlList = new ArrayList<>();
@@ -48,12 +53,12 @@ public class ProductService {
         return ProductVO.builder()
         .seq(pInfoEntity.getSeq())
         .name(pInfoEntity.getName())
-        .type(pInfoEntity.getType())
+        .type(pInfoEntity.getType().getTitle())
         .level(pInfoEntity.getLevel())
         .sweetness(pInfoEntity.getSweetness())
         .sour(pInfoEntity.getSour())
         .soda(pInfoEntity.getSoda())
-        .raw(pInfoEntity.getRaw())
+        .raw(pInfoEntity.getRaw().getTitle())
         .img(pInfoEntity.getImg())
         .subName(pInfoEntity.getSubName())
         .detailImg(pInfoEntity.getDetailImg())

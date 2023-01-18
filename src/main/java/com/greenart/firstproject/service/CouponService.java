@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.CouponInfoRefository;
-import com.greenart.firstproject.vo.CouponInfoVO;
+import com.greenart.firstproject.vo.coupon.CouponInfoVO;
 
 import lombok.RequiredArgsConstructor;
 

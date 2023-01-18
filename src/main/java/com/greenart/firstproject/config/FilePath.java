@@ -1,6 +1,6 @@
 package com.greenart.firstproject.config;
 
-public class FilePath {
+public abstract class FilePath {
     public static final String PRODUCT_IMAGES = "/home/product/images";
     
 }

@@ -17,7 +17,8 @@ public class ReviewService {
     private final ReviewRepository reviewRepo;
 
     public List<ReviewVO> getReview(Long piSeq){
-        return reviewRepo.findVOByProductSeq(piSeq);
+        // return reviewRepo.findVOByProductSeq(piSeq);
+        return reviewRepo.findFetchByProductSeq(piSeq).stream().map(ReviewVO::new).toList();
     }
 
     public ReviewCreateVO createReivew(UserEntity loginUser, ReviewCreateVO data) {

@@ -4,6 +4,8 @@ package com.greenart.firstproject.vo.superadmin;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.greenart.firstproject.entity.ProductInfoEntity;
+import com.greenart.firstproject.entity.enums.AlcoholType;
+import com.greenart.firstproject.entity.enums.RawMaterial;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,12 +19,12 @@ import lombok.NoArgsConstructor;
 public class AdminUpdateProductVO {
     private Long seq;
     private String name;
-    private String type;
+    private AlcoholType type;
     private Double level;
     private Integer sweetness;
     private Integer sour;
     private Integer soda;
-    private String raw;
+    private RawMaterial raw;
     private String subName;
     private String detailContent;
     private String manufacturer;

@@ -1,13 +1,15 @@
 package com.greenart.firstproject.api;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.config.MySessionkeys;
@@ -29,9 +31,13 @@ public class ReviewAPIController {
     private final ReviewService reviewService;
 
     @Operation(summary = "제품별 리뷰 정보", description = "제품에 따른 리뷰 정보")
-    @GetMapping("")
-    public ResponseEntity<List<ReviewVO>> getReview(@RequestParam Long piSeq){
-        return new ResponseEntity<>(reviewService.getReview(piSeq), HttpStatus.OK);
+    @GetMapping("/{seq}")
+    public ResponseEntity<Map<String, Object>> getReview(@PathVariable("seq") Long piSeq){
+        Map<String, Object> map = new LinkedHashMap<>();
+        List<ReviewVO> review = reviewService.getReview(piSeq);
+        map.put("size", review.size());
+        map.put("data", review);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @PostMapping("")
