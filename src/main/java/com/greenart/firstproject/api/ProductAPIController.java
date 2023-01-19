@@ -74,6 +74,7 @@ public class ProductAPIController {
     // @GetMapping("/detail")
 
 
+    // 여러 조건으로 검색
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> searchMultipleCondition(ProductSearchCond cond, Pageable pageable) {
         Map<String, Object> map = new LinkedHashMap<>();

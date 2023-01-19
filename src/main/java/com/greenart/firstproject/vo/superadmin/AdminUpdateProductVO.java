@@ -46,8 +46,8 @@ public class AdminUpdateProductVO {
                 .subName(prod.getSubName())
                 .detailContent(prod.getDetailContent())
                 .manufacturer(prod.getManufacturer())
-                .basicImgPath("/admin/image/" + prod.getImg())
-                .detailImgPath("/admin/image/" + prod.getDetailImg())
+                .basicImgPath("/api/images/product/" + prod.getImg())
+                .detailImgPath("/api/images/product/" + prod.getDetailImg())
                 .build();
     }
 }

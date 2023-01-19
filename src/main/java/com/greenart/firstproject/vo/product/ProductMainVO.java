@@ -32,7 +32,7 @@ public class ProductMainVO {
         this.name = name;
         this.subName = subName;
         this.mainPrice = mainPrice;
-        this.basicImg = basicImg;
+        this.basicImg = "/api/images/product/" + basicImg;
         this.reviewGrade = reviewGrade;
         this.reviewNumber = reviewNumber;
     }
