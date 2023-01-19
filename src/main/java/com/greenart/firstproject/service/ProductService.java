@@ -13,6 +13,8 @@ import com.greenart.firstproject.entity.enums.AlcoholType;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.vo.product.OptionVO;
+import com.greenart.firstproject.vo.product.ProductMainVO;
+import com.greenart.firstproject.vo.product.ProductSearchCond;
 import com.greenart.firstproject.vo.product.ProductVO;
 
 import lombok.RequiredArgsConstructor;
@@ -47,6 +49,9 @@ public class ProductService {
         return productVOlList;
     }
 
+    public Page<ProductMainVO> searchMultipleCondition(ProductSearchCond cond, Pageable pageable) {
+        return piRepo.findVOByMultiCondition(cond, pageable);
+    }
 
 
     private ProductVO convertEntityToVO(ProductInfoEntity pInfoEntity) {
@@ -66,4 +71,5 @@ public class ProductService {
         .manufacturer(pInfoEntity.getManufacturer())
         .build();
     }
+
 }

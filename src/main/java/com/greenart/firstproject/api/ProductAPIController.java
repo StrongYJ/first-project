@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.entity.enums.AlcoholType;
 import com.greenart.firstproject.service.ProductService;
+import com.greenart.firstproject.vo.product.ProductSearchCond;
 import com.greenart.firstproject.vo.product.ProductVO;
 
 import lombok.RequiredArgsConstructor;
@@ -73,4 +74,10 @@ public class ProductAPIController {
     // @GetMapping("/detail")
 
 
+    @GetMapping("")
+    public ResponseEntity<Map<String, Object>> searchMultipleCondition(ProductSearchCond cond, Pageable pageable) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("data", piService.searchMultipleCondition(cond, pageable));
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 }

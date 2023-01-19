@@ -9,29 +9,25 @@ import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 import lombok.Getter;
 
-/**
- * 술 원료
- */
 @Getter
 @JsonFormat(shape = Shape.OBJECT)
-public enum RawMaterial {
-    FRUIT_VEG("fruit", "과채류"), FLOWER("flower", "꽃"), GRAIN_NUT("grain-nut", "곡물견과류"), HERB("herb", "약재"), ETC("etc", "기타");
-
-    private final String code;
-    private final String title;
+public enum LevelRangeCode {
     
-    private RawMaterial(String code, String title) {
+    LOW("low"), MIDDLE("middle"), HIGH("high"), VERY_HIGH("very-high");
+
+    private String code;
+    private LevelRangeCode(String code) {
         this.code = code;
-        this.title = title;
     }
 
-    private static final Map<String, RawMaterial> BY_CODE = new ConcurrentHashMap<>();
+    private static final Map<String, LevelRangeCode> BY_CODE = new ConcurrentHashMap<>();
 
     static {
         Arrays.stream(values()).forEach(v -> BY_CODE.put(v.code, v));
     }
 
-    public static RawMaterial valueOfCode(String code) {
+    public static LevelRangeCode valueOfCode(String code) {
         return BY_CODE.get(code);
     }
+    
 }

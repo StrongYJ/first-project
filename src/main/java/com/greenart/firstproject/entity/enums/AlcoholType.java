@@ -26,10 +26,6 @@ public enum AlcoholType {
         this.title = title;
     }
 
-    public String getCode() {
-        return this.code;
-    }
-
     private static final Map<String, AlcoholType> BY_CODE = new ConcurrentHashMap<>();
 
     static {

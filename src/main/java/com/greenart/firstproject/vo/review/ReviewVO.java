@@ -25,23 +25,12 @@ public class ReviewVO {
     @Schema(description = "구매했던 제품의 옵션이름")
     private String optionName;
 
-    public static ReviewVO fromEntity(ReviewEntity entity) {
-        String nickname = entity.getUser() != null ? entity.getUser().getNickname() : "탈퇴한 유저";
-        return ReviewVO.builder()
-            .nickname(nickname)
-            .grade(entity.getGrade())
-            .content(entity.getContent())
-            .regDt(entity.getRegDt())
-            .optionName(entity.getOption().getOption())
-            .build();
-    }
-
     public ReviewVO(ReviewEntity entity) {
         String nickname = entity.getUser() != null ? entity.getUser().getNickname() : "탈퇴한 유저";
         this.nickname = nickname;
         this.grade = entity.getGrade();
         this.content = entity.getContent();
         this.regDt = entity.getRegDt();
-        this.optionName = entity.getOption().getOption();
+        this.optionName = entity.getOptionName();
     }
 }
