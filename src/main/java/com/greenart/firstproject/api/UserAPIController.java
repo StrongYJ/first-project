@@ -1,5 +1,6 @@
 package com.greenart.firstproject.api;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -27,10 +28,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserAPIController {
-    
     private final UserService userService;
 
-    @PutMapping("/join")
+    @PostMapping("/join")
     public ResponseEntity<Object> userJoin(@RequestBody UserJoinVO data){
         Map<String, Object> resultMap = userService.addUser(data);
         return new ResponseEntity<Object>(resultMap, (HttpStatus) resultMap.get("code"));
@@ -46,21 +46,29 @@ public class UserAPIController {
     @PutMapping("/login/update")
     public ResponseEntity<Object> userUpdate(@RequestBody UserUpdateVO data, HttpSession session){
         Map<String, Object> resultMap = null;
-        Object ue = session.getAttribute(MySessionkeys.USER_LOGIN_KEY);
-        if(ue == null) {
+        Object loginUser = session.getAttribute(MySessionkeys.USER_LOGIN_KEY);
+        if(loginUser == null) {
             resultMap = new LinkedHashMap<String, Object>();
             resultMap.put("status", false);
             resultMap.put("message", "로그인 사용자 정보가 없습니다.");
             return new ResponseEntity<>(resultMap, HttpStatus.UNAUTHORIZED);
         }
-        resultMap = userService.modifyUser(data, (UserEntity)ue);
+        resultMap = userService.modifyUser(data, (UserEntity)loginUser);
         return new ResponseEntity<>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
-    @DeleteMapping("/login/delete")
+    @PutMapping("/login/delete")
     public ResponseEntity<Object> userDelete(HttpSession session){
+        Map<String, Object> resultMap = null;
         Object loginUser = session.getAttribute(MySessionkeys.USER_LOGIN_KEY);
-        Map<String, Object> resultMap = userService.deleteUser((UserEntity) loginUser);
+        // Map<String, Object> resultMap = userService.deleteUser((UserEntity) loginUser);
+        if(loginUser == null){
+            resultMap = new LinkedHashMap<String, Object>();
+            resultMap.put("status", false);
+            resultMap.put("message", "로그인 사용자 정보가 없습니다.");
+            return new ResponseEntity<>(resultMap, HttpStatus.UNAUTHORIZED);
+        }
+        resultMap = userService.deleteUser((UserEntity) loginUser);
         session.invalidate();
         return new ResponseEntity<>(resultMap, (HttpStatus)resultMap.get("code"));
     }
