@@ -31,12 +31,27 @@ public class LocalAdminService {
         List<LocalMarketOptionStockVO> optionList = optionRepo.getOptionList(seq);
         return optionList;
     }
+
     public Page<LocalMarketOptionStockVO> getOptionList(Long seq, Pageable pageable) {
         Page<LocalMarketOptionStockVO> optionList = optionRepo.getOptionList(seq, pageable);
         return optionList;
     }
+
     public MarketStockEntity getStockInfo(Long stock_no) {
         return stockRepo.findBySeq(stock_no);
-
     }
+
+    // test-project보면서 다시 하셈
+    // public Map<String, Object> updateStockInfo(LocalMarketOptionStockVO data) {
+    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    //     Optional<MarketStockEntity> entity = MarketStockRepository.findById(data.getStockSeq());
+
+    //     MarketStockEntity mStockEntity = entity.get();
+    //     mStockEntity.setStock(data.getStock());
+    //     MarketStockRepository.save(mStockEntity);
+
+    //     return resultMap;
+
+    // }
+
 }

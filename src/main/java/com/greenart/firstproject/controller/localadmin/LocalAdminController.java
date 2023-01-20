@@ -2,6 +2,7 @@ package com.greenart.firstproject.controller.localadmin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,11 +129,22 @@ public class LocalAdminController {
 
             return "/localadmin/localadmin";
     }
+
     @GetMapping("/stock")
     public String getLocalStock(@RequestParam Long stock_no, Model model) {
         model.addAttribute("market_stock", localService.getStockInfo(stock_no));
         return "/localadmin/stock";
     }
+    
+    // @PostMapping("/update")
+    // public String postStockUpdate(MarketOptionStockVO data, HttpSession session) {
+    //     Map<String, Object> map = LocalAdminService.updateStockInfo(data);
+    //     if((boolean)map.get("stock")) {
+    //         return "redirect:/localadmin/stock";
+    //     }
+    //     session.setAttribute("update_result", map);
+    //     return "redirect:/localadmin/stock?stock_no="+data.getStock();
+    // }
 
     // @GetMapping("/stock/{seq}")
     // public String getStockInfo(HttpSession session) {
