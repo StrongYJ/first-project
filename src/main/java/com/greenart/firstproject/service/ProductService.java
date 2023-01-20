@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.greenart.firstproject.entity.ProductInfoEntity;
+import com.greenart.firstproject.entity.enums.AlcoholType;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
-import com.greenart.firstproject.vo.OptionVO;
-import com.greenart.firstproject.vo.ProductVO;
+import com.greenart.firstproject.vo.product.OptionVO;
+import com.greenart.firstproject.vo.product.ProductMainVO;
+import com.greenart.firstproject.vo.product.ProductSearchCond;
+import com.greenart.firstproject.vo.product.ProductVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,22 +25,18 @@ public class ProductService {
     private final ProductInfoRepository piRepo;
     private final OptionInfoRepository oiRepo;
 
-    // 전체제품 조회용
-    public Object findAllProducts(Pageable pageable) {
+    public Page<ProductInfoEntity> findAllProducts(Pageable pageable) {
         return piRepo.findAll(pageable);
     }
 
-    // 카테고리별 제품 조회용
-    public Object findByType(String type, Pageable pageable) {
+    public Page<ProductInfoEntity> findByType(AlcoholType type, Pageable pageable) {
         return piRepo.findByType(type, pageable);
     }
 
-    // seq번호로 제품정보 조회용
-    public Object findProductDetail(ProductVO productVO) {
-        return piRepo.findBySeq(productVO.getSeq());
+    public ProductInfoEntity findProductDetail(Long seq) {
+        return piRepo.findById(seq).orElseThrow();
     }
-
-    // 제품이름으로 검색용
+    
     public List<ProductVO> searchProducts(String keyword) {
         List<ProductInfoEntity> productInfoEntity = piRepo.findByNameContaining(keyword);
         List<ProductVO> productVOlList = new ArrayList<>();
@@ -49,18 +49,21 @@ public class ProductService {
         return productVOlList;
     }
 
+    public Page<ProductMainVO> searchMultipleCondition(ProductSearchCond cond, Pageable pageable) {
+        return piRepo.findVOByMultiCondition(cond, pageable);
+    }
 
 
     private ProductVO convertEntityToVO(ProductInfoEntity pInfoEntity) {
         return ProductVO.builder()
         .seq(pInfoEntity.getSeq())
         .name(pInfoEntity.getName())
-        .type(pInfoEntity.getType())
+        .type(pInfoEntity.getType().getTitle())
         .level(pInfoEntity.getLevel())
         .sweetness(pInfoEntity.getSweetness())
         .sour(pInfoEntity.getSour())
         .soda(pInfoEntity.getSoda())
-        .raw(pInfoEntity.getRaw())
+        .raw(pInfoEntity.getRaw().getTitle())
         .img(pInfoEntity.getImg())
         .subName(pInfoEntity.getSubName())
         .detailImg(pInfoEntity.getDetailImg())
@@ -68,4 +71,5 @@ public class ProductService {
         .manufacturer(pInfoEntity.getManufacturer())
         .build();
     }
+
 }

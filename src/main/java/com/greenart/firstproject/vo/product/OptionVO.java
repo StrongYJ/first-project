@@ -1,4 +1,4 @@
-package com.greenart.firstproject.vo;
+package com.greenart.firstproject.vo.product;
 
 import com.greenart.firstproject.entity.OptionInfoEntity;
 

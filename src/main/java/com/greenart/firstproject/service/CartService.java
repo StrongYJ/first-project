@@ -24,22 +24,23 @@ public class CartService {
 
     @Transactional(readOnly = true)
     public List<CartInfoVO> getCartInfo(UserEntity loginUser) {
-        return cartRepo.findByUser(loginUser).stream().map(CartInfoVO::fromEntity).toList();
+        return cartRepo.findByUserWithFetch(loginUser).stream().map(CartInfoVO::new).toList();
     }
 
+    @Transactional
     public void cartAdd(UserEntity loginUser, CartPlusMinusVO data) {
         Optional<CartInfoEntity> existInCart = cartRepo.findByUserAndOptionSeq(loginUser, data.getOptionSeq());
         if(existInCart.isEmpty()) {
             CartInfoEntity newCartInfo = CartInfoEntity.builder()
                 .quantity(data.getQuantity())
                 .user(loginUser)
-                .option(optionRepo.findById(data.getOptionSeq()).orElseThrow())
+                .option(optionRepo.findById(data.getOptionSeq()).orElseThrow(() -> new IllegalArgumentException("해당 옵션이 존재하지 않습니다.")))
                 .build();
             cartRepo.save(newCartInfo);
             return;
         }
         existInCart.get().addQuantity(data.getQuantity());
-        cartRepo.save(existInCart.get());
+        // cartRepo.save(existInCart.get());
     }
 
     
@@ -49,19 +50,14 @@ public class CartService {
      * @param optionSeq 장바구니 속 삭제할 옵션의 seq번호
      * @return 삭제되었다면 true 안되었다면 false
      */
-    public Boolean cartDelete(UserEntity loginUser, Long optionSeq) {
-        Optional<CartInfoEntity> element = cartRepo.findByUserAndOptionSeq(loginUser, optionSeq);
-        if(element.isEmpty()) {
-            return false;
-        }
-        cartRepo.delete(element.get());
-        return true; 
+    public void cartDelete(UserEntity loginUser, Long optionSeq) {
+        cartRepo.delete(cartRepo.findByUserAndOptionSeq(loginUser, optionSeq).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니 정보입니다.")));
     }
 
+    @Transactional
     public void cartSetQuantity(UserEntity loginUser, CartPlusMinusVO data) {
         cartRepo.findByUserAndOptionSeq(loginUser, data.getOptionSeq()).ifPresent(c -> {
                 c.setQuantity(data.getQuantity());
-                cartRepo.save(c);
             } 
         );
     }

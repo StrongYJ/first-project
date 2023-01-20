@@ -20,7 +20,7 @@
                 <a class="nav-link active" aria-current="page" th:href="@{/admin/super/main}">메인</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" th:href="@{/admin/super/product/add}">제품추가</a>
+                <a class="nav-link" th:href="@{/admin/super/products/add}">제품추가</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" th:href="@{/admin/super/users}">회원내역</a>
@@ -54,7 +54,7 @@
                         </div>
                     <p class="card-text" th:text="|재고: ${option.totalStock}|"></p>
                     <div>
-                      <button type="submit" class="btn btn-primary" >수정</button>
+                      <button type="submit" class="btn btn-primary" th:onclick="|modified()|">수정</button>
                       <button type="button" class="btn btn-primary" style="float: right;" th:onclick="|deleteOption(${option.seq})|">삭제</button>
                     </div>
                   </form>
@@ -96,6 +96,10 @@
             location.href = `/admin/super/options/${seq}/delete`;
             return;
           }
+        }
+
+        function modified() {
+            alert("수정되었습니다.");
         }
     </script>
 </body>

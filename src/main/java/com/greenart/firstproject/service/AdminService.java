@@ -2,10 +2,8 @@ package com.greenart.firstproject.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -14,17 +12,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.greenart.firstproject.config.FilePath;
 import com.greenart.firstproject.entity.AdminEntity;
 import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.AdminRepository;
-import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.MarketStockRepository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.repository.UserRepository;
+import com.greenart.firstproject.util.FileStore;
+import com.greenart.firstproject.util.UploadFile;
 import com.greenart.firstproject.vo.superadmin.AdminLoginVO;
 import com.greenart.firstproject.vo.superadmin.AdminAddProductVO;
 import com.greenart.firstproject.vo.superadmin.AdminMainProductInfoVO;
@@ -34,127 +32,61 @@ import com.greenart.firstproject.vo.superadmin.AdminUpdateProductVO;
 import com.greenart.firstproject.vo.superadmin.AdminUserVO;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class AdminService {
+    
     
     private final AdminRepository adminRepo;
     private final ProductInfoRepository productRepo;
     private final OptionInfoRepository optionRepo;
     private final MarketStockRepository stockRepo;
     private final UserRepository userRepo;
+    private final FileStore fileStore;
 
-    public Boolean loginCheckIdAndPwd(AdminLoginVO data) {
-        if(adminRepo.countByidAndPwd(data.getId(), data.getPwd()) > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    public Boolean isSuper(AdminLoginVO data) {
-        AdminEntity admin = adminRepo.findByIdAndPwd(data.getId(), data.getPwd());
-        if(admin.getGrade() == 1) {
-            return true;   
-        }
-        return false;
-    }
-
-    public Long getMarketSeq(AdminLoginVO data) {
-        AdminEntity findByIdAndPwd = adminRepo.findByIdAndPwd(data.getId(), data.getPwd());
-        return findByIdAndPwd.getMarketInfo().getSeq();
+    public AdminEntity login(AdminLoginVO data) {
+        return adminRepo.findByIdAndPwd(data.getId(), data.getPwd()).orElse(null);
     }
 
     public Boolean isInvalidProductAdd(AdminAddProductVO data) {
-        if(
-            data.getBasicImg() == null || data.getDetailImg() == null || data.getLevel() == null ||
-            data.getManufacturer() == null || data.getName() == null || data.getRaw() == null ||
-            data.getSoda() == null || data.getSour() == null || data.getSubName() == null ||
-            data.getSweetness() == null || data.getType() == null
-        ) {
-            return true;
-        }
-        if(
-            (data.getLevel() < 0 || data.getLevel() > 100) ||
-            (data.getSoda() < 0 || data.getSoda() > 3) ||
-            (data.getSour() < 0 || data.getSour() > 3) ||
-            (data.getSweetness() < 0 || data.getSweetness() > 3)
-        ) {
-            return true;
-        }
-        if(data.getName().isBlank() || data.getSubName().isBlank() || data.getManufacturer().isBlank()) {
-            return true;
-        }
         if(extractImageExt(data.getBasicImg()) == null || extractImageExt(data.getDetailImg()) == null) {
             return true;
         }
         return false;
     }
 
-    public Boolean isInvalidProductUpdate(AdminUpdateProductVO data) {
-        if(productRepo.findById(data.getSeq()).isPresent() == false) {
-            return true;
-        }
-        if(
-            data.getLevel() == null ||
-            data.getManufacturer() == null || data.getName() == null || data.getRaw() == null ||
-            data.getSoda() == null || data.getSour() == null || data.getSubName() == null ||
-            data.getSweetness() == null || data.getType() == null
-        ) {
-            return true;
-        }
-        if(
-            (data.getLevel() < 0 || data.getLevel() > 100) ||
-            (data.getSoda() < 0 || data.getSoda() > 3) ||
-            (data.getSour() < 0 || data.getSour() > 3) ||
-            (data.getSweetness() < 0 || data.getSweetness() > 3)
-        ) {
-            return true;
-        }
-        if(data.getName().isBlank() || data.getSubName().isBlank() || data.getManufacturer().isBlank()) {
-            return true;
-        }
-        if(!data.getBasicImg().isEmpty()) {
-            if(extractImageExt(data.getBasicImg()) == null) {
+    public Boolean invalidFileFormat(MultipartFile ...files) {
+        for(MultipartFile file : files) {
+            if(file.isEmpty() == false && extractImageExt(file) == null) {
                 return true;
             }
         }
-        if(!data.getDetailImg().isEmpty()) {
-            if(extractImageExt(data.getDetailImg()) == null) {
-                return true;
-            }
-        }
-
         return false;
     }
     
     public void productSave(AdminAddProductVO data) {
-        String basicImgExt = extractImageExt(data.getBasicImg());
-        String detailImgExt = extractImageExt(data.getDetailImg());
-        String newBasicName = "basic_" + UUID.randomUUID().toString() + "." + basicImgExt;
-        String newDetailName = "detail_" + UUID.randomUUID().toString() + "." + detailImgExt;
-        try {
-            data.getBasicImg().transferTo(Paths.get(FilePath.PRODUCT_IMAGES).resolve(newBasicName));
-            data.getDetailImg().transferTo(Paths.get(FilePath.PRODUCT_IMAGES).resolve(newDetailName));
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        UploadFile basicImg = fileStore.storeSingleFile("productMain", data.getBasicImg());
+        UploadFile detailImg = fileStore.storeSingleFile("productDetail", data.getDetailImg());
         productRepo.save(
             ProductInfoEntity.builder()
             .adminProductInfoVO(data)
-            .basicImg(newBasicName)
-            .detailImg(newDetailName)
+            .basicImg(basicImg.getStoreFilename())
+            .detailImg(detailImg.getStoreFilename())
             .build()
-            );   
+        );
     }
+
+    @Transactional
     public void productUpdate(AdminUpdateProductVO data) {
-        ProductInfoEntity product = productRepo.findById(data.getSeq()).get();
+        ProductInfoEntity product = productRepo.findById(data.getSeq()).orElseThrow();
         if(!data.getBasicImg().isEmpty()) {
             try {
-                data.getBasicImg().transferTo(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getImg()));
+                // data.getBasicImg().transferTo(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getImg()));
+                data.getBasicImg().transferTo(fileStore.getFullPath(product.getImg()));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -163,7 +95,8 @@ public class AdminService {
         }
         if(!data.getDetailImg().isEmpty()) {
             try {
-                data.getDetailImg().transferTo(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getDetailImg()));
+                // data.getDetailImg().transferTo(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getDetailImg()));
+                data.getDetailImg().transferTo(fileStore.getFullPath(product.getDetailImg()));
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -171,15 +104,16 @@ public class AdminService {
             }
         }
         product.updateProductInfo(data);
-        productRepo.save(product);
     }
 
     public String productDelete(Long seq) {
         Optional<ProductInfoEntity> findById = productRepo.findById(seq);
         if(findById.isPresent()) {
             ProductInfoEntity product = findById.get();
-            new File(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getImg()).toString()).delete();
-            new File(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getDetailImg()).toString()).delete();
+            // new File(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getImg()).toString()).delete();
+            // new File(Paths.get(FilePath.PRODUCT_IMAGES).resolve(product.getDetailImg()).toString()).delete();
+            new File(fileStore.getFullPath(product.getImg()).toString()).delete();
+            new File(fileStore.getFullPath(product.getDetailImg()).toString()).delete();
             productRepo.delete(product);
             return "제품이 성공적으로 삭제되었습니다.";
         }
@@ -193,17 +127,11 @@ public class AdminService {
     }
 
     public AdminUpdateProductVO getProductBySeq(Long id) {
-        Optional<ProductInfoEntity> findByIdProduct = productRepo.findById(id);
-        if(findByIdProduct.isPresent()) {
-            ProductInfoEntity productInfoEntity = findByIdProduct.get();
-            return AdminUpdateProductVO.fromEntity(productInfoEntity);
-        }
-        return null;
+        return AdminUpdateProductVO.fromEntity(productRepo.findById(id).orElseThrow());
     }
 
     public List<AdminOptionVO> getOptionsByProductSeq(Long seq) {
-        ProductInfoEntity productInfoEntity = productRepo.findById(seq).get();
-        List<OptionInfoEntity> options = optionRepo.findByProduct(productInfoEntity);
+        List<OptionInfoEntity> options = optionRepo.findByProduct(productRepo.findById(seq).orElseThrow());
         List<AdminOptionVO> result = options.stream().map(o -> 
             new AdminOptionVO(
                 o.getSeq(), o.getOption(), o.getPrice(),
@@ -214,22 +142,12 @@ public class AdminService {
     }
 
     public String getProductName(Long seq) {
-        Optional<ProductInfoEntity> findById = productRepo.findById(seq);
-        if(findById.isPresent()) {
-            return findById.get().getName();
-        }
-        return null;
+       return productRepo.findById(seq).orElseThrow().getName();
     }
 
     public String addProductOption(Long seq, AdminOptionVO optionVO) {
-        Optional<ProductInfoEntity> findById = productRepo.findById(seq);
-        if(findById.isPresent()) {
-            ProductInfoEntity productInfoEntity = findById.get();
-            optionRepo.save(new OptionInfoEntity(optionVO, productInfoEntity));
-            return "추가되었습니다.";
-        }
-
-        return "추가 실패";
+        optionRepo.save(new OptionInfoEntity(optionVO, productRepo.findById(seq).orElseThrow()));
+        return "추가되었습니다.";
     }
 
     public Long deleteProductOptionByOptionSeq(Long seq) {
@@ -246,6 +164,7 @@ public class AdminService {
         return null;
     }
 
+    @Transactional
     public Long updateOption(AdminUpdateOptionVO data, Long optionSeq) {
         Optional<OptionInfoEntity> findById = optionRepo.findById(optionSeq);
         if(findById.isPresent()) {
@@ -255,7 +174,6 @@ public class AdminService {
                 return null;
             }
             option.modifyNameAndPrice(data.getName(), data.getPrice());
-            optionRepo.save(option);
             return product.getSeq();
         }
         return null;
@@ -276,6 +194,7 @@ public class AdminService {
         return null;
     }
 
+    @Transactional
     public void changeUserStatus(Long seq, Integer status) {
         Optional<UserEntity> findById = userRepo.findById(seq);
         if(findById.isPresent()) {
@@ -284,6 +203,4 @@ public class AdminService {
             userRepo.save(userEntity);
         }
     }
-
-
 }

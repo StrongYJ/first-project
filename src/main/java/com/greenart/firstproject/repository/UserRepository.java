@@ -16,8 +16,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>{
     public UserEntity findByEmail(String eamil);
     public UserEntity findByEmailAndPwd(String eamil, String pwd);
     public UserEntity findByPwd(String pwd);
+    
     @Query(value = "SELECT new com.greenart.firstproject.vo.superadmin.AdminUserVO(u.seq, u.name, u.email, u.nickname, u.birth, u.phone, u.address, u.status, u.regDt) FROM UserEntity u")
     Page<AdminUserVO> findAdminUserVOAll(Pageable pageable);
+
     @Query(value = "SELECT new com.greenart.firstproject.vo.superadmin.AdminUserVO(u.seq, u.name, u.email, u.nickname, u.birth, u.phone, u.address, u.status, u.regDt) FROM UserEntity u WHERE u.seq = :seq")
     AdminUserVO findAdminUserVOBySeq(@Param("seq") Long seq);
 }

@@ -1,4 +1,4 @@
-package com.greenart.firstproject.vo;
+package com.greenart.firstproject.vo.product;
 
 import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
@@ -32,12 +32,12 @@ public class ProductVO {
     public ProductVO(ProductInfoEntity entity) {
         this.seq=entity.getSeq();
         this.name=entity.getName();
-        this.type=entity.getType();
+        this.type=entity.getType().getTitle();
         this.level=entity.getLevel();
         this.sweetness=entity.getSweetness();
         this.sour=entity.getSour();
         this.soda=entity.getSoda();
-        this.raw=entity.getRaw();
+        this.raw=entity.getRaw().getTitle();
         this.img=entity.getImg();
         this.subName=entity.getSubName();
         this.detailImg=entity.getDetailImg();
@@ -47,12 +47,12 @@ public class ProductVO {
     public void ProductVoOptionVO(ProductInfoEntity pEntity, OptionInfoEntity oEntity) {
         this.seq=pEntity.getSeq();
         this.name=pEntity.getName();
-        this.type=pEntity.getType();
+        this.type=pEntity.getType().getTitle();
         this.level=pEntity.getLevel();
         this.sweetness=pEntity.getSweetness();
         this.sour=pEntity.getSour();
         this.soda=pEntity.getSoda();
-        this.raw=pEntity.getRaw();
+        this.raw=pEntity.getRaw().getTitle();
         this.img=pEntity.getImg();
         this.subName=pEntity.getSubName();
         this.detailImg=pEntity.getDetailImg();

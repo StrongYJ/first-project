@@ -4,11 +4,15 @@ package com.greenart.firstproject.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.greenart.firstproject.entity.enums.RawMaterial;
+import com.greenart.firstproject.entity.enums.AlcoholType;
 import com.greenart.firstproject.vo.superadmin.AdminAddProductVO;
 import com.greenart.firstproject.vo.superadmin.AdminUpdateProductVO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,7 +37,8 @@ public class ProductInfoEntity {
     private String name;
     
     @Column(name = "pi_type")           
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private AlcoholType type;
     
     @Column(name = "pi_level")          
     private Double level;
@@ -48,7 +53,8 @@ public class ProductInfoEntity {
     private Integer soda;
     
     @Column(name = "pi_raw")            
-    private String raw;
+    @Enumerated(EnumType.STRING)
+    private RawMaterial raw;
     
     @Column(name = "pi_img")            
     private String img;

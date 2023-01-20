@@ -15,13 +15,12 @@ public class AdminMainProductInfoVO {
     private Long seq;
     private String name;
     private String type;
-    private Integer stock;
 
     public static AdminMainProductInfoVO fromEntity(ProductInfoEntity product) {
         return AdminMainProductInfoVO.builder()
         .seq(product.getSeq())
         .name(product.getName())
-        .type(product.getType())
+        .type(product.getType().getTitle())
         .build();
     }
 }

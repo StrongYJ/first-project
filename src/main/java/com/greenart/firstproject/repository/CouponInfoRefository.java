@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.greenart.firstproject.entity.CouponInfoEntity;
 import com.greenart.firstproject.entity.UserEntity;
-import com.greenart.firstproject.vo.CouponInfoVO;
+import com.greenart.firstproject.vo.coupon.CouponInfoVO;
 
 @Repository
 public interface CouponInfoRefository extends JpaRepository<CouponInfoEntity, Long>{

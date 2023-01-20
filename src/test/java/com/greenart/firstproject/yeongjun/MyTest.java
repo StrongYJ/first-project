@@ -1,15 +1,26 @@
 package com.greenart.firstproject.yeongjun;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.greenart.firstproject.entity.CartInfoEntity;
+import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.ReviewEntity;
+import com.greenart.firstproject.entity.enums.AlcoholType;
+import com.greenart.firstproject.entity.enums.LevelRangeCode;
+import com.greenart.firstproject.entity.enums.RawMaterial;
 import com.greenart.firstproject.repository.CartInfoRepository;
 import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.MarketStockRepository;
@@ -17,6 +28,8 @@ import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.repository.ReviewRepository;
 import com.greenart.firstproject.repository.UserRepository;
+import com.greenart.firstproject.vo.product.ProductMainVO;
+import com.greenart.firstproject.vo.product.ProductSearchCond;
 import com.greenart.firstproject.vo.review.ReviewVO;
 
 import jakarta.persistence.EntityManager;
@@ -100,18 +113,69 @@ class MyTest {
 
     @Test
     void testCart() {
-        Assertions.assertThat(cartRepo.findByUserAndOptionSeq(utestRepo.findById(1L).get(), 2L)).isNotNull();
+        assertThat(cartRepo.findByUserAndOptionSeq(utestRepo.findById(1L).get(), 2L)).isNotNull();
     }
 
     @Test
     void reviewTest() {
         List<ReviewVO> list = reviewRepo.findVOByProductSeq(1L);
-        Assertions.assertThat(list.size()).isEqualTo(4);
+        assertThat(list.size()).isEqualTo(4);
         for(var a : list) {
             log.info("data={}",a);
         }
     }
     
+    @Test
+    void enumMapTest() {
+        assertThat(AlcoholType.valueOfCode("takju")).isEqualTo(AlcoholType.TAKJU);
+        assertThat(AlcoholType.valueOfCode("wine")).isEqualTo(AlcoholType.WINE);
+        assertThat(AlcoholType.valueOfCode("chungju")).isEqualTo(AlcoholType.CHUNGJU);
+        assertThat(AlcoholType.valueOfCode("soju")).isEqualTo(AlcoholType.SOJU);
+        assertThat(RawMaterial.ETC).isEqualTo(RawMaterial.valueOfCode("etc"));
+        assertThat(RawMaterial.FLOWER).isEqualTo(RawMaterial.valueOfCode("flower"));
+        assertThat(RawMaterial.FRUIT_VEG).isEqualTo(RawMaterial.valueOfCode("fruit"));
+        assertThat(RawMaterial.HERB).isEqualTo(RawMaterial.valueOfCode("herb"));
+        assertThat(RawMaterial.GRAIN_NUT).isEqualTo(RawMaterial.valueOfCode("grain-nut"));
+    }
+
+    @Test
+    void findByType() {
+        Pageable pageable = PageRequest.of(0, 20);
+        Page<ProductInfoEntity> findByType = productRepo.findByType(AlcoholType.valueOfCode("takju"), pageable);
+        assertThat(findByType.getContent().size()).isEqualTo(3);
+    }
+
+    @Test
+    void searchMultiple() {
+        Pageable page = PageRequest.of(0, 20);
+        List<Integer> price = new ArrayList<>();
+        price.add(10000);
+        price.add(20000);
+        ProductSearchCond cond = ProductSearchCond.builder().type("takju").price(price).build();
+        Page<ProductMainVO> searchMultiple = productRepo.findVOByMultiCondition(cond, page);
+        assertThat(searchMultiple.getTotalElements()).isEqualTo(2);
+    }
+    @Test
+    void searchMultiple2() {
+        Pageable page = PageRequest.of(0, 100);
+        ProductSearchCond cond = ProductSearchCond.builder().build();
+        List<ProductMainVO> searchMultiple = productRepo.findVOByMultiCondition(cond, page).getContent();
+        String query = "select count(r) from ReviewEntity r where r.product.seq = :seq";
+        Long singleResult = em.createQuery(query, Long.class).setParameter("seq", 1).getSingleResult();
+        assertThat(singleResult).isEqualTo(4L);
+        for(var result : searchMultiple) {
+            assertThat(result.getReviewNumber()).isEqualTo(em.createQuery(query, Long.class).setParameter("seq", result.getSeq()).getSingleResult());
+        }
+    }
+
+    // @Test
+    // @Rollback(false)
+    // void setReview() {
+    //     reviewRepo.findAll().forEach(r -> {
+    //         r.setOptionName(r.getOption().getOption());
+    //         r.setProduct(r.getOption().getProduct());
+    //     });
+    // }
 }
 
 @Data

@@ -13,7 +13,8 @@ import com.greenart.firstproject.entity.UserEntity;
 
 @Repository
 public interface CartInfoRepository extends JpaRepository<CartInfoEntity, Long> {
-    List<CartInfoEntity> findByUser(UserEntity user);
+    @Query(value = "select c from CartInfoEntity c join fetch c.option o join fetch o.product")
+    List<CartInfoEntity> findByUserWithFetch(UserEntity user);
     @Query(value = "SELECT c FROM CartInfoEntity c WHERE c.user = :user AND c.option.seq = :optionSeq")
     Optional<CartInfoEntity> findByUserAndOptionSeq(@Param("user") UserEntity user, @Param("optionSeq") Long optionSeq);
 }

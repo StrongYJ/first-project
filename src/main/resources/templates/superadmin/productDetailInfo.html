@@ -20,7 +20,7 @@
                 <a class="nav-link active" aria-current="page" th:href="@{/admin/super/main}">메인</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" th:href="@{/admin/super/product/add}">제품추가</a>
+                <a class="nav-link" th:href="@{/admin/super/products/add}">제품추가</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" th:href="@{/admin/super/users}">회원내역</a>
@@ -42,8 +42,12 @@
             <label for="floatingInput">제품이름</label>
         </div>  
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{type}" disabled readonly>
+            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{type.title}" disabled readonly>
             <label for="floatingInput">주종</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{raw.title}" disabled readonly>
+            <label for="floatingInput">원료</label>
         </div>  
         <div class="form-floating mb-3">
             <input type="number" step="0.01" min="0" max="100" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{level}" disabled readonly>
@@ -62,17 +66,13 @@
             <label for="floatingInput">탄산</label>
         </div>  
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{raw}" disabled readonly>
-            <label for="floatingInput">원료</label>
+            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{manufacturer}" disabled readonly>
+            <label for="floatingInput">제조사 이름</label>
         </div>  
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{subName}" disabled readonly>
             <label for="floatingInput">부제목</label>
         </div>    
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" th:field="*{manufacturer}" disabled readonly>
-            <label for="floatingInput">제조사 이름</label>
-        </div>  
         <div class="form-floating">
             <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" th:field="*{detailContent}" disabled readonly></textarea>
             <label for="floatingTextarea2">상세설명 (생략가능)</label>
