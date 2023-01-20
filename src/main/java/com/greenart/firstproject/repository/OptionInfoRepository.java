@@ -1,6 +1,7 @@
 package com.greenart.firstproject.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
+import com.greenart.firstproject.vo.OptionVO;
 import com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO;
 
 @Repository

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.service.ProductService;
+import com.greenart.firstproject.vo.OptionVO;
 import com.greenart.firstproject.vo.ProductVO;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class ProductAPIController {
     
     // 카테고리별 제품조회
     @GetMapping("/category/{id}")
-    public ResponseEntity<Map<String, Object>> getCategoryProducts(@PathVariable String id, Pageable pageable) {
+    public ResponseEntity<Map<String, Object>> getCategoryProducts(@PathVariable("id") String id, Pageable pageable) {
         Map<String,Object> map = new LinkedHashMap<String, Object>();
         map.put("list", piService.findByType(id, pageable));
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
@@ -43,10 +44,10 @@ public class ProductAPIController {
 
     // 상품번호로 상품조회(상세페이지) + 옵션추가
     @GetMapping("/detail/{seq}")
-    public ResponseEntity<Map<String, Object>> getProductDetail(@PathVariable Long seq) {
+    public ResponseEntity<Map<String, Object>> getProductDetail(@PathVariable("seq") Long seq) {
         Map<String,Object> map = new LinkedHashMap<String, Object>();
         map.put("detailInfo", piService.findProductDetail(ProductVO.builder().seq(seq).build()));
-        // map.put("", )
+        // map.put("optionInfo", piService.findProductOption(OptionVO.builder().seq(seq).build()));
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
 
@@ -58,9 +59,4 @@ public class ProductAPIController {
         map.put("productList", productVOs);
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
-
-    // 상품번호로 조회 + 옵션까지 같이
-    // @GetMapping("/detail")
-
-
 }

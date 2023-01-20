@@ -21,15 +21,22 @@ public class ProductService {
     private final ProductInfoRepository piRepo;
     private final OptionInfoRepository oiRepo;
 
+    // 전체제품 조회용
     public Object findAllProducts(Pageable pageable) {
         return piRepo.findAll(pageable);
     }
+
+    // 카테고리별 제품 조회용
     public Object findByType(String type, Pageable pageable) {
         return piRepo.findByType(type, pageable);
     }
+
+    // seq번호로 제품정보 조회용
     public Object findProductDetail(ProductVO productVO) {
         return piRepo.findBySeq(productVO.getSeq());
     }
+
+    // 제품이름으로 검색용
     public List<ProductVO> searchProducts(String keyword) {
         List<ProductInfoEntity> productInfoEntity = piRepo.findByNameContaining(keyword);
         List<ProductVO> productVOlList = new ArrayList<>();
