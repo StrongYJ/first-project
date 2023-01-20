@@ -25,6 +25,9 @@ public class OrderHistoryEntity {
     @Column(name = "oh_seq")
     private Long seq;
 
+    @Column(name = "oh_oi_name")
+    private String name;
+    
     @Column(name = "oh_order_dt")
     private LocalDateTime orderDt;
 
@@ -44,8 +47,8 @@ public class OrderHistoryEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 
-    @JoinColumn(name = "oh_oi_seq")
+    @JoinColumn(name = "oh_pi_seq")
     @ManyToOne(fetch = FetchType.LAZY)
-    private OptionInfoEntity option;
+    private ProductInfoEntity product;
 
 }

@@ -16,6 +16,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.greenart.firstproject.entity.CartInfoEntity;
+import com.greenart.firstproject.entity.MarketStockEntity;
+import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.ReviewEntity;
 import com.greenart.firstproject.entity.enums.AlcoholType;
@@ -175,6 +177,16 @@ class MyTest {
     //         r.setOptionName(r.getOption().getOption());
     //         r.setProduct(r.getOption().getProduct());
     //     });
+    // }
+
+    // @Test
+    // @Rollback(false)
+    // void initStock() {
+    //     for(OptionInfoEntity o : optionRepo.findAll()) {
+    //         marketRepo.findAll().forEach(m -> {
+    //             stockRepo.save(new MarketStockEntity(10, m, o));
+    //         });
+    //     }
     // }
 }
 

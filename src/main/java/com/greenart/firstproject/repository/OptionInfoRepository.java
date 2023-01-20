@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
-import com.greenart.firstproject.vo.OptionVO;
 import com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO;
 
 @Repository

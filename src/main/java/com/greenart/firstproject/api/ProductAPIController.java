@@ -56,7 +56,7 @@ public class ProductAPIController {
     @GetMapping("/detail/{seq}")
     public ResponseEntity<Map<String, Object>> getProductDetail(@PathVariable("seq") Long seq) {
         Map<String,Object> map = new LinkedHashMap<String, Object>();
-        map.put("detailInfo", piService.findProductDetail(ProductVO.builder().seq(seq).build()));
+        map.put("detailInfo", piService.findProductDetail(seq));
         // map.put("optionInfo", piService.findProductOption(OptionVO.builder().seq(seq).build()));
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }

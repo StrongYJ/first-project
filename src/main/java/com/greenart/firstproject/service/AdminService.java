@@ -2,6 +2,7 @@ package com.greenart.firstproject.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.greenart.firstproject.entity.AdminEntity;
+import com.greenart.firstproject.entity.MarketStockEntity;
 import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.AdminRepository;
+import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.MarketStockRepository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
@@ -40,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminService {
     
-    
+    private final MarketInfoRepository marketRepo;
     private final AdminRepository adminRepo;
     private final ProductInfoRepository productRepo;
     private final OptionInfoRepository optionRepo;
@@ -68,9 +71,10 @@ public class AdminService {
         return false;
     }
     
-    public void productSave(AdminAddProductVO data) {
+    public void productAdd(AdminAddProductVO data) {
         UploadFile basicImg = fileStore.storeSingleFile("productMain", data.getBasicImg());
         UploadFile detailImg = fileStore.storeSingleFile("productDetail", data.getDetailImg());
+
         productRepo.save(
             ProductInfoEntity.builder()
             .adminProductInfoVO(data)
@@ -146,7 +150,13 @@ public class AdminService {
     }
 
     public String addProductOption(Long seq, AdminOptionVO optionVO) {
-        optionRepo.save(new OptionInfoEntity(optionVO, productRepo.findById(seq).orElseThrow()));
+        OptionInfoEntity option = new OptionInfoEntity(optionVO, productRepo.findById(seq).orElseThrow());
+        optionRepo.save(option);
+        List<MarketStockEntity> stockList = new ArrayList<>();
+        marketRepo.findAll().forEach(m -> {
+            stockList.add(new MarketStockEntity(1, m, option));
+        });
+        stockRepo.saveAll(stockList);
         return "추가되었습니다.";
     }
 
