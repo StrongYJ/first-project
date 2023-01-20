@@ -9,5 +9,39 @@
 </head>
 <body>
     <h1>재고 상세정보</h1>
+    <thead>
+        <tr>
+            <td>매장이름</td>
+            <td th:text ="${marketName}"></td>
+        </tr>
+    </thead>
+    <tbody>
+        <form action="/update" method="post">
+
+                <tr>
+                    <td>제품이름</td>
+                    <td th:text ="${productName}"></td>
+                </tr>
+                <tr>
+                    <td>옵션이름</td>
+                    <td th:text ="${optionName}"></td>
+                </tr>
+                <tr>
+                    <td>옵션가격</td>
+                    <td th:text ="${optionPrice}"></td>
+                </tr>
+                <tr>
+                    <td>현재재고</td>
+                    <input type="text" th:value="${stock}"></input>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button>변경하기</button>
+                        <a href="/admin/localadmin">메인으로</a>
+                    </td>
+                </tr>
+
+        </form>
+    </tbody>
 </body>
 </html>
