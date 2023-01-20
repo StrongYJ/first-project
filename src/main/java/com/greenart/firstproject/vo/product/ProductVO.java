@@ -1,7 +1,11 @@
 package com.greenart.firstproject.vo.product;
 
+import java.util.List;
+
 import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
+import com.greenart.firstproject.entity.enums.AlcoholType;
+import com.greenart.firstproject.entity.enums.RawMaterial;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,56 +15,36 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class ProductVO {
-    private Long seq;
-    private String name;
+    private Long productSeq;
+    private String productName;
     private String type;
     private Double level;
     private Integer sweetness;
     private Integer sour;
     private Integer soda;
     private String raw;
-    private String img;
+    private String thumbImg;
     private String subName;
     private String detailImg;
     private String detailContent;
     private String manufacturer;
-
-    private String option;
-    private Integer price;
-    private ProductInfoEntity product;
+    private List<OptionVO> options;
     
-    public ProductVO(ProductInfoEntity entity) {
-        this.seq=entity.getSeq();
-        this.name=entity.getName();
-        this.type=entity.getType().getTitle();
-        this.level=entity.getLevel();
-        this.sweetness=entity.getSweetness();
-        this.sour=entity.getSour();
-        this.soda=entity.getSoda();
-        this.raw=entity.getRaw().getTitle();
-        this.img=entity.getImg();
-        this.subName=entity.getSubName();
-        this.detailImg=entity.getDetailImg();
-        this.detailContent=entity.getDetailContent();
-        this.manufacturer=entity.getManufacturer();
-    }
-    public void ProductVoOptionVO(ProductInfoEntity pEntity, OptionInfoEntity oEntity) {
-        this.seq=pEntity.getSeq();
-        this.name=pEntity.getName();
-        this.type=pEntity.getType().getTitle();
-        this.level=pEntity.getLevel();
-        this.sweetness=pEntity.getSweetness();
-        this.sour=pEntity.getSour();
-        this.soda=pEntity.getSoda();
-        this.raw=pEntity.getRaw().getTitle();
-        this.img=pEntity.getImg();
-        this.subName=pEntity.getSubName();
-        this.detailImg=pEntity.getDetailImg();
-        this.detailContent=pEntity.getDetailContent();
-        this.manufacturer=pEntity.getManufacturer();
-        this.option=oEntity.getOption();
-        this.price=oEntity.getPrice();
-        this.product=oEntity.getProduct();
+    public ProductVO(ProductInfoEntity product, List<OptionInfoEntity> options) {
+        this.productSeq = product.getSeq();
+        this.productName = product.getName();
+        this.subName = product.getSubName();
+        this.type = product.getType().getTitle();
+        this.level = product.getLevel();
+        this.sweetness = product.getSweetness();
+        this.sour = product.getSour();
+        this.soda = product.getSoda();
+        this.raw = product.getRaw().getTitle();
+        this.manufacturer = product.getManufacturer();
+        this.detailContent = product.getDetailContent();
+        this.thumbImg = "/api/images/product/" + product.getImg();
+        this.detailImg = "/api/images/product/" + product.getDetailImg();
+        this.options = options.stream().map(OptionVO::new).toList();
     }
 }
 

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
-import com.greenart.firstproject.vo.OptionVO;
+import com.greenart.firstproject.vo.product.OptionVO;
 import com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO;
 
 @Repository
@@ -30,6 +30,4 @@ public interface OptionInfoRepository extends JpaRepository<OptionInfoEntity, Lo
         value = "select new com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO(ms.seq, oi.product.name, oi.option, oi.price, ms.stock) from OptionInfoEntity oi left join MarketStockEntity ms on ms.option.seq = oi.seq and ms.market.seq = :marketInfoSeq"
         )
 	Page<LocalMarketOptionStockVO> getOptionList(@Param("marketInfoSeq") Long seq, Pageable pageable);
-
-    public List<OptionInfoEntity> findBySeq(Long seq);
 }

@@ -11,14 +11,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class OptionVO {
     private Long seq;
-    private String option;
+    private String name;
     private Integer price;
-    private Long piSeq;
 
     public OptionVO(OptionInfoEntity entity) {
-        this.seq=entity.getSeq();
-        this.option=entity.getOption();
-        this.price=entity.getPrice();
-        this.piSeq=entity.getSeq();
+        this.seq = entity.getSeq();
+        this.name = entity.getOption();
+        this.price = entity.getPrice();
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.entity.enums.AlcoholType;
 import com.greenart.firstproject.service.ProductService;
+import com.greenart.firstproject.vo.product.OptionVO;
 import com.greenart.firstproject.vo.product.ProductSearchCond;
 import com.greenart.firstproject.vo.product.ProductVO;
 
@@ -27,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductAPIController {
     private final ProductService piService;
 
-
+    // 카테고리조회
     @GetMapping("/categories")
     public ResponseEntity<Map<String, Object>> getAlcoholTypes() {
         Map<String, Object> map = new LinkedHashMap<>();
@@ -53,11 +54,11 @@ public class ProductAPIController {
     }
 
     // 상품번호로 상품조회(상세페이지) + 옵션추가
-    @GetMapping("/detail/{seq}")
+    @GetMapping("/{seq}")
     public ResponseEntity<Map<String, Object>> getProductDetail(@PathVariable("seq") Long seq) {
         Map<String,Object> map = new LinkedHashMap<String, Object>();
-        map.put("detailInfo", piService.findProductDetail(ProductVO.builder().seq(seq).build()));
-        // map.put("optionInfo", piService.findProductOption(OptionVO.builder().seq(seq).build()));
+        map.put("data", piService.findProductDetail(seq));
+        // map.put("optionInfo", piService.findProductOption("테스트", 1));
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
 
