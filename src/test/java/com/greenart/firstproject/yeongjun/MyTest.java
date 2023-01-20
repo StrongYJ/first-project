@@ -167,6 +167,15 @@ class MyTest {
             assertThat(result.getReviewNumber()).isEqualTo(em.createQuery(query, Long.class).setParameter("seq", result.getSeq()).getSingleResult());
         }
     }
+
+    // @Test
+    // @Rollback(false)
+    // void setReview() {
+    //     reviewRepo.findAll().forEach(r -> {
+    //         r.setOptionName(r.getOption().getOption());
+    //         r.setProduct(r.getOption().getProduct());
+    //     });
+    // }
 }
 
 @Data
