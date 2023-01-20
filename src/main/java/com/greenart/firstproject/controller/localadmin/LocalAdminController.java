@@ -13,11 +13,13 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.greenart.firstproject.config.MySessionkeys;
 import com.greenart.firstproject.entity.MarketInfoEntity;
@@ -31,6 +33,7 @@ import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.service.LocalAdminService;
 import com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO;
 import com.greenart.firstproject.vo.localadmin.MarketOptionStockVO;
+import com.greenart.firstproject.vo.localadmin.UpdateLocalMarketOptionStockVO;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +50,7 @@ public class LocalAdminController {
     // /admin/local/{id}
 
     // /{id} 는 marketInfo의 seq 번호
+    // http://192.168.0.183:8080/admin/local/1
     // http://localhost:8080/admin/local/3
     // @GetMapping("/{id}") // http주소
     // public String getLocalAdmin(@PathVariable("id") Long id, Model model) {
@@ -117,42 +121,42 @@ public class LocalAdminController {
             model.addAttribute("marketName", marketName); // html로 내보내기위한 이름 저장
             model.addAttribute("seq", seq);
             Page<LocalMarketOptionStockVO> lmos = localService.getOptionList(seq, pageable);
-            int nowPage = lmos.getPageable().getPageNumber()+1;
-            int startPage = Math.max(nowPage -4, 1);
-            int endPage = Math.min(nowPage +5, lmos.getTotalPages());
+            // int nowPage = lmos.getPageable().getPageNumber()+1;
+            // int startPage = Math.max(nowPage -4, 1);
+            // int endPage = Math.min(nowPage +5, lmos.getTotalPages());
 
             model.addAttribute("list", lmos.getContent());
+            model.addAttribute("pages", lmos);
 
-            model.addAttribute("nowPage", nowPage);
-            model.addAttribute("startPage", startPage);
-            model.addAttribute("endPage", endPage);
+            // model.addAttribute("nowPage", nowPage);
+            // model.addAttribute("startPage", startPage);
+            // model.addAttribute("endPage", endPage);
 
             return "/localadmin/localadmin";
     }
 
     @GetMapping("/stock")
     public String getLocalStock(@RequestParam Long stock_no, Model model) {
-        model.addAttribute("market_stock", localService.getStockInfo(stock_no));
+        MarketStockEntity marketStock = localService.getStockInfo(stock_no);
+        UpdateLocalMarketOptionStockVO ulmos = new UpdateLocalMarketOptionStockVO();
+        ulmos.setMarketName(marketStock.getMarket().getName());
+        ulmos.setProductName(marketStock.getOption().getProduct().getName());
+        ulmos.setOptionName(marketStock.getOption().getOption());
+        ulmos.setOptionPrice(marketStock.getOption().getPrice());
+        ulmos.setStock(marketStock.getStock());
+
+        model.addAttribute("marketSeq", marketStock.getMarket().getSeq());
+        model.addAttribute("market_stock", ulmos);
         return "/localadmin/stock";
     }
-    
-    // @PostMapping("/update")
-    // public String postStockUpdate(MarketOptionStockVO data, HttpSession session) {
-    //     Map<String, Object> map = LocalAdminService.updateStockInfo(data);
-    //     if((boolean)map.get("stock")) {
-    //         return "redirect:/localadmin/stock";
-    //     }
-    //     session.setAttribute("update_result", map);
-    //     return "redirect:/localadmin/stock?stock_no="+data.getStock();
-    // }
 
-    // @GetMapping("/stock/{seq}")
-    // public String getStockInfo(HttpSession session) {
-    //     if(session.getAttribute(MySessionkeys.LOCAL_ADMIN_KEY) == null) {
+    @PostMapping("/stock")
+    public String postLocalStock(@RequestParam Long stock_no, @RequestParam Integer stock, RedirectAttributes reat) {
+        localService.updateStock(stock_no, stock);
 
-    //     }
-    // }
-
-
+        reat.addAttribute("stock_no", stock_no);
+        reat.addAttribute("updated", true);
+        return "redirect:/admin/local/stock";
+    }
 
 }

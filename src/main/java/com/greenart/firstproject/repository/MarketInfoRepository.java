@@ -10,5 +10,5 @@ import com.greenart.firstproject.entity.MarketInfoEntity;
 @Repository
 public interface MarketInfoRepository extends JpaRepository<MarketInfoEntity, Long> {
     List<MarketInfoEntity> findByAddress(String address);
-    List<MarketInfoEntity> findBySeq(Long seq);
+    MarketInfoEntity findBySeq(Long seq);
 }
