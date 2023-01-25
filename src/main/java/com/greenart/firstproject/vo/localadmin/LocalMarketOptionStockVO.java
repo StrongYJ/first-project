@@ -27,11 +27,11 @@ public class LocalMarketOptionStockVO {
         this.optionPrice = optionPrice;
         this.stock = stock;
     } 
-    public void updateMarketOptionStockInfo(LocalMarketOptionStockVO data) {
-        this.stockSeq = data.getStockSeq();
-        this.productName = data.getProductName();
-        this.optionName = data.getOptionName();
-        this.optionPrice = data.getOptionPrice();
-        this.stock = data.getStock();
-    } 
+    // public void updateMarketOptionStockInfo(LocalMarketOptionStockVO data) {
+    //     this.stockSeq = data.getStockSeq();
+    //     this.productName = data.getProductName();
+    //     this.optionName = data.getOptionName();
+    //     this.optionPrice = data.getOptionPrice();
+    //     this.stock = data.getStock();
+    // } 
 }

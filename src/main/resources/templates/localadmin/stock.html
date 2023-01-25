@@ -11,33 +11,37 @@
     <h1>재고 상세정보</h1>
     <thead>
         <tr>
-            <td>매장이름</td>
-            <td th:text ="${marketName}"></td>
+            <h2>
+                <td th:text ="${market_stock.marketName}"></td>
+            </h2>
         </tr>
     </thead>
     <tbody>
-        <form action="/update" method="post">
+        <form th:action method="post">
+        <!-- <form th:object="${market_stock}" action="/update" method="post"> -->
 
                 <tr>
                     <td>제품이름</td>
-                    <td th:text ="${productName}"></td>
+                    <td th:text ="${market_stock.productName}"></td><br>
                 </tr>
                 <tr>
                     <td>옵션이름</td>
-                    <td th:text ="${optionName}"></td>
+                    <td th:text ="${market_stock.optionName}"></td><br>
                 </tr>
                 <tr>
                     <td>옵션가격</td>
-                    <td th:text ="${optionPrice}"></td>
+                    <td th:text ="${market_stock.optionPrice}"></td><br>
                 </tr>
                 <tr>
                     <td>현재재고</td>
-                    <input type="text" th:value="${stock}"></input>
+                    <input type="text" th:value="${market_stock.stock}" name="stock">
+                    <span th:if="${param.updated}" th:text="수정됨" style="color:red"></span>
+                    <br>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <button>변경하기</button>
-                        <a href="/admin/localadmin">메인으로</a>
+                        <a th:href="@{/admin/local/{seq}(seq=${marketSeq})}">메인으로</a>
                     </td>
                 </tr>
 

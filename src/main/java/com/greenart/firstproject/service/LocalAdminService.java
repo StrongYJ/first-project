@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.greenart.firstproject.entity.MarketInfoEntity;
@@ -41,17 +42,11 @@ public class LocalAdminService {
         return stockRepo.findBySeq(stock_no);
     }
 
-    // test-project보면서 다시 하셈
-    // public Map<String, Object> updateStockInfo(LocalMarketOptionStockVO data) {
-    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    //     Optional<MarketStockEntity> entity = MarketStockRepository.findById(data.getStockSeq());
+    @Transactional
+    public void updateStock(Long seq, Integer stock) {
+        MarketStockEntity mse = stockRepo.findById(seq).orElseThrow();
+        mse.setStock(stock);
+    }
 
-    //     MarketStockEntity mStockEntity = entity.get();
-    //     mStockEntity.setStock(data.getStock());
-    //     MarketStockRepository.save(mStockEntity);
-
-    //     return resultMap;
-
-    // }
 
 }
