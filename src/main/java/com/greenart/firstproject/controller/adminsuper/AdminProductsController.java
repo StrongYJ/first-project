@@ -65,7 +65,7 @@ public class AdminProductsController {
             return "superadmin/productadd";
         }
         reat.addFlashAttribute("isProductSaved", "success");
-        adminService.productSave(prod);
+        adminService.productAdd(prod);
         return "redirect:/admin/super/main";
     }
 

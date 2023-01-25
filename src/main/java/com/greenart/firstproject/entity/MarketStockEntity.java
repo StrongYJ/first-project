@@ -38,8 +38,12 @@ public class MarketStockEntity {
         return ""+stock;
     }
 
-    public MarketStockEntity get() {
-        return null;
+    public MarketStockEntity(Integer stock, MarketInfoEntity market, OptionInfoEntity option) {
+        this.stock = stock;
+        this.market = market;
+        this.option = option;
     }
+
+    
 
 }

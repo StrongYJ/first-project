@@ -4,16 +4,19 @@ import static com.greenart.firstproject.entity.QProductInfoEntity.productInfoEnt
 import static com.greenart.firstproject.entity.QOptionInfoEntity.optionInfoEntity;
 import static com.greenart.firstproject.entity.QReviewEntity.reviewEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 
 import com.greenart.firstproject.entity.ProductInfoEntity;
+import com.greenart.firstproject.entity.QOptionInfoEntity;
 import com.greenart.firstproject.entity.enums.AlcoholType;
 import com.greenart.firstproject.entity.enums.LevelRangeCode;
 import com.greenart.firstproject.entity.enums.RawMaterial;
@@ -21,10 +24,13 @@ import com.greenart.firstproject.vo.product.ProductMainVO;
 import com.greenart.firstproject.vo.product.ProductSearchCond;
 import com.greenart.firstproject.vo.product.QProductMainVO;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -57,7 +63,7 @@ public class ProductInfoRepositoryImpl implements ProductRepositoryCustom {
                 )
             .groupBy(productInfoEntity)
             .having(priceBetween(optionInfoEntity.price.min(), condition.getPrice()))
-            .orderBy(productInfoEntity.seq.desc())
+            .orderBy(getOrderSpecifier(pageable.getSort()).stream().toArray(OrderSpecifier[]::new))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -109,5 +115,19 @@ public class ProductInfoRepositoryImpl implements ProductRepositoryCustom {
         return productInfoEntity.type.eq(AlcoholType.valueOfCode(type));
     }
 
-    
+    private List<OrderSpecifier> getOrderSpecifier(Sort sort) {
+        List<OrderSpecifier> orders = new ArrayList<>();
+        sort.stream().forEach(order -> {
+            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+            String prop = order.getProperty();
+            switch(prop) {
+                case "mainPrice" -> orders.add(new OrderSpecifier(direction, optionInfoEntity.price.min()));
+                case "reviewGrade" -> orders.add(new OrderSpecifier(direction, reviewEntity.grade.avg()));
+                case "reviewNumber" -> orders.add(new OrderSpecifier(direction, reviewEntity.countDistinct()));
+                default -> orders.add(new OrderSpecifier(direction, new PathBuilder(ProductMainVO.class, "productInfoEntity")));
+            };
+        });
+        return orders;
+        
+    }
 }
