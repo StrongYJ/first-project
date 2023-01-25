@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class UserEntity {
     @Column(name = "ui_name")
     private String name;
 
-    @Column(name = "ui_email") 
+    @Column(name = "ui_email")
     private String email;
 
     @Column(name = "ui_pwd") 

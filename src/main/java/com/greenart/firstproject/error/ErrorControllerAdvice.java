@@ -22,3 +22,4 @@ public class ErrorControllerAdvice {
         return "error/400";
     }
 }
+

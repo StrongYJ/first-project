@@ -6,13 +6,16 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.config.MySessionkeys;
+import com.greenart.firstproject.entity.ReviewEntity;
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.service.ReviewService;
 import com.greenart.firstproject.vo.review.ReviewCreateVO;
@@ -49,4 +52,13 @@ public class ReviewAPIController {
         ReviewCreateVO created = reviewService.createReivew((UserEntity)loginUser, data);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{seq}")
+    public ResponseEntity<Map<String, Object>> deleteReview(@PathVariable("seq") Long seq){
+        Map<String, Object> map = new LinkedHashMap<>();
+        reviewService.delete(seq);
+        map.put("message", "삭제 완료");
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+    
 }

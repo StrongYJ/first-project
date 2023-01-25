@@ -23,5 +23,4 @@ public class ErrorRestControllerAdvice {
         return new ErrorResult("Bad Request", e.getMessage());
     }
 
-
 }
