@@ -1,7 +1,5 @@
 package com.greenart.firstproject.entity;
 
-import com.greenart.firstproject.vo.cart.CartPlusMinusVO;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

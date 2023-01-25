@@ -10,6 +10,7 @@ import com.greenart.firstproject.entity.CartInfoEntity;
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.CartInfoRepository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
+import com.greenart.firstproject.repository.UserRepository;
 import com.greenart.firstproject.vo.cart.CartPlusMinusVO;
 import com.greenart.firstproject.vo.cart.CartInfoVO;
 
@@ -21,19 +22,21 @@ public class CartService {
 
     private final CartInfoRepository cartRepo;
     private final OptionInfoRepository optionRepo;
+    private final UserRepository userRepo;
 
     @Transactional(readOnly = true)
-    public List<CartInfoVO> getCartInfo(UserEntity loginUser) {
-        return cartRepo.findByUserWithFetch(loginUser).stream().map(CartInfoVO::new).toList();
+    public List<CartInfoVO> getCartInfo(Long userSeq) {
+        return cartRepo.findByUserSeqWithFetch(userSeq).stream().map(CartInfoVO::new).toList();
     }
 
     @Transactional
-    public void cartAdd(UserEntity loginUser, CartPlusMinusVO data) {
-        Optional<CartInfoEntity> existInCart = cartRepo.findByUserAndOptionSeq(loginUser, data.getOptionSeq());
+    public void cartAdd(Long userSeq, CartPlusMinusVO data) {
+        UserEntity user = userRepo.findById(userSeq).orElseThrow();
+        Optional<CartInfoEntity> existInCart = cartRepo.findByUserAndOptionSeq(user, data.getOptionSeq());
         if(existInCart.isEmpty()) {
             CartInfoEntity newCartInfo = CartInfoEntity.builder()
                 .quantity(data.getQuantity())
-                .user(loginUser)
+                .user(user)
                 .option(optionRepo.findById(data.getOptionSeq()).orElseThrow(() -> new IllegalArgumentException("해당 옵션이 존재하지 않습니다.")))
                 .build();
             cartRepo.save(newCartInfo);
@@ -50,13 +53,14 @@ public class CartService {
      * @param optionSeq 장바구니 속 삭제할 옵션의 seq번호
      * @return 삭제되었다면 true 안되었다면 false
      */
-    public void cartDelete(UserEntity loginUser, Long optionSeq) {
+    public void cartDelete(Long userSeq, Long optionSeq) {
+        UserEntity loginUser = userRepo.findById(optionSeq).orElseThrow();
         cartRepo.delete(cartRepo.findByUserAndOptionSeq(loginUser, optionSeq).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니 정보입니다.")));
     }
 
     @Transactional
-    public void cartSetQuantity(UserEntity loginUser, CartPlusMinusVO data) {
-        cartRepo.findByUserAndOptionSeq(loginUser, data.getOptionSeq()).ifPresent(c -> {
+    public void cartSetQuantity(Long userSeq, CartPlusMinusVO data) {
+        cartRepo.findByUserSeqAndOptionSeq(userSeq, data.getOptionSeq()).ifPresent(c -> {
                 c.setQuantity(data.getQuantity());
             } 
         );
