@@ -8,10 +8,12 @@ import java.util.regex.Pattern;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.UserRepository;
 import com.greenart.firstproject.vo.user.UserJoinVO;
+import com.greenart.firstproject.vo.user.UserJoinWelcomeVO;
 import com.greenart.firstproject.vo.user.UserLoginVO;
 import com.greenart.firstproject.vo.user.UserUpdateVO;
 
@@ -22,52 +24,26 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
     private final UserRepository uRepo;
 
-    public Map<String, Object> addUser(UserJoinVO data){
-        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(data.getEmail());
-        if(m.matches()){
-            if(uRepo.countByEmail(data.getEmail()) == 1){
-                resultMap.put("status", false);
-                resultMap.put("message", data.getEmail()+"은/는 이미 등록된 사용자입니다.");
-                resultMap.put("code", HttpStatus.BAD_REQUEST);
-                return resultMap;
-            }else{
-                Pattern pwdPattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
-                Matcher pwdMatcher = pwdPattern.matcher(data.getPwd());
-                if(pwdMatcher.find()){
-                    Pattern phonePattern = Pattern.compile("^010(\\d{4})(\\d{4})$");
-                    Matcher matcher = phonePattern.matcher(data.getPhone());
-                    if(matcher.matches()) {
-                        UserEntity newUser = new UserEntity(data);
-                        uRepo.save(newUser);
-                        resultMap.put("status", true);
-                        resultMap.put("message", "회원이 등록되었습니다.");
-                        resultMap.put("code", HttpStatus.CREATED);
-                    }
-                    else{
-                        resultMap.put("status", false);
-                        resultMap.put("message", "잘못된 핸드폰 번호입니다.");
-                        resultMap.put("code", HttpStatus.NOT_ACCEPTABLE);
-                        return resultMap;
-                    }
-                }
-                else{
-                    resultMap.put("status", false);
-                    resultMap.put("message", "영문,숫자,특수문자 포함하여 8자리 이상 입력하여야 합니다.");
-                    resultMap.put("code", HttpStatus.NOT_ACCEPTABLE);
-                    return resultMap;
-                }
-            }
-            return resultMap;
+    public Boolean isDuplicatedEmail(String email){
+        if(uRepo.countByEmail(email) > 0) {
+            return true;
         }
-        else{
-            resultMap.put("status", false);
-            resultMap.put("message", "이메일 형식이 잘못 되었습니다.");
-            resultMap.put("code", HttpStatus.NOT_ACCEPTABLE);
-            return resultMap;
+        return false;
+    }
+
+    public Boolean isDuplicatedNickname(String nickname){
+        if(uRepo.countByNickname(nickname) > 0){
+            return true;
         }
+        return false;
+    }
+
+    public UserJoinWelcomeVO addUser(UserJoinVO data) {
+        if(isDuplicatedEmail(data.getEmail())) return null;
+        if(isDuplicatedNickname(data.getNickname())) return null;
+        UserEntity newUser = new UserEntity(data);
+        uRepo.save(newUser);
+        return new UserJoinWelcomeVO(newUser.getSeq(), newUser.getName(), newUser.getNickname());
     }
 
     public Map<String, Object> loginUser(UserLoginVO data){
@@ -116,6 +92,7 @@ public class UserService {
         return resultMap;
     }
 
+    @Transactional
     public Map<String, Object> deleteUser(UserEntity loginUser){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         
@@ -126,11 +103,12 @@ public class UserService {
             return resultMap;
         }
         loginUser.changeStatus(3);
-        uRepo.save(loginUser);
         resultMap.put("status", true);
         resultMap.put("message", "탈퇴가 완료 되었습니다.");
         resultMap.put("code", HttpStatus.ACCEPTED);
         resultMap.put("loginUser", null);
         return resultMap;
     }
+
+
 }

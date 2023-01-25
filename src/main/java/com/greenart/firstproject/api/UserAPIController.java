@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +19,7 @@ import com.greenart.firstproject.entity.CouponInfoEntity;
 import com.greenart.firstproject.repository.CouponInfoRefository;
 import com.greenart.firstproject.service.UserService;
 import com.greenart.firstproject.vo.user.UserJoinVO;
+import com.greenart.firstproject.vo.user.UserJoinWelcomeVO;
 import com.greenart.firstproject.vo.user.UserLoginVO;
 import com.greenart.firstproject.vo.user.UserUpdateVO;
 
@@ -30,10 +32,24 @@ import lombok.RequiredArgsConstructor;
 public class UserAPIController {
     private final UserService userService;
 
+    @PostMapping("/checkEmail")
+    public ResponseEntity<Object> check(String email){
+        Map<String, Object> resultMap = new LinkedHashMap<>();
+        resultMap.put("duplicated", userService.isDuplicatedEmail(email));
+        return ResponseEntity.ok().body(resultMap);
+    }
+
     @PostMapping("/join")
-    public ResponseEntity<Object> userJoin(@RequestBody UserJoinVO data){
-        Map<String, Object> resultMap = userService.addUser(data);
-        return new ResponseEntity<Object>(resultMap, (HttpStatus) resultMap.get("code"));
+    public ResponseEntity<Object> userJoin(@Validated @RequestBody UserJoinVO data){
+        Map<String, Object> resultMap = new LinkedHashMap<>();
+        UserJoinWelcomeVO addUser = userService.addUser(data);
+        if(addUser == null){
+            resultMap.put("message", "Failed");
+            return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
+        }
+        resultMap.put("message", "회원이 등록되었습니다.");
+        resultMap.put("data", addUser);
+        return new ResponseEntity<Object>(resultMap, HttpStatus.OK);
     }
 
     @PostMapping("/login")

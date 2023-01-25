@@ -13,6 +13,7 @@ import com.greenart.firstproject.vo.superadmin.AdminUserVO;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long>{
     public Integer countByEmail(String eamil);
+    public Integer countByNickname(String nickname);
     public UserEntity findByEmail(String eamil);
     public UserEntity findByEmailAndPwd(String eamil, String pwd);
     public UserEntity findByPwd(String pwd);
