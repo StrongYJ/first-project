@@ -51,7 +51,7 @@ public class ProductInfoRepositoryImpl implements ProductRepositoryCustom {
             .leftJoin(reviewEntity).on(productInfoEntity.eq(reviewEntity.product))
             .fetchJoin()
             .where(
-                typeEq(condition.getType()), levelEq(condition.getLevel()), 
+                typeEq(condition.getCategory()), levelEq(condition.getLevel()), 
                 sweetnessEq(condition.getSweetness()), sourEq(condition.getSour()), 
                 sodaEq(condition.getSoda()), rawEq(condition.getRaw())
                 )

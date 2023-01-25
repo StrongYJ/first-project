@@ -30,7 +30,7 @@ public class ProductVO {
     private String manufacturer;
     private List<OptionVO> options;
     
-    public ProductVO(ProductInfoEntity product, List<OptionInfoEntity> options) {
+    public ProductVO(ProductInfoEntity product) {
         this.productSeq = product.getSeq();
         this.productName = product.getName();
         this.subName = product.getSubName();
@@ -44,7 +44,7 @@ public class ProductVO {
         this.detailContent = product.getDetailContent();
         this.thumbImg = "/api/images/product/" + product.getImg();
         this.detailImg = "/api/images/product/" + product.getDetailImg();
-        this.options = options.stream().map(OptionVO::new).toList();
+        this.options = product.getOptions().stream().map(OptionVO::new).toList();
     }
 }
 

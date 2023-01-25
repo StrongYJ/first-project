@@ -2,11 +2,13 @@ package com.greenart.firstproject.repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.greenart.firstproject.entity.ProductInfoEntity;
@@ -25,4 +27,6 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfoEntity, 
     // )
     // List<ProductInfoEntity> findAllSearch(String keyword);
     public List<ProductInfoEntity> findByNameContaining(String keyword);
+    @Query(value = "select distinct p from ProductInfoEntity p join fetch p.options where p.seq = :seq")
+    Optional<ProductInfoEntity> findFetchBySeq(@Param("seq") Long seq);
 }

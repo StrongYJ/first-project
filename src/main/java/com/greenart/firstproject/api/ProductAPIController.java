@@ -37,21 +37,21 @@ public class ProductAPIController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    // 전체제품정보 싹다조회
-    @GetMapping("/all")
-    public ResponseEntity<Map<String, Object>> getAllProductsInfo(Pageable pageable) {
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
-        map.put("list", piService.findAllProducts(pageable));
-        return new ResponseEntity<>(map, HttpStatus.CREATED);
-    }
+    // // 전체제품정보 싹다조회
+    // @GetMapping("/all")
+    // public ResponseEntity<Map<String, Object>> getAllProductsInfo(Pageable pageable) {
+    //     Map<String, Object> map = new LinkedHashMap<String, Object>();
+    //     map.put("list", piService.findAllProducts(pageable));
+    //     return new ResponseEntity<>(map, HttpStatus.CREATED);
+    // }
     
-    // 카테고리별 제품조회
-    @GetMapping("/category/{code}")
-    public ResponseEntity<Map<String, Object>> getCategoryProducts(@PathVariable("code") String id, Pageable pageable) {
-        Map<String,Object> map = new LinkedHashMap<String, Object>();
-        map.put("list", piService.findByType(AlcoholType.valueOfCode(id), pageable));
-        return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
-    }
+    // // 카테고리별 제품조회
+    // @GetMapping("/category/{code}")
+    // public ResponseEntity<Map<String, Object>> getCategoryProducts(@PathVariable("code") String id, Pageable pageable) {
+    //     Map<String,Object> map = new LinkedHashMap<String, Object>();
+    //     map.put("list", piService.findByType(AlcoholType.valueOfCode(id), pageable));
+    //     return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
+    // }
 
     // 상품번호로 상품조회(상세페이지) + 옵션추가
     @GetMapping("/{seq}")

@@ -151,7 +151,7 @@ class MyTest {
         List<Integer> price = new ArrayList<>();
         price.add(10000);
         price.add(20000);
-        ProductSearchCond cond = ProductSearchCond.builder().type("takju").price(price).build();
+        ProductSearchCond cond = ProductSearchCond.builder().category("takju").price(price).build();
         Page<ProductMainVO> searchMultiple = productRepo.findVOByMultiCondition(cond, page);
         assertThat(searchMultiple.getTotalElements()).isEqualTo(2);
     }

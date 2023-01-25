@@ -38,10 +38,12 @@ public class ProductService {
 
     // 제품상세페이지
     public ProductVO findProductDetail(Long seq) {
-        ProductInfoEntity product =  piRepo.findById(seq).orElseThrow();
-        List<OptionInfoEntity> options = oiRepo.findByProduct(product);
-        
-        return new ProductVO(product, options);
+        // ProductInfoEntity product =  piRepo.findById(seq).orElseThrow();
+        // List<OptionInfoEntity> options = oiRepo.findByProduct(product);
+
+        ProductInfoEntity product = piRepo.findFetchBySeq(seq).orElseThrow();
+
+        return new ProductVO(product);
     }
 
     // 제품상세페이지에 옵션출력
