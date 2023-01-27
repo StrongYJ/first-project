@@ -52,21 +52,21 @@ public class OrderHistoryEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductInfoEntity product;
     
-    // @JoinColumn(name = "oh_oi_name")
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // private OptionInfoEntity option;
 
-    // @Builder
-    // public OrderHistoryEntity(
-    //     LocalDateTime orderDt, Integer quantity, 
-    //     Integer price, Integer deliveryStatus, 
-    //     Boolean canceled, UserEntity user
-    // ) {
-    //     this.orderDt = orderDt;
-    //     this.quantity = quantity;
-    //     this.price = price;
-    //     this.deliveryStatus = deliveryStatus;
-    //     this.canceled = canceled;
-    //     this.user = user;
-    // }
+    @Builder
+    public OrderHistoryEntity(
+        LocalDateTime orderDt, Integer quantity, 
+        Integer price, Integer deliveryStatus, 
+        Boolean canceled, UserEntity user,
+        ProductInfoEntity product, String name
+    ) {
+        this.orderDt = orderDt;
+        this.product = product;
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.deliveryStatus = deliveryStatus;
+        this.canceled = canceled;
+        this.user = user;
+    }
 }
