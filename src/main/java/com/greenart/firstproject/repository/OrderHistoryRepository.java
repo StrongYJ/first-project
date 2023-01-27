@@ -3,6 +3,7 @@ package com.greenart.firstproject.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,8 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistoryEntity
     (value = "select oh from OrderHistoryEntity oh join oh.user u join fetch oh.product where u.seq = :seq")
     //        select c from CartInfoEntity c join c.user u join fetch c.option o join fetch o.product where u.seq = :seq
     List<OrderHistoryEntity> findByUserSeqWithFetch(@Param("seq") Long userSeq);
+    public OrderHistoryEntity findByUser(UserEntity user);
+    
 }
 
 

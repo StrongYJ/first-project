@@ -81,7 +81,7 @@ public class UserAPIController {
     }
 
     @PutMapping("/login/delete")
-    public ResponseEntity<Object> userDelete(HttpSession session){
+    public ResponseEntity<Object> userDelete(HttpSession session) {
         Map<String, Object> resultMap = null;
         Object loginUser = session.getAttribute(MySessionkeys.USER_LOGIN_KEY);
         // Map<String, Object> resultMap = userService.deleteUser((UserEntity) loginUser);
