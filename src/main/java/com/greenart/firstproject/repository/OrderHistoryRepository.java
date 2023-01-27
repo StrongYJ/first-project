@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.greenart.firstproject.entity.OrderHistoryEntity;
+import com.greenart.firstproject.entity.UserEntity;
 
 
 @Repository
