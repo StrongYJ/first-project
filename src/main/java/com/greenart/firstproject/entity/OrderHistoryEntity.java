@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -50,5 +51,22 @@ public class OrderHistoryEntity {
     @JoinColumn(name = "oh_pi_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductInfoEntity product;
+    
 
+    @Builder
+    public OrderHistoryEntity(
+        LocalDateTime orderDt, Integer quantity, 
+        Integer price, Integer deliveryStatus, 
+        Boolean canceled, UserEntity user,
+        ProductInfoEntity product, String name
+    ) {
+        this.orderDt = orderDt;
+        this.product = product;
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.deliveryStatus = deliveryStatus;
+        this.canceled = canceled;
+        this.user = user;
+    }
 }

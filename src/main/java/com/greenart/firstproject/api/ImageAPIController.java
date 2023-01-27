@@ -39,6 +39,5 @@ public class ImageAPIController {
             .body(
                 new UrlResource("file:" + fileStore.getFullPath(name))
             );
-            
     }
 }

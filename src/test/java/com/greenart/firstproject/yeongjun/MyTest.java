@@ -166,7 +166,7 @@ class MyTest {
         Long singleResult = em.createQuery(query, Long.class).setParameter("seq", 1).getSingleResult();
         assertThat(singleResult).isEqualTo(4L);
         for(var result : searchMultiple) {
-            assertThat(result.getReviewNumber()).isEqualTo(em.createQuery(query, Long.class).setParameter("seq", result.getSeq()).getSingleResult());
+            assertThat(result.getReviewNumber()).isEqualTo(em.createQuery(query, Long.class).setParameter("seq", result.getProductSeq()).getSingleResult());
         }
     }
 

@@ -6,21 +6,21 @@ import lombok.Data;
 
 @Data
 public class ProductMainVO {
-    private Long seq;
-    private String name;
+    private Long productSeq;
+    private String productName;
     private String subName;
     private Integer mainPrice;
-    private String basicImg;
+    private String thumbImg;
     private Double reviewGrade;
     private Long reviewNumber;
 
     @QueryProjection
     public ProductMainVO(Long seq, String name, String subName, Integer mainPrice, String basicImg) {
-        this.seq = seq;
-        this.name = name;
+        this.productSeq = seq;
+        this.productName = name;
         this.subName = subName;
         this.mainPrice = mainPrice;
-        this.basicImg = basicImg;
+        this.thumbImg = basicImg;
         this.reviewGrade = null;
         this.reviewNumber = null;
     }
@@ -28,11 +28,11 @@ public class ProductMainVO {
     @QueryProjection
     public ProductMainVO(Long seq, String name, String subName, Integer mainPrice, String basicImg, Double reviewGrade,
             Long reviewNumber) {
-        this.seq = seq;
-        this.name = name;
+        this.productSeq = seq;
+        this.productName = name;
         this.subName = subName;
         this.mainPrice = mainPrice;
-        this.basicImg = "/api/images/product/" + basicImg;
+        this.thumbImg = "/api/images/product/" + basicImg;
         this.reviewGrade = reviewGrade;
         this.reviewNumber = reviewNumber;
     }

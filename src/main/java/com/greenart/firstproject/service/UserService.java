@@ -6,9 +6,11 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.boot.web.servlet.server.Session.Cookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.UserRepository;
@@ -50,6 +52,7 @@ public class UserService {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         UserEntity loginUser = null;
         loginUser = uRepo.findByEmailAndPwd(data.getEmail(), data.getPwd());
+        
         if(loginUser == null){
             resultMap.put("stats", false);
             resultMap.put("message", "이메일 또는 비밀번호 오류입니다.");
@@ -66,6 +69,19 @@ public class UserService {
             resultMap.put("code", HttpStatus.FORBIDDEN);
         }
         else{
+            JwtService jwtService = new JwtServiceImpl();
+            Long id = loginUser.getSeq();
+            // String token = jwtService.getToken("id", id);
+            
+            // JwtService jwtService = new JwtServiceImpl();
+            // Long id = loginUser.getSeq();
+            // String token = jwtService.getToken("id", id);
+            // Cookie cookie = new Cookie("token", (String) resultMap.get("token"));
+            // cookie.setHttpOnly(true);
+            // cookie.setPath("/");
+            // res.addCookie(cookie);
+            // return new ResponseEntity<>(id, HttpStatus.OK);
+            
             resultMap.put("status", true);
             resultMap.put("message", "로그인 되었습니다.");
             resultMap.put("code", HttpStatus.ACCEPTED);
@@ -74,16 +90,16 @@ public class UserService {
         return resultMap;
     }
 
-    public Map<String, Object> modifyUser(UserUpdateVO data, UserEntity loginUser){
+    public Map<String, Object> modifyUser(UserUpdateVO data, Long seq){
+        // Optional<UserEntity> findById = uRepo.findById(loginUser.getSeq());
+        // if(findById.isEmpty()) {
+            //     resultMap.put("status", false);
+            //     resultMap.put("message", "만료된 세션입니다.");
+            //     resultMap.put("code", HttpStatus.BAD_REQUEST);
+            //     return resultMap;
+            // }
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        Optional<UserEntity> findById = uRepo.findById(loginUser.getSeq());
-        if(findById.isEmpty()) {
-            resultMap.put("status", false);
-            resultMap.put("message", "만료된 세션입니다.");
-            resultMap.put("code", HttpStatus.BAD_REQUEST);
-            return resultMap;
-        }
-        UserEntity userEntity = findById.get();
+        UserEntity userEntity = uRepo.findById(seq).orElseThrow();
         userEntity.updateUser(data);
         uRepo.save(userEntity);
         resultMap.put("status", true);
@@ -109,6 +125,5 @@ public class UserService {
         resultMap.put("loginUser", null);
         return resultMap;
     }
-
 
 }

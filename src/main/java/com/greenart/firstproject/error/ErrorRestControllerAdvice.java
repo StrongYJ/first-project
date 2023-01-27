@@ -22,5 +22,4 @@ public class ErrorRestControllerAdvice {
     public ErrorResult notFoundExHandle(IllegalArgumentException e) {
         return new ErrorResult("Bad Request", e.getMessage());
     }
-
 }

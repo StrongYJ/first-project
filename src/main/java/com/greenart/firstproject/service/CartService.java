@@ -54,7 +54,7 @@ public class CartService {
      * @return 삭제되었다면 true 안되었다면 false
      */
     public void cartDelete(Long userSeq, Long optionSeq) {
-        UserEntity loginUser = userRepo.findById(optionSeq).orElseThrow();
+        UserEntity loginUser = userRepo.findById(userSeq).orElseThrow();
         cartRepo.delete(cartRepo.findByUserAndOptionSeq(loginUser, optionSeq).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니 정보입니다.")));
     }
 

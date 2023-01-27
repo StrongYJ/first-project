@@ -28,7 +28,7 @@ public class OptionInfoEntity {
     @Column(name = "oi_seq")        
     private Long seq;
     
-    @Column(name = "oi_name")     
+    @Column(name = "oi_name")
     private String option;
     
     @Column(name = "oi_price")      
