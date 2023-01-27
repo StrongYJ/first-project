@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.boot.web.servlet.server.Session.Cookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,7 @@ public class UserService {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         UserEntity loginUser = null;
         loginUser = uRepo.findByEmailAndPwd(data.getEmail(), data.getPwd());
+        
         if(loginUser == null){
             resultMap.put("stats", false);
             resultMap.put("message", "이메일 또는 비밀번호 오류입니다.");
@@ -66,6 +68,19 @@ public class UserService {
             resultMap.put("code", HttpStatus.FORBIDDEN);
         }
         else{
+            JwtService jwtService = new JwtServiceImpl();
+            Long id = loginUser.getSeq();
+            // String token = jwtService.getToken("id", id);
+            
+            // JwtService jwtService = new JwtServiceImpl();
+            // Long id = loginUser.getSeq();
+            // String token = jwtService.getToken("id", id);
+            // Cookie cookie = new Cookie("token", (String) resultMap.get("token"));
+            // cookie.setHttpOnly(true);
+            // cookie.setPath("/");
+            // res.addCookie(cookie);
+            // return new ResponseEntity<>(id, HttpStatus.OK);
+            
             resultMap.put("status", true);
             resultMap.put("message", "로그인 되었습니다.");
             resultMap.put("code", HttpStatus.ACCEPTED);
@@ -109,6 +124,5 @@ public class UserService {
         resultMap.put("loginUser", null);
         return resultMap;
     }
-
 
 }

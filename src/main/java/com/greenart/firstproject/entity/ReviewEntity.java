@@ -2,6 +2,8 @@ package com.greenart.firstproject.entity;
 
 import java.time.LocalDateTime;
 
+import com.greenart.firstproject.vo.review.ReviewCreateVO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -41,11 +44,23 @@ public class ReviewEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductInfoEntity product;
 
+    @Builder
+    public ReviewEntity(ReviewCreateVO data) {
+        this.optionName = data.getOptionName();
+        this.grade = data.getGrade();
+        this.content = data.getContent();
+        this.regDt = LocalDateTime.now();
+    }
+
     public void setOptionName(String optionName) {
         this.optionName = optionName;
     }
 
     public void setProduct(ProductInfoEntity product) {
         this.product = product;
-    }    
+    }
+
+    public void setUser(UserEntity user){
+        this.user = user;
+    }
 }
