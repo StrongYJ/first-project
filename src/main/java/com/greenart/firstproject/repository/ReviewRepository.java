@@ -20,7 +20,7 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long>{
     @Query(value = "select new com.greenart.firstproject.vo.review.ReviewVO(u.nickname, r.grade, r.content, r.regDt, r.optionName) from ReviewEntity r left join UserEntity u on r.user = u where r.product.seq = :piSeq")
     List<ReviewVO> findVOByProductSeq(@Param("piSeq") Long seq);
 
-    @Query(value = "select r from ReviewEntity r left join fetch r.user where r.product.seq = :piSeq")
+    @Query(value = "select r from ReviewEntity r join r.product p left join fetch r.user where p.seq = :piSeq")
     List<ReviewEntity> findFetchByProductSeq(@Param("piSeq") Long productSeq);
     // @Query(value = "select ui_nickname as nickname, ri_grade as grade, ri_content as content, ri_reg_dt as regDt, oi_option as option from review_info a join option_info b on a.ri_oi_seq = b.oi_seq join user_info d on d.ui_seq = a.ri_ui_seq join product_info c on b.oi_pi_seq = c.pi_seq where pi_seq = :piSeq", nativeQuery = true)
     // List<ReviewVO> findByProductReview(@Param("piSeq") Long piSeq);

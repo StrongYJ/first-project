@@ -3,10 +3,11 @@ package com.greenart.firstproject.api;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.config.MySessionkeys;
+import com.greenart.firstproject.config.security.JwtProperties;
+import com.greenart.firstproject.config.security.JwtUtil;
 import com.greenart.firstproject.entity.UserEntity;
-import com.greenart.firstproject.entity.CouponInfoEntity;
-import com.greenart.firstproject.repository.CouponInfoRefository;
 import com.greenart.firstproject.service.UserService;
 import com.greenart.firstproject.vo.user.UserJoinVO;
 import com.greenart.firstproject.vo.user.UserJoinWelcomeVO;
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserAPIController {
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/checkEmail")
     public ResponseEntity<Object> check(String email){
@@ -53,23 +55,28 @@ public class UserAPIController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> userLogin(@RequestBody UserLoginVO data, HttpSession session){
+    public ResponseEntity<Object> userLogin(@RequestBody UserLoginVO data){
         Map<String, Object> resultMap = userService.loginUser(data);
-        session.setAttribute(MySessionkeys.USER_LOGIN_KEY, resultMap.get(MySessionkeys.USER_LOGIN_KEY));
-        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+        UserEntity user = (UserEntity)resultMap.get("loginUser");
+        String jwt = JwtProperties.TOKEN_PREFIX + jwtUtil.create(user.getSeq());
+        resultMap.put("Authorization", jwt);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, jwt);
+        return new ResponseEntity<Object>(resultMap, headers, (HttpStatus)resultMap.get("code"));
     }
 
     @PutMapping("/login/update")
-    public ResponseEntity<Object> userUpdate(@RequestBody UserUpdateVO data, HttpSession session){
+    public ResponseEntity<Object> userUpdate(@RequestBody UserUpdateVO data, Authentication authentication){
         Map<String, Object> resultMap = null;
-        Object loginUser = session.getAttribute(MySessionkeys.USER_LOGIN_KEY);
-        if(loginUser == null) {
-            resultMap = new LinkedHashMap<String, Object>();
-            resultMap.put("status", false);
-            resultMap.put("message", "로그인 사용자 정보가 없습니다.");
-            return new ResponseEntity<>(resultMap, HttpStatus.UNAUTHORIZED);
-        }
-        resultMap = userService.modifyUser(data, (UserEntity)loginUser);
+        // Object loginUser = session.getAttribute(MySessionkeys.USER_LOGIN_KEY);
+        // if(loginUser == null) {
+        //     resultMap = new LinkedHashMap<String, Object>();
+        //     resultMap.put("status", false);
+        //     resultMap.put("message", "로그인 사용자 정보가 없습니다.");
+        //     return new ResponseEntity<>(resultMap, HttpStatus.UNAUTHORIZED);
+        // }
+        Long seq = Long.parseLong(authentication.getName());
+        resultMap = userService.modifyUser(data, seq);
         return new ResponseEntity<>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 

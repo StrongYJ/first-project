@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.UserRepository;
@@ -74,16 +75,16 @@ public class UserService {
         return resultMap;
     }
 
-    public Map<String, Object> modifyUser(UserUpdateVO data, UserEntity loginUser){
+    public Map<String, Object> modifyUser(UserUpdateVO data, Long seq){
+        // Optional<UserEntity> findById = uRepo.findById(loginUser.getSeq());
+        // if(findById.isEmpty()) {
+            //     resultMap.put("status", false);
+            //     resultMap.put("message", "만료된 세션입니다.");
+            //     resultMap.put("code", HttpStatus.BAD_REQUEST);
+            //     return resultMap;
+            // }
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        Optional<UserEntity> findById = uRepo.findById(loginUser.getSeq());
-        if(findById.isEmpty()) {
-            resultMap.put("status", false);
-            resultMap.put("message", "만료된 세션입니다.");
-            resultMap.put("code", HttpStatus.BAD_REQUEST);
-            return resultMap;
-        }
-        UserEntity userEntity = findById.get();
+        UserEntity userEntity = uRepo.findById(seq).orElseThrow();
         userEntity.updateUser(data);
         uRepo.save(userEntity);
         resultMap.put("status", true);
