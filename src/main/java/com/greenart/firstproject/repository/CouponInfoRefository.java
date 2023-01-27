@@ -16,4 +16,7 @@ import com.greenart.firstproject.vo.coupon.CouponInfoVO;
 @Repository
 public interface CouponInfoRefository extends JpaRepository<CouponInfoEntity, Long>{
     List<CouponInfoEntity> findByUser(UserEntity user);
+
+    @Query(value = "select c from CouponInfoEntity c left join fetch c.user where c.user.seq = :uiSeq")
+    List<CouponInfoEntity> findByFetchByUserSeq(@Param("uiSeq") Long userSeq);
 }

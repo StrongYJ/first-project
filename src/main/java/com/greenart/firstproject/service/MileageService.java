@@ -16,4 +16,9 @@ public class MileageService {
     public List<MileageInfoVO> getUserMileage(UserEntity loginUser) {
         return milegeRepo.findByUser(loginUser).stream().map(MileageInfoVO::fromEntity).toList();
     }
+    
+    //seq로 받기
+    public List<MileageInfoVO> getUserMileage(Long uiSeq) {
+        return milegeRepo.findByFetchByUserSeq(uiSeq).stream().map(MileageInfoVO::new).toList();
+    }
 }
