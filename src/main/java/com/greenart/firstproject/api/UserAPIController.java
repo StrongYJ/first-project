@@ -7,9 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.NumberUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,15 +18,12 @@ import com.greenart.firstproject.config.MySessionkeys;
 import com.greenart.firstproject.config.security.JwtProperties;
 import com.greenart.firstproject.config.security.JwtUtil;
 import com.greenart.firstproject.entity.UserEntity;
-import com.greenart.firstproject.entity.CouponInfoEntity;
-import com.greenart.firstproject.repository.CouponInfoRefository;
 import com.greenart.firstproject.service.UserService;
 import com.greenart.firstproject.vo.user.UserJoinVO;
 import com.greenart.firstproject.vo.user.UserJoinWelcomeVO;
 import com.greenart.firstproject.vo.user.UserLoginVO;
 import com.greenart.firstproject.vo.user.UserUpdateVO;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
