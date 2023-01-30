@@ -1,6 +1,8 @@
 package com.greenart.firstproject.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,8 +36,25 @@ public class PaymentInfoEntity {
 
     @Column(name = "pay_order_dt")
     private LocalDateTime orderDt;
+    
+    @Column(name = "pay_delivery_status")
+    private Integer deliveryStatus;
+
+    @Column(name = "pay_canceled")
+    private Boolean canceled;
+
 
     @JoinColumn(name = "pay_ui_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
+
+    @OneToMany(mappedBy = "paymentInfo")
+    private List<OrderHistoryEntity> orderHistories = new ArrayList<>();
+
+    public PaymentInfoEntity(Integer originalPrice, Integer finalPrice, LocalDateTime orderDt, UserEntity user) {
+        this.originalPrice = originalPrice;
+        this.finalPrice = finalPrice;
+        this.orderDt = orderDt;
+        this.user = user;
+    }
 }
