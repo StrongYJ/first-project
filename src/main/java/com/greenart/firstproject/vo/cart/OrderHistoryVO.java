@@ -37,7 +37,7 @@ public class OrderHistoryVO {
         this.orderDt = entity.getOrderDt();
         this.productSeq = entity.getProduct().getSeq();
         // this.optionName = cartInfoVO.getOptionName();
-        // this.optionName = optionEntity.getOption();
+        this.optionName = optionEntity.getOption();
         this.quantity = entity.getQuantity();
         this.price = entity.getPrice();
         this.canceled = entity.getCanceled();
