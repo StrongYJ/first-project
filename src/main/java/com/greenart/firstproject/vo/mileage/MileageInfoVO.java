@@ -1,4 +1,4 @@
-package com.greenart.firstproject.vo;
+package com.greenart.firstproject.vo.mileage;
 
 import java.time.LocalDate;
 
@@ -26,5 +26,13 @@ public class MileageInfoVO {
         .mpPrice(entity.getMpPrice())
         .mpExpirationDate(entity.getMpExpirationDate())
         .build();
+    }
+
+    //seq번호
+    public MileageInfoVO(MileagePointEntity entity) {
+        this.email = email;
+        this.nickname = nickname;
+        this.mpPrice = entity.getMpPrice();
+        this.mpExpirationDate = entity.getMpExpirationDate();
     }
 }
