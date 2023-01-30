@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.greenart.firstproject.entity.MileagePointEntity;
 import com.greenart.firstproject.entity.UserEntity;
-import com.greenart.firstproject.vo.MileageInfoVO;
+import com.greenart.firstproject.vo.mileage.MileageInfoVO;
 
 @Repository
 public interface MilegePointRepository extends JpaRepository<MileagePointEntity, Long>{

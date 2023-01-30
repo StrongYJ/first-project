@@ -15,8 +15,7 @@ import com.greenart.firstproject.config.MySessionkeys;
 import com.greenart.firstproject.repository.MilegePointRepository;
 import com.greenart.firstproject.service.MileageService;
 import com.greenart.firstproject.service.UserService;
-import com.greenart.firstproject.vo.MileageInfoVO;
-
+import com.greenart.firstproject.vo.mileage.MileageInfoVO;
 import com.greenart.firstproject.entity.UserEntity;
 import jakarta.servlet.http.HttpSession;
 

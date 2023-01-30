@@ -38,11 +38,12 @@ public class SecurityConfig {
             .and()
             .formLogin().disable()
             .authorizeHttpRequests()
-            .requestMatchers(
-                "/*", "/admin/**", "/api/products/**", "/api-docs", "/swagger-ui/**", "/v3/api-docs/**",
-                "/api/users/login", "/api/users/join", "/api/users/checkEmail"
-            ).permitAll()
-            .requestMatchers("/api/**").authenticated()
+            // .requestMatchers(
+            //     "/*", "/admin/**", "/api/products/**", "/api-docs", "/swagger-ui/**", "/v3/api-docs/**",
+            //     "/api/users/login", "/api/users/join", "/api/users/checkEmail"
+            // ).permitAll()
+            // .requestMatchers("/api/**").authenticated()
+            .anyRequest().permitAll()
             .and()
             .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
             .build();

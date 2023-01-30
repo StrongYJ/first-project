@@ -69,8 +69,8 @@ public class UserService {
             resultMap.put("code", HttpStatus.FORBIDDEN);
         }
         else{
-            JwtService jwtService = new JwtServiceImpl();
             Long id = loginUser.getSeq();
+                // JwtService jwtService = new JwtServiceImpl();
             // String token = jwtService.getToken("id", id);
             
             // JwtService jwtService = new JwtServiceImpl();
