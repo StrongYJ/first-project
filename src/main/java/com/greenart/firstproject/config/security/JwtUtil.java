@@ -28,4 +28,8 @@ public class JwtUtil {
     public String resolve(String token) {
         return token.replace(JwtProperties.TOKEN_PREFIX, "");
     }
+
+    public long getExpireTime(String token) {
+        return JWT.require(Algorithm.HMAC256(key)).build().verify(token).getExpiresAt().getTime();
+    }
 }

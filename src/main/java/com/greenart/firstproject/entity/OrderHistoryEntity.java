@@ -61,12 +61,12 @@ public class OrderHistoryEntity {
         ProductInfoEntity product, String name
     ) {
         this.orderDt = orderDt;
-        this.product = product;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
         this.deliveryStatus = deliveryStatus;
         this.canceled = canceled;
         this.user = user;
+        this.product = product;
     }
 }

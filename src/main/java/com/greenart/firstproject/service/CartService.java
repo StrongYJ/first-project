@@ -1,18 +1,26 @@
 package com.greenart.firstproject.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.greenart.firstproject.entity.CartInfoEntity;
+import com.greenart.firstproject.entity.OptionInfoEntity;
+import com.greenart.firstproject.entity.OrderHistoryEntity;
+import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.CartInfoRepository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.UserRepository;
-import com.greenart.firstproject.vo.cart.CartPlusMinusVO;
 import com.greenart.firstproject.vo.cart.CartInfoVO;
+import com.greenart.firstproject.vo.cart.CartPlusMinusVO;
+import com.greenart.firstproject.vo.cart.OrderResult;
 
 import lombok.RequiredArgsConstructor;
 
@@ -64,6 +72,32 @@ public class CartService {
                 c.setQuantity(data.getQuantity());
             } 
         );
+    }
+
+    public OrderResult order(Long userSeq) {
+        List<CartInfoEntity> cartInfo = cartRepo.findByUserSeq(userSeq);
+        List<OrderHistoryEntity> orders = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        List<String> orderedOptions = new ArrayList<>();
+        int totalPrice = 0;
+        cartInfo.forEach(c -> {
+            OptionInfoEntity option = c.getOption();
+            String optionName = option.getOption();
+            totalPrice += option.getPrice() * c.getQuantity();
+            orderedOptions.add(optionName);
+            orders.add(OrderHistoryEntity.builder()
+                .name(optionName)
+                .orderDt(now)
+                .quantity(c.getQuantity())
+                .price(option.getPrice())
+                .deliveryStatus(0)
+                .canceled(false)
+                .user(c.getUser())
+                .product(option.getProduct())
+                .build());
+            });
+        
+        return new OrderResult("결제완료", totalPrice, orderedOptions);
     }
     
 }
