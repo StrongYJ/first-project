@@ -8,9 +8,13 @@ import com.greenart.firstproject.entity.OrderHistoryEntity;
 import com.greenart.firstproject.entity.UserEntity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
+@AllArgsConstructor
 @Schema(description = "주문내역")
 public class OrderHistoryVO {
     @Schema(description = "주문날짜")
@@ -29,7 +33,6 @@ public class OrderHistoryVO {
     private Integer deliveryStatus;
 
     public OrderHistoryVO(OrderHistoryEntity entity) {
-        this.orderDt = entity.getOrderDt();
         this.productSeq = entity.getProduct().getSeq();
         // this.optionName = cartInfoVO.getOptionName();
         this.optionName = entity.getName();
@@ -38,4 +41,5 @@ public class OrderHistoryVO {
         this.canceled = entity.getCanceled();
         this.deliveryStatus = entity.getDeliveryStatus();
     }
+    
 }

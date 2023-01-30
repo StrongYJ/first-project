@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,5 +41,28 @@ public class OrderHistoryAPIController {
                 new OrderHistoryResponseBody<>(true, null, ohService.getOrderHistory(seq)),
                 HttpStatus.OK
         );
-    } 
+    }
+
+    // GET주문취소내역
+    @GetMapping("/canceled")
+    public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> getOrderCanceled(Authentication authentication) {
+        Long seq = Long.parseLong(authentication.getName());
+
+        return new ResponseEntity<>(
+                new OrderHistoryResponseBody<>(true, null, ohService.getOrderCanceled(seq, false)),
+                HttpStatus.OK
+        );
+    }
+    // PATCH주문취소내역
+    @PatchMapping("/canceled")
+    public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> patchOrderCanceled(Authentication authentication) {
+        Long seq = Long.parseLong(authentication.getName());
+
+        return new ResponseEntity<>(
+                new OrderHistoryResponseBody<>(true, null, ohService.patchOrderCanceled(seq, false)),
+                HttpStatus.CREATED
+        );
+    }
+
+
 }
