@@ -21,4 +21,13 @@ public class OrderHistoryService {
     public List<OrderHistoryVO> getOrderHistory(Long userSeq) {
         return ohRepo.findByUserSeqWithFetch(userSeq).stream().map(OrderHistoryVO::new).toList();
     }
+    
+    // 주문취소내역서비스
+    public List<OrderHistoryVO> getOrderCanceled(Long userSeq, boolean canceled) {
+        if(canceled != true) {
+
+        }
+        return ohRepo.findByUserSeqWithFetch(userSeq,canceled).stream().map(OrderHistoryVO::new).toList();
+    }
+    
 }

@@ -40,5 +40,20 @@ public class OrderHistoryAPIController {
                 new OrderHistoryResponseBody<>(true, null, ohService.getOrderHistory(seq)),
                 HttpStatus.OK
         );
-    } 
+    }
+
+    // 주문취소내역
+    @GetMapping("")
+    public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> getOrderCanceled(Authentication authentication) {
+        // Map<String, Object> map = new LinkedHashMap<String, Object>();
+        // map.put("list", ohService.getOrderHistory(seq));
+        Long seq = Long.parseLong(authentication.getName());
+
+        return new ResponseEntity<>(
+                new OrderHistoryResponseBody<>(true, null, ohService.getOrderCanceled(seq, false)),
+                HttpStatus.OK
+        );
+    }
+
+
 }
