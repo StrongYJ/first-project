@@ -38,8 +38,6 @@ public class OrderHistoryVO {
         this.optionName = entity.getName();
         this.quantity = entity.getQuantity();
         this.price = entity.getPrice();
-        this.canceled = entity.getCanceled();
-        this.deliveryStatus = entity.getDeliveryStatus();
     }
     
 }

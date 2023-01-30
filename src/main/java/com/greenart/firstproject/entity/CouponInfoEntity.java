@@ -34,6 +34,9 @@ public class CouponInfoEntity {
     @Column(name = "cou_status")   
     private Integer couStatus;
 
+    @Column(name = "cou_discount_rate")
+    private Double discountRate;
+    
     @JoinColumn(name = "cou_ui_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;

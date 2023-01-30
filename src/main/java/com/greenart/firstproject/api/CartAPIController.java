@@ -21,6 +21,8 @@ import com.greenart.firstproject.service.CartService;
 import com.greenart.firstproject.vo.cart.CartInfoVO;
 import com.greenart.firstproject.vo.cart.CartPlusMinusVO;
 import com.greenart.firstproject.vo.cart.CartinfoResponseBody;
+import com.greenart.firstproject.vo.cart.DiscountVO;
+import com.greenart.firstproject.vo.cart.OrderResult;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -85,5 +87,11 @@ public class CartAPIController {
         Long userSeq = Long.parseLong(authentication.getName());
         cartService.cartDelete(userSeq, optionSeq);
         return new ResponseEntity<>(new CartinfoResponseBody<>(true, "삭제되었습니다."), HttpStatus.OK);
+    }
+
+    public ResponseEntity<OrderResult> order(Authentication authentication, @RequestBody DiscountVO discount) {
+        Long userSeq = Long.parseLong(authentication.getName());
+        OrderResult orderResult = cartService.order(userSeq, discount);
+        return new ResponseEntity<>(orderResult, HttpStatus.OK);
     }
 }

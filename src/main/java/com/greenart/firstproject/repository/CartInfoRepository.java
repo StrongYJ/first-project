@@ -16,6 +16,8 @@ public interface CartInfoRepository extends JpaRepository<CartInfoEntity, Long> 
     @Query(value = "select c from CartInfoEntity c join c.user u join fetch c.option o join fetch o.product where u.seq = :seq")
     List<CartInfoEntity> findByUserSeqWithFetch(@Param("seq") Long userSeq);
 
+    List<CartInfoEntity> findByUser(UserEntity user);
+    
     @Query(value = "SELECT c FROM CartInfoEntity c join c.user u join c.option o WHERE u = :user AND o.seq = :optionSeq")
     Optional<CartInfoEntity> findByUserAndOptionSeq(@Param("user") UserEntity user, @Param("optionSeq") Long optionSeq);
 
