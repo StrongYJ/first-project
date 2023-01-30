@@ -31,4 +31,15 @@ public class CouponInfoVO {
         .couStatus(entity.getCouStatus())
         .build();
     }
+    
+    //seq번호
+    public CouponInfoVO(CouponInfoEntity entity) {
+        this.email = email;
+        this.nickname = nickname;
+        this.couName = entity.getCouName();
+        this.couValidDt = entity.getCouValidDt();
+        this.couCode = entity.getCouCode();
+        this.couStatus = entity.getCouStatus();
+
+    }
 }

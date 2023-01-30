@@ -65,6 +65,7 @@ public class UserService {
         }
         else{
             Long id = loginUser.getSeq();
+                // JwtService jwtService = new JwtServiceImpl();
             // String token = jwtService.getToken("id", id);
             
             // JwtService jwtService = new JwtServiceImpl();
