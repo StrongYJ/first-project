@@ -29,7 +29,6 @@ public class OrderHistoryVO {
     private Integer deliveryStatus;
 
     public OrderHistoryVO(OrderHistoryEntity entity) {
-        this.orderDt = entity.getOrderDt();
         this.productSeq = entity.getProduct().getSeq();
         // this.optionName = cartInfoVO.getOptionName();
         this.optionName = entity.getName();

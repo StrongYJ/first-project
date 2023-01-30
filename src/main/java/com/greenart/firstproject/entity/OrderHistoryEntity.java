@@ -1,6 +1,5 @@
 package com.greenart.firstproject.entity;
 
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,9 +27,6 @@ public class OrderHistoryEntity {
     @Column(name = "oh_oi_name")
     private String name;
     
-    @Column(name = "oh_order_dt")
-    private LocalDateTime orderDt;
-
     @Column(name = "oh_quantity")
     private Integer quantity;
 
@@ -44,29 +39,12 @@ public class OrderHistoryEntity {
     @Column(name = "oh_canceled")
     private Boolean canceled;
 
-    @JoinColumn(name = "oh_ui_seq")
+    @JoinColumn(name = "oh_pay_seq")
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity user;
+    private PaymentInfoEntity paymentInfo;
 
     @JoinColumn(name = "oh_pi_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductInfoEntity product;
     
-
-    @Builder
-    public OrderHistoryEntity(
-        LocalDateTime orderDt, Integer quantity, 
-        Integer price, Integer deliveryStatus, 
-        Boolean canceled, UserEntity user,
-        ProductInfoEntity product, String name
-    ) {
-        this.orderDt = orderDt;
-        this.product = product;
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
-        this.deliveryStatus = deliveryStatus;
-        this.canceled = canceled;
-        this.user = user;
-    }
 }
