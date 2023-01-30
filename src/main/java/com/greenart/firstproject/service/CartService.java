@@ -79,12 +79,12 @@ public class CartService {
         List<OrderHistoryEntity> orders = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
         List<String> orderedOptions = new ArrayList<>();
-        int totalPrice = 0;
+        List<Integer> prices = new ArrayList<>();
         cartInfo.forEach(c -> {
             OptionInfoEntity option = c.getOption();
             String optionName = option.getOption();
-            totalPrice += option.getPrice() * c.getQuantity();
             orderedOptions.add(optionName);
+            prices.add(option.getPrice());
             orders.add(OrderHistoryEntity.builder()
                 .name(optionName)
                 .orderDt(now)
@@ -97,7 +97,7 @@ public class CartService {
                 .build());
             });
         
-        return new OrderResult("결제완료", totalPrice, orderedOptions);
+        return new OrderResult("결제완료", prices.stream().mapToInt(i -> i).sum(), orderedOptions);
     }
     
 }
