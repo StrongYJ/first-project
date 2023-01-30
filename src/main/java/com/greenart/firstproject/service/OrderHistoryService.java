@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.greenart.firstproject.entity.OrderHistoryEntity;
 import com.greenart.firstproject.repository.OrderHistoryRepository;
+import com.greenart.firstproject.repository.PaymentInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.repository.UserRepository;
 import com.greenart.firstproject.vo.cart.OrderHistoryVO;
@@ -19,9 +20,10 @@ public class OrderHistoryService {
     private final OrderHistoryRepository ohRepo;
     private final ProductInfoRepository piRepo;
     private final UserRepository userRepo;
+    private final PaymentInfoRepository payRepo;
 
     public List<OrderHistoryVO> getOrderHistory(Long userSeq) {
-        return ohRepo.findByUserSeqWithFetch(userSeq).stream().map(OrderHistoryVO::new).toList();
+        return payRepo.findByUserSeqWithFetch(userSeq).stream().map(OrderHistoryVO::new).toList();
     }
     
     // 주문취소내역서비스 get
