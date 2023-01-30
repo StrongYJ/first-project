@@ -31,7 +31,12 @@ public class ReviewService {
         // return reviewRepo.findVOByProductSeq(piSeq);
         return reviewRepo.findFetchByProductSeq(piSeq).stream().map(ReviewVO::new).toList();
     }
-
+    /**
+     * 리뷰등록 메서드
+     * @param userSeq 유저번호
+     * @param data dto
+     * @return
+     */
     public ReviewCreateVO addReivew(Long userSeq, ReviewCreateVO data) {
         // 사용자 정보를 불러오고 없으면 예외 발생
         UserEntity user = userRepo.findById(userSeq).orElseThrow();

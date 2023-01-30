@@ -24,7 +24,6 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistoryEntity
     //        select c from CartInfoEntity c join c.user u join fetch c.option o join fetch o.product where u.seq = :seq
     List<OrderHistoryEntity> findByUserSeqWithFetch(@Param("seq") Long userSeq);
     public OrderHistoryEntity findByUser(UserEntity user);
-    
 }
 
 

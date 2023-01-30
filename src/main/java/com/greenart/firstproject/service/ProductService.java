@@ -52,16 +52,9 @@ public class ProductService {
     // }
 
     // 제품이름으로 제품검색
-    public List<ProductVO> searchProducts(String keyword) {
-        List<ProductInfoEntity> productInfoEntity = piRepo.findByNameContaining(keyword);
-        List<ProductVO> productVOlList = new ArrayList<>();
-        
-        if(productInfoEntity.isEmpty()) return productVOlList;
-
-        for(ProductInfoEntity productInfoEntity2 : productInfoEntity) {
-            productVOlList.add(this.convertEntityToVO(productInfoEntity2));
-        }
-        return productVOlList;
+    public Page<ProductVO> searchProducts(String keyword, Pageable pageable) {
+    
+        return piRepo.findByNameContaining(keyword, pageable).map(ProductVO::new);
     }
 
     // 조건 다중선택
