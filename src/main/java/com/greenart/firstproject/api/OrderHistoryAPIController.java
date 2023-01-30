@@ -43,23 +43,24 @@ public class OrderHistoryAPIController {
         );
     }
 
-    // GET주문취소내역
+    // GET주문취소내역 -> 마지막
     @GetMapping("/canceled")
     public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> getOrderCanceled(Authentication authentication) {
         Long seq = Long.parseLong(authentication.getName());
 
         return new ResponseEntity<>(
-                new OrderHistoryResponseBody<>(true, null, ohService.getOrderCanceled(seq, false)),
+                new OrderHistoryResponseBody<>(true, null, ohService.getOrderCanceled(seq)),
                 HttpStatus.OK
         );
     }
+    
     // PATCH주문취소내역
     @PatchMapping("/canceled")
     public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> patchOrderCanceled(Authentication authentication) {
         Long seq = Long.parseLong(authentication.getName());
 
         return new ResponseEntity<>(
-                new OrderHistoryResponseBody<>(true, null, ohService.patchOrderCanceled(seq, false)),
+                new OrderHistoryResponseBody<>(true, null, ohService.patchOrderCanceled(seq)),
                 HttpStatus.CREATED
         );
     }

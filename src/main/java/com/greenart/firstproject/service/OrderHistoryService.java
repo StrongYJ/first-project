@@ -25,22 +25,19 @@ public class OrderHistoryService {
     }
     
     // 주문취소내역서비스 get
-    public List<OrderHistoryVO> getOrderCanceled(Long userSeq, boolean canceled) {
-        if() {
-            
-        }
-        return ohRepo.findByUserSeqCanceledWithFetch(userSeq,canceled).stream().map(OrderHistoryVO::new).toList();
+    public List<OrderHistoryVO> getOrderCanceled(Long userSeq) {
+
+        return ohRepo.findByUserSeqWithFetch(userSeq).stream().map(OrderHistoryVO::new).toList();
     }
 
     // 주문취소내역서비스 patch
-    public List<OrderHistoryVO> patchOrderCanceled(Long userSeq, boolean canceled) {
-        return ohRepo.findByUserSeqCanceledWithFetch(userSeq,canceled).stream().map(OrderHistoryVO::new).toList();
+    public List<OrderHistoryVO> patchOrderCanceled(Long userSeq) {
+        return ohRepo.findByUserSeqWithFetch(userSeq).stream().map(OrderHistoryVO::new).toList();
 
     }
     
     private OrderHistoryVO OrderCanceledHistoryVO(OrderHistoryEntity entity) {
         return OrderHistoryVO.builder()
-        .orderDt(entity.getOrderDt())
         .productSeq(entity.getProduct().getSeq())
         .optionName(entity.getName())
         .quantity(entity.getQuantity())
