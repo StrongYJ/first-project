@@ -26,7 +26,8 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfoEntity, 
     // @Query(value = "SELECT b FROM product_info b WHERE pi_name LIKE %:keyword%"
     // )
     // List<ProductInfoEntity> findAllSearch(String keyword);
-    public List<ProductInfoEntity> findByNameContaining(String keyword);
+    List<ProductInfoEntity> findByNameContaining(String keyword);
+    Page<ProductInfoEntity> findByNameContaining(String keyword, Pageable pageable);
     @Query(value = "select distinct p from ProductInfoEntity p join fetch p.options where p.seq = :seq")
     Optional<ProductInfoEntity> findFetchBySeq(@Param("seq") Long seq);
 }

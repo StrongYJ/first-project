@@ -65,11 +65,8 @@ public class ProductAPIController {
 
     // 검색기능
     @GetMapping("/search")
-    public ResponseEntity<Map<String, Object>> searchProducts(@RequestParam(value="keyword") String keyword) {
-        List<ProductVO> productVOs = piService.searchProducts(keyword);
-        Map<String,Object> map = new LinkedHashMap<String, Object>();
-        map.put("productList", productVOs);
-        return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
+    public ResponseEntity<Page<ProductVO>> searchProducts(@RequestParam(value="keyword") String keyword, Pageable pageable) {
+        return new ResponseEntity<>(piService.searchProducts(keyword, pageable), HttpStatus.ACCEPTED);
     }
 
     // 상품번호로 조회 + 옵션까지 같이

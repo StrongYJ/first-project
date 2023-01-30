@@ -28,16 +28,11 @@ public class OrderHistoryVO {
     @Schema(description = "배달상태")
     private Integer deliveryStatus;
 
-    private CartInfoVO cartInfoVO;
-    private CartInfoEntity cEntity;
-    private UserEntity userEntity;
-    private OptionInfoEntity optionEntity;
-
     public OrderHistoryVO(OrderHistoryEntity entity) {
         this.orderDt = entity.getOrderDt();
         this.productSeq = entity.getProduct().getSeq();
         // this.optionName = cartInfoVO.getOptionName();
-        // this.optionName = optionEntity.getOption();
+        this.optionName = entity.getName();
         this.quantity = entity.getQuantity();
         this.price = entity.getPrice();
         this.canceled = entity.getCanceled();
