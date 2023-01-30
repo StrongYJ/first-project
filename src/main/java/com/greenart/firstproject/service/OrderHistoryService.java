@@ -26,6 +26,9 @@ public class OrderHistoryService {
     
     // 주문취소내역서비스 get
     public List<OrderHistoryVO> getOrderCanceled(Long userSeq, boolean canceled) {
+        if() {
+            
+        }
         return ohRepo.findByUserSeqCanceledWithFetch(userSeq,canceled).stream().map(OrderHistoryVO::new).toList();
     }
 
