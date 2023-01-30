@@ -53,14 +53,14 @@ public class OrderHistoryAPIController {
                 HttpStatus.OK
         );
     }
-    // GET주문취소내역
+    // PATCH주문취소내역
     @PatchMapping("/canceled")
     public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> patchOrderCanceled(Authentication authentication) {
         Long seq = Long.parseLong(authentication.getName());
 
         return new ResponseEntity<>(
                 new OrderHistoryResponseBody<>(true, null, ohService.patchOrderCanceled(seq, false)),
-                HttpStatus.OK
+                HttpStatus.CREATED
         );
     }
 
