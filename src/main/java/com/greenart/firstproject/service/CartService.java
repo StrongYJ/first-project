@@ -1,18 +1,30 @@
 package com.greenart.firstproject.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.greenart.firstproject.entity.CartInfoEntity;
+import com.greenart.firstproject.entity.CouponInfoEntity;
+import com.greenart.firstproject.entity.OptionInfoEntity;
+import com.greenart.firstproject.entity.OrderHistoryEntity;
+import com.greenart.firstproject.entity.PaymentInfoEntity;
+import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.CartInfoRepository;
+import com.greenart.firstproject.repository.CouponInfoRefository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
 import com.greenart.firstproject.repository.UserRepository;
-import com.greenart.firstproject.vo.cart.CartPlusMinusVO;
 import com.greenart.firstproject.vo.cart.CartInfoVO;
+import com.greenart.firstproject.vo.cart.CartPlusMinusVO;
+import com.greenart.firstproject.vo.cart.DiscountVO;
+import com.greenart.firstproject.vo.cart.OrderResult;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +35,7 @@ public class CartService {
     private final CartInfoRepository cartRepo;
     private final OptionInfoRepository optionRepo;
     private final UserRepository userRepo;
+    private final CouponInfoRefository couponRepo;
 
     @Transactional(readOnly = true)
     public List<CartInfoVO> getCartInfo(Long userSeq) {
@@ -64,6 +77,27 @@ public class CartService {
                 c.setQuantity(data.getQuantity());
             } 
         );
+    }
+
+    @Transactional
+    public OrderResult order(Long userSeq, DiscountVO discount) {
+        UserEntity user = userRepo.findById(userSeq).orElseThrow();
+        List<CartInfoEntity> cartInfo = cartRepo.findByUser(user);
+        int finalPrice = 0;
+        int originalPrice = 0;
+        for(CartInfoEntity cart : cartInfo) {
+            originalPrice += cart.getQuantity() * cart.getOption().getPrice();
+        }
+        finalPrice = originalPrice;
+        if(discount.couponSeq() != null) {
+            CouponInfoEntity coupon = couponRepo.findById(discount.couponSeq()).orElseThrow();
+            finalPrice *= (1 - coupon.getDiscountRate());
+        }
+        if(discount.point() != null) {
+            finalPrice -= discount.point();
+        }
+
+        return null;
     }
     
 }

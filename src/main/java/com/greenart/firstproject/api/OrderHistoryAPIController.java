@@ -29,40 +29,40 @@ import lombok.RequiredArgsConstructor;
 public class OrderHistoryAPIController {
     private final OrderHistoryService ohService;
 
-    @Operation(summary = "결제내역 불러오기")
-    @ApiResponse(responseCode = "200", description = "결제내역 데이터")
-    @ApiResponse(responseCode = "401", description = "로그인 되지 않은 유저가 접근할때")
-    @GetMapping("")
-    public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> getOrderHistory(Authentication authentication) {
-        // Map<String, Object> map = new LinkedHashMap<String, Object>();
-        // map.put("list", ohService.getOrderHistory(seq));
-        Long seq = Long.parseLong(authentication.getName());
-        return new ResponseEntity<>(
-                new OrderHistoryResponseBody<>(true, null, ohService.getOrderHistory(seq)),
-                HttpStatus.OK
-        );
-    }
+    // @Operation(summary = "결제내역 불러오기")
+    // @ApiResponse(responseCode = "200", description = "결제내역 데이터")
+    // @ApiResponse(responseCode = "401", description = "로그인 되지 않은 유저가 접근할때")
+    // @GetMapping("")
+    // public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> getOrderHistory(Authentication authentication) {
+    //     // Map<String, Object> map = new LinkedHashMap<String, Object>();
+    //     // map.put("list", ohService.getOrderHistory(seq));
+    //     Long seq = Long.parseLong(authentication.getName());
+    //     return new ResponseEntity<>(
+    //             new OrderHistoryResponseBody<>(true, null, ohService.getOrderHistory(seq)),
+    //             HttpStatus.OK
+    //     );
+    // }
 
-    // GET주문취소내역
-    @GetMapping("/canceled")
-    public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> getOrderCanceled(Authentication authentication) {
-        Long seq = Long.parseLong(authentication.getName());
+    // // GET주문취소내역
+    // @GetMapping("/canceled")
+    // public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> getOrderCanceled(Authentication authentication) {
+    //     Long seq = Long.parseLong(authentication.getName());
 
-        return new ResponseEntity<>(
-                new OrderHistoryResponseBody<>(true, null, ohService.getOrderCanceled(seq, false)),
-                HttpStatus.OK
-        );
-    }
-    // PATCH주문취소내역
-    @PatchMapping("/canceled")
-    public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> patchOrderCanceled(Authentication authentication) {
-        Long seq = Long.parseLong(authentication.getName());
+    //     return new ResponseEntity<>(
+    //             new OrderHistoryResponseBody<>(true, null, ohService.getOrderCanceled(seq, false)),
+    //             HttpStatus.OK
+    //     );
+    // }
+    // // PATCH주문취소내역
+    // @PatchMapping("/canceled")
+    // public ResponseEntity<OrderHistoryResponseBody<List<OrderHistoryVO>>> patchOrderCanceled(Authentication authentication) {
+    //     Long seq = Long.parseLong(authentication.getName());
 
-        return new ResponseEntity<>(
-                new OrderHistoryResponseBody<>(true, null, ohService.patchOrderCanceled(seq, false)),
-                HttpStatus.CREATED
-        );
-    }
+    //     return new ResponseEntity<>(
+    //             new OrderHistoryResponseBody<>(true, null, ohService.patchOrderCanceled(seq, false)),
+    //             HttpStatus.CREATED
+    //     );
+    // }
 
 
 }

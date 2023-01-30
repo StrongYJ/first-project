@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,12 +34,6 @@ public class OrderHistoryEntity {
     @Column(name = "oh_price")
     private Integer price;
 
-    @Column(name = "oh_delivery_status")
-    private Integer deliveryStatus;
-
-    @Column(name = "oh_canceled")
-    private Boolean canceled;
-
     @JoinColumn(name = "oh_pay_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private PaymentInfoEntity paymentInfo;
@@ -46,5 +41,16 @@ public class OrderHistoryEntity {
     @JoinColumn(name = "oh_pi_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductInfoEntity product;
+
+    @Builder
+    public OrderHistoryEntity(String name, Integer quantity, Integer price,
+            PaymentInfoEntity paymentInfo, ProductInfoEntity product) {
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.paymentInfo = paymentInfo;
+        this.product = product;
+    }
+    
     
 }
