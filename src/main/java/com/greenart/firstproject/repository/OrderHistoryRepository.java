@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.greenart.firstproject.entity.OrderHistoryEntity;
+import com.greenart.firstproject.entity.UserEntity;
 
 
 @Repository
@@ -23,7 +24,6 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistoryEntity
     //        select c from CartInfoEntity c join c.user u join fetch c.option o join fetch o.product where u.seq = :seq
     List<OrderHistoryEntity> findByUserSeqWithFetch(@Param("seq") Long userSeq);
     public OrderHistoryEntity findByUser(UserEntity user);
-    
 }
 
 
