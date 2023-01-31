@@ -21,8 +21,8 @@ import lombok.Data;
 public class PaymentInfoVO {
     @Schema(description = "결제정보 기본키")
     private Long seq;
-    @Schema(description = "옵션이름")
-    private List<String> optionName; // 주문내역에 대한 vo를 List로 받는다.
+    // @Schema(description = "옵션이름")
+    // private List<String> optionName; 
     @Schema(description = "상품총금액")
     private Integer originalPrice;
     @Schema(description = "최종결제금액")
@@ -33,13 +33,16 @@ public class PaymentInfoVO {
     private Integer deliveryStatus;
     @Schema(description = "취소여부")
     private Boolean canceled;
-    private List<PaymentOptionVO> paymentOption;
+    @Schema(description = "주문옵션")
+    private List<PaymentOptionVO> paymentOption; // 주문내역에 대한 vo를 List로 받는다.
 
     // 기본키, 주문날짜, 옵션이름(orderhistory),상품금액총합, 최종결제금액, 취소여부
+    @Builder
     public PaymentInfoVO(PaymentInfoEntity entity) {
         this.seq = entity.getSeq();
         this.paymentOption = entity.getOrderHistories().stream().map(PaymentOptionVO::new).toList();
         // 요런식으로 vo list를 받는다. join fetch
+        this.canceled = entity.getCanceled();
         this.originalPrice = entity.getOriginalPrice();
         this.finalPrice = entity.getFinalPrice();
         this.orderDt = entity.getOrderDt();

@@ -12,10 +12,16 @@ import com.greenart.firstproject.vo.cart.PaymentInfoVO;
 public interface PaymentInfoRepository extends JpaRepository<PaymentInfoEntity, Long> {
     @Query
     (
-        value = "select pay from PaymentInfoEntity pay join pay.user u join fetch pay.option oh join fetch oh.orderhistories where u.seq = :seq"
-        )
+        value = "select pay.pay_seq, pay.pay_ui_seq, pay.pay_order_dt, oh.oh_oi_name, pay.pay_original, pay.pay_final, pay.pay_delivery_status, pay.pay_canceled from payment_info pay left join user_info u on pay.pay_ui_seq = u.ui_seq left join order_history oh on oh.oh_pay_seq = pay.pay_seq;"
+        ,nativeQuery = true)
     List<PaymentInfoEntity> findByUserSeqWithFetch(@Param("seq") Long userSeq);
     }
+    // @Query
+    // (
+    //     value = "select pay from PaymentInfoEntity pay join pay.user u join fetch pay.option oh join fetch oh.orderhistories where u.seq = :seq"
+    //     )
+    // List<PaymentInfoEntity> findByUserSeqWithFetch(@Param("seq") Long userSeq);
+    // }
     
     // value = "select new com.greenart.firstproject.vo.cart.PaymentInfoVO()
     // from OrderHistoryEntity oh left join PaymentInfoEntity pay on  pay.seq = oh.seq and pay.user.seq = :userInfoSeq"
