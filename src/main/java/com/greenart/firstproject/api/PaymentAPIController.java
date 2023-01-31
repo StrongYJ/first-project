@@ -32,9 +32,6 @@ public class PaymentAPIController {
         // Map<String, Object> map = new LinkedHashMap<String, Object>();
         // map.put("list", ohService.getOrderHistory(seq));
         Long seq = Long.parseLong(authentication.getName());
-
-        
-
         return new ResponseEntity<>(
                 new paymentInfoReponseBody<>(true, null, payService.getPaymentList(seq)),
                 HttpStatus.OK
