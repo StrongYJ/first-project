@@ -22,25 +22,14 @@ public class OrderHistoryService {
     private final UserRepository userRepo;
     private final PaymentInfoRepository payRepo;
 
-    public List<OrderHistoryVO> getOrderHistory(Long userSeq) {
-        return payRepo.findByUserSeqWithFetch(userSeq).stream().map(OrderHistoryVO::new).toList();
-    }
     // public List<OrderHistoryVO> getOrderHistory(Long userSeq) {
-    //     return ohRepo.findByUserSeqWithFetch(userSeq).stream().map(OrderHistoryVO::new).toList();
+    //     return payRepo.findByUserSeqWithFetch(userSeq).stream().map(OrderHistoryVO::new).toList();
     // }
-    
-    // 주문취소내역서비스 get
-    public List<OrderHistoryVO> getOrderCanceled(Long userSeq, boolean canceled) {
-        if() {
-            
-        }
-        return ohRepo.findByUserSeqCanceledWithFetch(userSeq,canceled).stream().map(OrderHistoryVO::new).toList();
-    }
 
-    // 주문취소내역서비스 patch
-    public List<OrderHistoryVO> patchOrderCanceled(Long userSeq) {
-        return ohRepo.findByUserSeqWithFetch(userSeq).stream().map(OrderHistoryVO::new).toList();
+    // // 주문취소내역서비스 patch
+    // public List<OrderHistoryVO> patchOrderCanceled(Long userSeq) {
+    //     return ohRepo.findByUserSeqWithFetch(userSeq).stream().map(OrderHistoryVO::new).toList();
 
-    }
+    // }
     
 }
