@@ -24,13 +24,7 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistoryEntity
     // // join product_info p on o.oi_pi_seq = p.pi_seq
     // // join cart_info c on u.ui_seq = c.ci_ui_seq ;
 
-    // @Query
-    // (value = "select oh from OrderHistoryEntity oh join fetch oh.product where oh.canceled = :canceled")
-    // //        select c from CartInfoEntity c join c.user u join fetch c.option o join fetch o.product where u.seq = :seq
-    // List<OrderHistoryEntity> findByUserSeqCanceledWithFetch(@Param("seq") Long userSeq, @Param("canceled") Boolean canceled);
 }
-
-
 
 // @Query(value = "select oh from OrderHistoryEntity oh join oh.user u join fetch oh.product c join fetch c.cart where u.seq = :seq")
 // List<OrderHistoryEntity> findByUserSeqWithFetch(@Param("seq") Long userSeq);
