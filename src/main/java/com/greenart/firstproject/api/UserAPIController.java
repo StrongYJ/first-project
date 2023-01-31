@@ -24,6 +24,8 @@ import com.greenart.firstproject.vo.user.UserJoinWelcomeVO;
 import com.greenart.firstproject.vo.user.UserLoginVO;
 import com.greenart.firstproject.vo.user.UserUpdateVO;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 

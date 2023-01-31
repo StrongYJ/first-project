@@ -18,8 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.greenart.firstproject.entity.CartInfoEntity;
 import com.greenart.firstproject.entity.MarketStockEntity;
 import com.greenart.firstproject.entity.OptionInfoEntity;
+import com.greenart.firstproject.entity.PaymentInfoEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.ReviewEntity;
+import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.entity.enums.AlcoholType;
 import com.greenart.firstproject.entity.enums.LevelRangeCode;
 import com.greenart.firstproject.entity.enums.RawMaterial;
@@ -27,6 +29,7 @@ import com.greenart.firstproject.repository.CartInfoRepository;
 import com.greenart.firstproject.repository.MarketInfoRepository;
 import com.greenart.firstproject.repository.MarketStockRepository;
 import com.greenart.firstproject.repository.OptionInfoRepository;
+import com.greenart.firstproject.repository.PaymentInfoRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.repository.ReviewRepository;
 import com.greenart.firstproject.repository.UserRepository;
@@ -53,6 +56,7 @@ class MyTest {
     @Autowired private ProductInfoRepository productRepo;
     @Autowired private CartInfoRepository cartRepo;
     @Autowired private ReviewRepository reviewRepo;
+    @Autowired private PaymentInfoRepository paymentRepo;
 
     @Autowired
     private EntityManager em;
@@ -168,6 +172,12 @@ class MyTest {
         for(var result : searchMultiple) {
             assertThat(result.getReviewNumber()).isEqualTo(em.createQuery(query, Long.class).setParameter("seq", result.getProductSeq()).getSingleResult());
         }
+    }
+
+    @Test
+    @Rollback(false)
+    void jpaAuditingTest() {
+        paymentRepo.save(new PaymentInfoEntity(0, 0, 0, false, utestRepo.findById(2L).get()));
     }
 
     // @Test

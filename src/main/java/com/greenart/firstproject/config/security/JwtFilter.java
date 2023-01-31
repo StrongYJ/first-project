@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,26 +33,25 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if(StringUtils.hasText(authorization) && authorization.startsWith(JwtProperties.TOKEN_PREFIX)) {
-            try {
-                String token = jwtUtil.resolve(authorization);
-                Long userSeq = jwtUtil.verifyAndExtractClaim(token);
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userSeq, null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                log.info("인증완료");
-                doFilter(request, response, filterChain);
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                response.setStatus(401);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("utf-8");
-                response.getWriter().write(jsonResponseWrapper(e));
-            }
-            return;
-        }
-        log.error("없거나 시작값이 없습니다.");
+         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+         if(StringUtils.hasText(authorization) && authorization.startsWith(JwtProperties.TOKEN_PREFIX)) {
+             try {
+                 String token = jwtUtil.resolve(authorization);
+                 Long userSeq = jwtUtil.verifyAndExtractClaim(token);
+                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userSeq, null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                 log.info("인증완료");
+                 doFilter(request, response, filterChain);
+             } catch (JWTVerificationException e) {
+                 log.error(e.getMessage());
+                 response.setStatus(401);
+                 response.setContentType("application/json");
+                 response.setCharacterEncoding("utf-8");
+                 response.getWriter().write(jsonResponseWrapper(e));
+             }
+             return;
+         }
         doFilter(request, response, filterChain);
     }
 

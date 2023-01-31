@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,8 @@ public interface CartInfoRepository extends JpaRepository<CartInfoEntity, Long> 
 
     @Query(value = "SELECT c FROM CartInfoEntity c join c.user u join c.option o WHERE u.seq = :user AND o.seq = :optionSeq")
     Optional<CartInfoEntity> findByUserSeqAndOptionSeq(@Param("user") Long userSeq, @Param("optionSeq") Long optionSeq);
+
+        @Modifying(clearAutomatically = true)
+    @Query(value = "DELETE FROM CartInfoEntity c WHERE c.user = :user")
+    void deleteAllByUser(@Param("user") UserEntity user);
 }

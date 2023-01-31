@@ -10,12 +10,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "mileage_point")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MileagePointEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mp_seq")
@@ -30,4 +34,18 @@ public class MileagePointEntity {
     @JoinColumn(name = "mp_ui_seq")
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
+
+    public void changePrice(Integer mpPrice) {
+        this.mpPrice = mpPrice;
+    }
+
+    @PrePersist
+    private void setExpirationDate() {
+        this.mpExpirationDate = LocalDate.now().plusYears(1L);
+    }
+
+    public MileagePointEntity(Integer mpPrice, UserEntity user) {
+        this.mpPrice = mpPrice;
+        this.user = user;
+    }
 }
