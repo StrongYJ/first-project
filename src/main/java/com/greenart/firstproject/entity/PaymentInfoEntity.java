@@ -57,4 +57,11 @@ public class PaymentInfoEntity {
         this.orderDt = orderDt;
         this.user = user;
     }
+
+    // public PaymentInfoEntity(Long seq, UserEntity user, OrderHistoryEntity orderHistories) {
+    //     this.seq = seq;
+    //     this.user = user;
+    //     this.orderHistories = (List<OrderHistoryEntity>) orderHistories;
+    // }
+
 }
