@@ -27,19 +27,5 @@ public interface PaymentInfoRepository extends JpaRepository<PaymentInfoEntity, 
     // from OrderHistoryEntity oh left join PaymentInfoEntity pay on  pay.seq = oh.seq and pay.user.seq = :userInfoSeq"
     // List<PaymentInfoVO> getPaymentList(@Param("userInfoSeq") Long seq);
     
-    // @Query(
-    //     value = "select new com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO(ms.seq, oi.product.name, oi.option, oi.price, ms.stock) 
-    // from OptionInfoEntity oi left join MarketStockEntity ms on ms.option.seq = oi.seq and ms.market.seq = :marketInfoSeq"
-    //     )
-    // List<LocalMarketOptionStockVO> getOptionList(@Param("marketInfoSeq") Long marketInfoSeq);
-
-
-
-
-
-
 // @Query(value = "select oh from OrderHistoryEntity oh join oh.user u join fetch oh.product c join fetch c.cart where u.seq = :seq")
 // List<OrderHistoryEntity> findByUserSeqWithFetch(@Param("seq") Long userSeq);
-
-// @Query("select u from User u where u.username = :name")
-// List<User> methodName(@Param("name") String username);
