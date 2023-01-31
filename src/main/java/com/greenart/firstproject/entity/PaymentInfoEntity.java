@@ -4,8 +4,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "payment_info")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class PaymentInfoEntity {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +39,8 @@ public class PaymentInfoEntity {
     @Column(name = "pay_final")
     private Integer finalPrice;
 
-    @Column(name = "pay_order_dt")
+    @CreatedDate
+    @Column(name = "pay_order_dt", updatable = false)
     private LocalDateTime orderDt;
     
     @Column(name = "pay_delivery_status")
@@ -51,11 +57,13 @@ public class PaymentInfoEntity {
     @OneToMany(mappedBy = "paymentInfo")
     private List<OrderHistoryEntity> orderHistories = new ArrayList<>();
 
-    public PaymentInfoEntity(Integer originalPrice, Integer finalPrice, LocalDateTime orderDt, UserEntity user) {
+    public PaymentInfoEntity(Integer originalPrice, Integer finalPrice, Integer deliveryStatus, 
+            Boolean canceled ,UserEntity user) {
         this.originalPrice = originalPrice;
         this.finalPrice = finalPrice;
-        this.orderDt = orderDt;
         this.user = user;
+        this.deliveryStatus = deliveryStatus;
+        this.canceled = canceled;
     }
 
     // public PaymentInfoEntity(Long seq, UserEntity user, OrderHistoryEntity orderHistories) {

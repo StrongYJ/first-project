@@ -11,27 +11,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 
-import com.greenart.firstproject.entity.ProductInfoEntity;
-import com.greenart.firstproject.entity.QOptionInfoEntity;
 import com.greenart.firstproject.entity.enums.AlcoholType;
 import com.greenart.firstproject.entity.enums.LevelRangeCode;
 import com.greenart.firstproject.entity.enums.RawMaterial;
 import com.greenart.firstproject.vo.product.ProductMainVO;
 import com.greenart.firstproject.vo.product.ProductSearchCond;
 import com.greenart.firstproject.vo.product.QProductMainVO;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -57,6 +50,7 @@ public class ProductInfoRepositoryImpl implements ProductRepositoryCustom {
             .leftJoin(reviewEntity).on(productInfoEntity.eq(reviewEntity.product))
             .fetchJoin()
             .where(
+                nameLike(condition.getKeyword()),
                 typeEq(condition.getCategory()), levelEq(condition.getLevel()), 
                 sweetnessEq(condition.getSweetness()), sourEq(condition.getSour()), 
                 sodaEq(condition.getSoda()), rawEq(condition.getRaw())
@@ -69,6 +63,12 @@ public class ProductInfoRepositoryImpl implements ProductRepositoryCustom {
             .fetch();
 
         return new PageImpl<>(content, pageable, content.size());
+    }
+
+
+    private BooleanExpression nameLike(String keyword) {
+        if(keyword == null) return null;
+        return productInfoEntity.name.like("%" + keyword + "%");
     }
 
 

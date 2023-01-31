@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.greenart.firstproject.config.security.LoginUserSeq;
 import com.greenart.firstproject.service.CartService;
 import com.greenart.firstproject.vo.cart.CartInfoVO;
 import com.greenart.firstproject.vo.cart.CartPlusMinusVO;
@@ -45,10 +46,10 @@ public class CartAPIController {
     @ApiResponse(responseCode = "200", description = "장바구니 데이터")
     @ApiResponse(responseCode = "403", description = "로그인 되지 않은 유저가 접근시")
     @GetMapping("")
-    public ResponseEntity<CartinfoResponseBody<List<CartInfoVO>>> getCartInfo(Authentication authentication) {
+    public ResponseEntity<CartinfoResponseBody<List<CartInfoVO>>> getCartInfo(@LoginUserSeq Long userSeq) {
         // Map<String, Object> map = new LinkedHashMap<>();
         // map.put("data", cartService.getCartInfo(seq));
-        Long userSeq = Long.parseLong(authentication.getName());
+        // Long userSeq = Long.parseLong(authentication.getName());
         return new ResponseEntity<>(
                 new CartinfoResponseBody<>(true, null, cartService.getCartInfo(userSeq)), 
                 HttpStatus.OK
@@ -89,6 +90,7 @@ public class CartAPIController {
         return new ResponseEntity<>(new CartinfoResponseBody<>(true, "삭제되었습니다."), HttpStatus.OK);
     }
 
+    @PostMapping("/order")
     public ResponseEntity<OrderResult> order(Authentication authentication, @RequestBody DiscountVO discount) {
         Long userSeq = Long.parseLong(authentication.getName());
         OrderResult orderResult = cartService.order(userSeq, discount);
