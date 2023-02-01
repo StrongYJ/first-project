@@ -27,6 +27,7 @@ import com.greenart.firstproject.vo.cart.CartInfoVO;
 import com.greenart.firstproject.vo.cart.CartPlusMinusVO;
 import com.greenart.firstproject.vo.cart.DiscountVO;
 import com.greenart.firstproject.vo.cart.OrderResult;
+import com.greenart.firstproject.vo.cart.OrderedOption;
 
 import lombok.RequiredArgsConstructor;
 
@@ -126,7 +127,7 @@ public class CartService {
 
         PaymentInfoEntity newPayment = new PaymentInfoEntity(originalPrice, finalPrice, 0, false, user);
         List<OrderHistoryEntity> orders = new ArrayList<>();
-        List<String> orderedOptionNames = new ArrayList<>();
+        List<OrderedOption> orderedOptions = new ArrayList<>();
         cartInfo.forEach(c -> {
             OptionInfoEntity option = c.getOption();
             OrderHistoryEntity optionHistory = OrderHistoryEntity.builder()
@@ -137,7 +138,7 @@ public class CartService {
                 .product(option.getProduct())
                 .build();
             orders.add(optionHistory);
-            
+            orderedOptions.add(new OrderedOption(optionHistory));
         });
 
         
@@ -145,7 +146,7 @@ public class CartService {
         orderHistoryRepo.saveAll(orders);
         pointRepo.save(new MileagePointEntity((int)(finalPrice * 0.1), user));
         cartRepo.deleteAllByUser(user);
-        return null;
+        return new OrderResult(newPayment.getSeq(), "결제완료", finalPrice, orderedOptions);
     }
 
 }

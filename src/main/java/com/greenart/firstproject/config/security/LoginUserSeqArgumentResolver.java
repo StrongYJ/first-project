@@ -16,7 +16,8 @@ public class LoginUserSeqArgumentResolver implements HandlerMethodArgumentResolv
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasMethodAnnotation(LoginUserSeq.class) && parameter.getParameterType().equals(Long.class);
+        return parameter.hasParameterAnnotation(LoginUserSeq.class)
+                && parameter.getParameterType().equals(Long.class);
     }
 
     @Override

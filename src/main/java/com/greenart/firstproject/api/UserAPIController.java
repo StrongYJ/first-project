@@ -8,25 +8,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.greenart.firstproject.config.MySessionkeys;
-import com.greenart.firstproject.config.security.JwtProperties;
 import com.greenart.firstproject.config.security.JwtUtil;
-import com.greenart.firstproject.entity.UserEntity;
+import com.greenart.firstproject.config.security.LoginUserSeq;
 import com.greenart.firstproject.service.UserService;
 import com.greenart.firstproject.vo.user.UserJoinVO;
-import com.greenart.firstproject.vo.user.UserJoinWelcomeVO;
 import com.greenart.firstproject.vo.user.UserLoginVO;
+import com.greenart.firstproject.vo.user.UserResponseVO;
 import com.greenart.firstproject.vo.user.UserUpdateVO;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -46,9 +42,9 @@ public class UserAPIController {
     @PostMapping("/join")
     public ResponseEntity<Object> userJoin(@Validated @RequestBody UserJoinVO data){
         Map<String, Object> resultMap = new LinkedHashMap<>();
-        UserJoinWelcomeVO addUser = userService.addUser(data);
+        UserResponseVO addUser = userService.addUser(data);
         if(addUser == null){
-            resultMap.put("message", "Failed");
+            resultMap.put("message", "중복된 이메일이거나 닉네임입니다.");
             return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
         }
         resultMap.put("message", "회원이 등록되었습니다.");
@@ -77,19 +73,11 @@ public class UserAPIController {
         return new ResponseEntity<>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
-    @PutMapping("/login/delete")
-    public ResponseEntity<Object> userDelete(HttpSession session) {
-        Map<String, Object> resultMap = null;
-        Object loginUser = session.getAttribute(MySessionkeys.USER_LOGIN_KEY);
-        // Map<String, Object> resultMap = userService.deleteUser((UserEntity) loginUser);
-        if(loginUser == null){
-            resultMap = new LinkedHashMap<String, Object>();
-            resultMap.put("status", false);
-            resultMap.put("message", "로그인 사용자 정보가 없습니다.");
-            return new ResponseEntity<>(resultMap, HttpStatus.UNAUTHORIZED);
-        }
-        resultMap = userService.deleteUser((UserEntity) loginUser);
-        session.invalidate();
-        return new ResponseEntity<>(resultMap, (HttpStatus)resultMap.get("code"));
+    @DeleteMapping("/delete")
+    public ResponseEntity<Object> userDelete(@LoginUserSeq Long logined) {
+        userService.deleteUser(logined);
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("message", "탈퇴되었습니다.");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

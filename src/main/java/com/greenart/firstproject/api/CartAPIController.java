@@ -32,13 +32,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "장바구니")
 @RestController
 @RequestMapping("/api/carts")
 @RequiredArgsConstructor
-@Slf4j
 public class CartAPIController {
     private final CartService cartService;
 
