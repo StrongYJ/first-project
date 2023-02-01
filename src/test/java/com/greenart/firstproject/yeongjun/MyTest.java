@@ -198,6 +198,12 @@ class MyTest {
     //         });
     //     }
     // }
+
+    @Test
+    void jwtlength() {
+        String t = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NzUyNDA0NTYsInVzZXJTZXEiOjMxfQ.QUlX7c_kyGQB5y5WVq8QM2I78sTH2_yLV5Po_6R9Taw";
+        log.info("length = {}", t.length());
+    }
 }
 
 @Data

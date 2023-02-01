@@ -13,7 +13,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.greenart.firstproject.config.security.JwtProperties;
 import com.greenart.firstproject.config.security.JwtUtil;
+import com.greenart.firstproject.entity.TokenBlackList;
 import com.greenart.firstproject.entity.UserEntity;
+import com.greenart.firstproject.repository.TokenBlackListRepository;
 import com.greenart.firstproject.repository.UserRepository;
 import com.greenart.firstproject.vo.user.UserJoinVO;
 import com.greenart.firstproject.vo.user.UserJoinWelcomeVO;
@@ -29,6 +31,7 @@ public class UserService {
     private final UserRepository uRepo;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final TokenBlackListRepository tokenBlackListRepo;
 
     public Boolean isDuplicatedEmail(String email){
         if(uRepo.countByEmail(email) > 0) {
@@ -113,6 +116,12 @@ public class UserService {
             throw new IllegalArgumentException("이미 탈퇴한 회원입니다.");
         }
         uRepo.delete(user);
+    }
+
+    @Transactional
+    public void blackListToken(String token) {
+        long expireTime = jwtUtil.getExpireTime(token);
+        tokenBlackListRepo.save(new TokenBlackList(token, expireTime));
     }
 
 }

@@ -16,6 +16,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.greenart.firstproject.repository.TokenBlackListRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
+    private final TokenBlackListRepository tokenBlackListRepo;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -52,7 +55,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
                 .requestMatchers("/api/**").authenticated()
             .and()
-            .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new JwtFilter(jwtUtil, tokenBlackListRepo), UsernamePasswordAuthenticationFilter.class)
             .build();
     }
 

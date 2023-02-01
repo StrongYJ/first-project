@@ -77,12 +77,10 @@ public class UserAPIController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Object> logout(HttpServletRequest request, HttpSession session) {
+    public ResponseEntity<Object> logout(HttpServletRequest request) {
         Map<String, Object> map = new LinkedHashMap<>();
-        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        String token = jwtUtil.resolve(authorization);
-        session.setAttribute(token, true);
-        session.setMaxInactiveInterval(NumberUtils.convertNumberToTargetClass((jwtUtil.getExpireTime(token) / 1000), Integer.class));
+        String token = jwtUtil.resolve(request.getHeader(HttpHeaders.AUTHORIZATION));
+        userService.blackListToken(token);
         map.put("message", "로그아웃 되었습니다.");
         return new ResponseEntity<Object>(map, HttpStatus.OK);
     }
