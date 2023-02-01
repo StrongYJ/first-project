@@ -1,5 +1,7 @@
 package com.greenart.firstproject.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +16,7 @@ import com.greenart.firstproject.vo.superadmin.AdminUserVO;
 public interface UserRepository extends JpaRepository<UserEntity, Long>{
     public Integer countByEmail(String eamil);
     public Integer countByNickname(String nickname);
-    public UserEntity findByEmail(String eamil);
+    Optional<UserEntity> findByEmail(String eamil);
     public UserEntity findByEmailAndPwd(String eamil, String pwd);
     public UserEntity findByPwd(String pwd);
     
