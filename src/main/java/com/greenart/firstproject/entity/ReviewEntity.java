@@ -3,6 +3,7 @@ package com.greenart.firstproject.entity;
 import java.time.LocalDateTime;
 
 import com.greenart.firstproject.vo.review.ReviewCreateVO;
+import com.greenart.firstproject.vo.review.ReviewUpdateVO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,11 +14,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "review_info")
 public class ReviewEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,5 +66,10 @@ public class ReviewEntity {
 
     public void setUser(UserEntity user){
         this.user = user;
+    }
+    
+    public void setUpdateReview(ReviewUpdateVO data){
+        this.grade = data.getGrade();
+        this.content = data.getContent();
     }
 }
