@@ -21,6 +21,7 @@ import com.greenart.firstproject.entity.ReviewEntity;
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.service.ReviewService;
 import com.greenart.firstproject.vo.review.ReviewCreateVO;
+import com.greenart.firstproject.vo.review.ReviewUpdateVO;
 import com.greenart.firstproject.vo.review.ReviewVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,6 +60,15 @@ public class ReviewAPIController {
         map.put("message", "리뷰 등록 완료");
         map.put("data", addReview);
         return new ResponseEntity<Object>(map, HttpStatus.CREATED);
+    }
+
+    @PutMapping("")
+    public ResponseEntity<Object> updateReview(@RequestParam Long reviewSeq, @RequestBody ReviewUpdateVO data){
+        Map<String, Object> map = new LinkedHashMap<>();
+        ReviewUpdateVO updateReview = reviewService.updateReview(reviewSeq, data);
+        map.put("message", "리뷰 수정 완료");
+        map.put("data", updateReview);
+        return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{seq}")

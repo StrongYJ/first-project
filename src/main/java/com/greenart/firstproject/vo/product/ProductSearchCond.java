@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductSearchCond {
+    private String keyword;
     private String category;
     private String level;
     private Integer sweetness;

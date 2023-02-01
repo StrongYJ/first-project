@@ -2,11 +2,8 @@ package com.greenart.firstproject.service;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import com.greenart.firstproject.entity.OrderHistoryEntity;
 import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.ReviewEntity;
 import com.greenart.firstproject.entity.UserEntity;
@@ -15,6 +12,7 @@ import com.greenart.firstproject.repository.ProductInfoRepository;
 import com.greenart.firstproject.repository.ReviewRepository;
 import com.greenart.firstproject.repository.UserRepository;
 import com.greenart.firstproject.vo.review.ReviewCreateVO;
+import com.greenart.firstproject.vo.review.ReviewUpdateVO;
 import com.greenart.firstproject.vo.review.ReviewVO;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,6 @@ public class ReviewService {
     private final ReviewRepository reviewRepo;
     private final UserRepository userRepo;
     private final ProductInfoRepository productInfoRepo;
-    private final OrderHistoryRepository orderHistoryRepo;
     
     public List<ReviewVO> getReview(Long piSeq){
         // return reviewRepo.findVOByProductSeq(piSeq);
@@ -48,6 +45,14 @@ public class ReviewService {
         addReview.setUser(user);
         reviewRepo.save(addReview);
         data.setRegDt(addReview.getRegDt());
+        return data;
+    }
+
+    public ReviewUpdateVO updateReview(Long reviewSeq, ReviewUpdateVO data){
+        // 리뷰 정보를 불러오고 없으면 예외 발생
+        ReviewEntity updateReview = reviewRepo.findById(reviewSeq).orElseThrow();
+        updateReview.setUpdateReview(data);
+        reviewRepo.save(updateReview);
         return data;
     }
 
