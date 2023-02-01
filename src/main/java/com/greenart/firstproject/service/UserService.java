@@ -2,6 +2,7 @@ package com.greenart.firstproject.service;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,28 +79,23 @@ public class UserService {
                 resultMap.put("Authorization", jwt);
             }
         }
-
-        // if(loginUser.isEmpty()){
-        //     resultMap.put("stats", false);
-        //     resultMap.put("message", "이메일 또는 비밀번호 오류입니다.");
-        //     resultMap.put("code", HttpStatus.BAD_REQUEST);
-        // }
-
         return resultMap;
     }
 
+    @Transactional
     public Map<String, Object> modifyUser(UserUpdateVO data, Long seq){
-        // Optional<UserEntity> findById = uRepo.findById(loginUser.getSeq());
-        // if(findById.isEmpty()) {
-            //     resultMap.put("status", false);
-            //     resultMap.put("message", "만료된 세션입니다.");
-            //     resultMap.put("code", HttpStatus.BAD_REQUEST);
-            //     return resultMap;
-            // }
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         UserEntity userEntity = uRepo.findById(seq).orElseThrow();
+        /*
+         * 비밀번호를 바꿀꺼임
+         * seq로 회원의 데이터를 받아옴
+         * JSON 형식으로 VO로 바꿀꺼 다 받아옴
+         * 그러면 pwd가 암호화 걸려있을거임 matches를 통해 비밀번호를 비교를 해야함
+         * 근데 지금은 바로 입력으로 pwd를 바꾸는거라 대체하려면 바로 바꾸면 되긴 함
+         */
+        data.setPwd(passwordEncoder.encode(data.getPwd()));
         userEntity.updateUser(data);
-        uRepo.save(userEntity);
+        
         resultMap.put("status", true);
         resultMap.put("message", "수정이 완료 되었습니다.");
         resultMap.put("code", HttpStatus.ACCEPTED);
