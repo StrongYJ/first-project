@@ -126,16 +126,18 @@ public class CartService {
 
         PaymentInfoEntity newPayment = new PaymentInfoEntity(originalPrice, finalPrice, 0, false, user);
         List<OrderHistoryEntity> orders = new ArrayList<>();
+        List<String> orderedOptionNames = new ArrayList<>();
         cartInfo.forEach(c -> {
             OptionInfoEntity option = c.getOption();
-            orders.add(
-                    OrderHistoryEntity.builder()
-                            .name(option.getOption())
-                            .quantity(c.getQuantity())
-                            .price(option.getPrice())
-                            .paymentInfo(newPayment)
-                            .product(option.getProduct())
-                            .build());
+            OrderHistoryEntity optionHistory = OrderHistoryEntity.builder()
+                .name(option.getOption())
+                .quantity(c.getQuantity())
+                .price(option.getPrice())
+                .paymentInfo(newPayment)
+                .product(option.getProduct())
+                .build();
+            orders.add(optionHistory);
+            
         });
 
         
@@ -143,7 +145,7 @@ public class CartService {
         orderHistoryRepo.saveAll(orders);
         pointRepo.save(new MileagePointEntity((int)(finalPrice * 0.1), user));
         cartRepo.deleteAllByUser(user);
-        return new OrderResult(newPayment.getSeq(), "결제완료", finalPrice);
+        return null;
     }
 
 }
