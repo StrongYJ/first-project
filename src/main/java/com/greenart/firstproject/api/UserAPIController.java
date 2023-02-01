@@ -61,13 +61,6 @@ public class UserAPIController {
     @PutMapping("/login/update")
     public ResponseEntity<Object> userUpdate(@RequestBody UserUpdateVO data, Authentication authentication){
         Map<String, Object> resultMap = null;
-        // Object loginUser = session.getAttribute(MySessionkeys.USER_LOGIN_KEY);
-        // if(loginUser == null) {
-        //     resultMap = new LinkedHashMap<String, Object>();
-        //     resultMap.put("status", false);
-        //     resultMap.put("message", "로그인 사용자 정보가 없습니다.");
-        //     return new ResponseEntity<>(resultMap, HttpStatus.UNAUTHORIZED);
-        // }
         Long seq = Long.parseLong(authentication.getName());
         resultMap = userService.modifyUser(data, seq);
         return new ResponseEntity<>(resultMap, (HttpStatus)resultMap.get("code"));

@@ -80,18 +80,11 @@ public class UserService {
             resultMap.put("message", "passwordEncoder Error");
             resultMap.put("code", HttpStatus.BAD_GATEWAY);
         }
-
-        // if(loginUser.isEmpty()){
-        //     resultMap.put("stats", false);
-        //     resultMap.put("message", "이메일 또는 비밀번호 오류입니다.");
-        //     resultMap.put("code", HttpStatus.BAD_REQUEST);
-        // }
-
         return resultMap;
     }
 
     @Transactional
-    public Map<String, Object> modifyUser(UserUpdateVO data, Long seq) {
+    public Map<String, Object> modifyUser(UserUpdateVO data, Long seq){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         UserEntity userEntity = uRepo.findById(seq).orElseThrow();
         /*
@@ -103,6 +96,7 @@ public class UserService {
          */
         data.setPwd(passwordEncoder.encode(data.getPwd()));
         userEntity.updateUser(data);
+        
         resultMap.put("status", true);
         resultMap.put("message", "수정이 완료 되었습니다.");
         resultMap.put("code", HttpStatus.ACCEPTED);
