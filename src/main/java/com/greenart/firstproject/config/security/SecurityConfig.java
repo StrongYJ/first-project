@@ -49,8 +49,8 @@ public class SecurityConfig {
                 "/*", "/admin/**", "/api/products/**", "/api-docs", "/swagger-ui/**", "/v3/api-docs/**",
                 "/api/users/login", "/api/users/join", "/api/users/checkEmail", "/api/images/**"
                 ).permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
                 .requestMatchers("/api/**").authenticated()
-                // .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
             .and()
             .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
             .build();

@@ -26,7 +26,6 @@ import com.greenart.firstproject.vo.review.ReviewVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Tag(name = "리뷰", description = "리뷰 서비스를 위한 API")
@@ -41,6 +40,11 @@ public class ReviewAPIController {
     public ResponseEntity<Map<String, Object>> getReview(@PathVariable("seq") Long piSeq){
         Map<String, Object> map = new LinkedHashMap<>();
         List<ReviewVO> review = reviewService.getReview(piSeq);
+        if(review.size() != 0) {
+            map.put("reviewGrade", review.stream().mapToDouble(r -> r.getGrade()).average());
+        } else {
+            map.put("reviewGrade", null);
+        }
         map.put("size", review.size());
         map.put("data", review);
         return new ResponseEntity<>(map, HttpStatus.OK);

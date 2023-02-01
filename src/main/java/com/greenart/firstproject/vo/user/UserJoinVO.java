@@ -8,11 +8,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserJoinVO {
     @NotBlank
     private String name;
@@ -35,15 +37,5 @@ public class UserJoinVO {
 
     @NotBlank
     private String address;
-
-    public UserJoinVO(String name, String email, String pwd, String nickname, LocalDate birth, String phone,
-            String address) {
-        this.name = name;
-        this.email = email;
-        this.pwd = pwd;
-        this.nickname = nickname;
-        this.birth = birth;
-        this.phone = phone;
-        this.address = address;
-    }
+    
 }
