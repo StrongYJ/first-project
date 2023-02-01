@@ -1,4 +1,4 @@
-package com.greenart.firstproject.vo.cart;
+package com.greenart.firstproject.vo.pay;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

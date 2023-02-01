@@ -8,14 +8,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.config.security.LoginUserSeq;
 import com.greenart.firstproject.service.PaymentService;
-import com.greenart.firstproject.vo.cart.PaymentInfoVO;
-import com.greenart.firstproject.vo.cart.paymentInfoReponseBody;
+import com.greenart.firstproject.vo.pay.PaymentInfoVO;
+import com.greenart.firstproject.vo.pay.PaymentCanceledVO;
+import com.greenart.firstproject.vo.pay.paymentInfoReponseBody;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -49,6 +54,16 @@ public class PaymentAPIController {
         List<PaymentInfoVO> getpay = payService.getPaymentList(uiSeq);
         map.put("payList", getpay);
         return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+    
+    @PutMapping("")
+    public ResponseEntity<Object> patchPaymentInfo(@RequestBody PaymentCanceledVO data,
+    @RequestParam Long paySeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        PaymentCanceledVO canceledPayment = payService.calceledPayment(paySeq, data);
+        map.put("message", "주문 취소 완료");
+        map.put("data", canceledPayment);
+        return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
 
 }

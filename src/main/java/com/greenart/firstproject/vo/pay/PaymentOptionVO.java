@@ -1,4 +1,4 @@
-package com.greenart.firstproject.vo.cart;
+package com.greenart.firstproject.vo.pay;
 
 import com.greenart.firstproject.entity.OptionInfoEntity;
 import com.greenart.firstproject.entity.OrderHistoryEntity;

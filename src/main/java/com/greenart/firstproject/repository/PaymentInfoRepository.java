@@ -8,8 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.greenart.firstproject.entity.PaymentInfoEntity;
 import com.greenart.firstproject.entity.UserEntity;
-
-import com.greenart.firstproject.vo.cart.PaymentInfoVO;
+import com.greenart.firstproject.vo.pay.PaymentInfoVO;
 
 public interface PaymentInfoRepository extends JpaRepository<PaymentInfoEntity, Long> {
     List<PaymentInfoEntity> findByUser(UserEntity user);

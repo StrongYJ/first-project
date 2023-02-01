@@ -9,8 +9,9 @@ import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.OrderHistoryRepository;
 import com.greenart.firstproject.repository.PaymentInfoRepository;
 import com.greenart.firstproject.repository.UserRepository;
-import com.greenart.firstproject.vo.cart.PaymentInfoVO;
-import com.greenart.firstproject.vo.cart.PaymentOptionVO;
+import com.greenart.firstproject.vo.pay.PaymentInfoVO;
+import com.greenart.firstproject.vo.pay.PaymentOptionVO;
+import com.greenart.firstproject.vo.pay.PaymentCanceledVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +32,12 @@ public class PaymentService {
         return payRepo.findByFetchByUserSeq(uiSeq).stream().map(PaymentInfoVO::new).toList();
     }
 
+    public PaymentCanceledVO calceledPayment(Long paySeq, PaymentCanceledVO data) {
+        PaymentInfoEntity canceledPayment = payRepo.findById(paySeq).orElseThrow();
+        canceledPayment.setCanceledPayment(data);
+        payRepo.save(canceledPayment);
+        return data;
+    }
 
         // 기본키, 주문날짜, 옵션이름(orderhistory),상품금액총합, 최종결제금액, 취소여부
         public PaymentInfoVO getPaymentInfoVO(PaymentInfoEntity entity) {
