@@ -24,12 +24,16 @@ public class PaymentService {
     private UserEntity userEntity;
 
 
-    public List<PaymentInfoVO> getPaymentList(Long userSeq) {
-        return payRepo.findByUserSeqWithFetch(userSeq).stream().map(PaymentInfoVO::new).toList();
+    // public List<PaymentInfoVO> getPaymentList(Long userSeq) {
+    //     return payRepo.findByUserSeqWithFetch(userSeq).stream().map(PaymentInfoVO::new).toList();
+    // }
+    public List<PaymentInfoVO> getPaymentList(Long uiSeq) {
+        return payRepo.findByFetchByUserSeq(uiSeq).stream().map(PaymentInfoVO::new).toList();
     }
 
+
         // 기본키, 주문날짜, 옵션이름(orderhistory),상품금액총합, 최종결제금액, 취소여부
-        private PaymentInfoVO PaymentInfoVO(PaymentInfoEntity entity) {
+        public PaymentInfoVO getPaymentInfoVO(PaymentInfoEntity entity) {
             return PaymentInfoVO.builder()
             .seq(entity.getSeq())
             .orderDt(entity.getOrderDt())

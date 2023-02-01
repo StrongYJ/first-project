@@ -7,15 +7,24 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.greenart.firstproject.entity.PaymentInfoEntity;
+import com.greenart.firstproject.entity.UserEntity;
+
 import com.greenart.firstproject.vo.cart.PaymentInfoVO;
 
 public interface PaymentInfoRepository extends JpaRepository<PaymentInfoEntity, Long> {
+    List<PaymentInfoEntity> findByUser(UserEntity user);
+    
     @Query
     (
         value = "select pay.pay_seq, pay.pay_ui_seq, pay.pay_order_dt, oh.oh_oi_name, pay.pay_original, pay.pay_final, pay.pay_delivery_status, pay.pay_canceled from payment_info pay left join user_info u on pay.pay_ui_seq = u.ui_seq left join order_history oh on oh.oh_pay_seq = pay.pay_seq;"
         ,nativeQuery = true)
     List<PaymentInfoEntity> findByUserSeqWithFetch(@Param("seq") Long userSeq);
-    }
+
+    //hy add
+    @Query(value = "select c from PaymentInfoEntity c left join fetch c.user where c.user.seq = :uiSeq")
+    List<PaymentInfoEntity> findByFetchByUserSeq(@Param("uiSeq") Long userSeq);
+}
+
     // @Query
     // (
     //     value = "select pay from PaymentInfoEntity pay join pay.user u join fetch pay.option oh join fetch oh.orderhistories where u.seq = :seq"

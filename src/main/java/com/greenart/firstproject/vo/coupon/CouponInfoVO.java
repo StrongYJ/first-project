@@ -20,6 +20,7 @@ public class CouponInfoVO {
     private String couCode;
     private LocalDate couValidDt;
     private Integer couStatus;
+    private Double discountRate;
     
     public static CouponInfoVO fromEntity(CouponInfoEntity entity) {
         return CouponInfoVO.builder()
@@ -29,6 +30,7 @@ public class CouponInfoVO {
         .couCode(entity.getCouCode())
         .couValidDt(entity.getCouValidDt())
         .couStatus(entity.getCouStatus())
+        .discountRate(entity.getDiscountRate())
         .build();
     }
     
@@ -40,6 +42,7 @@ public class CouponInfoVO {
         this.couValidDt = entity.getCouValidDt();
         this.couCode = entity.getCouCode();
         this.couStatus = entity.getCouStatus();
+        this.discountRate = entity.getDiscountRate();
 
     }
 }
