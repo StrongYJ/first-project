@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.NumberUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,8 @@ import com.greenart.firstproject.vo.user.UserLoginVO;
 import com.greenart.firstproject.vo.user.UserResponseVO;
 import com.greenart.firstproject.vo.user.UserUpdateVO;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -59,17 +62,9 @@ public class UserAPIController {
     }
 
     @PutMapping("/login/update")
-    public ResponseEntity<Object> userUpdate(@RequestBody UserUpdateVO data, Authentication authentication){
-        Map<String, Object> resultMap = null;
-        // Object loginUser = session.getAttribute(MySessionkeys.USER_LOGIN_KEY);
-        // if(loginUser == null) {
-        //     resultMap = new LinkedHashMap<String, Object>();
-        //     resultMap.put("status", false);
-        //     resultMap.put("message", "로그인 사용자 정보가 없습니다.");
-        //     return new ResponseEntity<>(resultMap, HttpStatus.UNAUTHORIZED);
-        // }
+    public ResponseEntity<Object> userUpdate(@RequestBody UserUpdateVO data, Authentication authentication, HttpSession session){
         Long seq = Long.parseLong(authentication.getName());
-        resultMap = userService.modifyUser(data, seq);
+        Map<String, Object> resultMap = userService.modifyUser(data, seq);
         return new ResponseEntity<>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
@@ -79,5 +74,16 @@ public class UserAPIController {
         Map<String, Object> map = new LinkedHashMap<>();
         map.put("message", "탈퇴되었습니다.");
         return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Object> logout(HttpServletRequest request, HttpSession session) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = jwtUtil.resolve(authorization);
+        session.setAttribute(token, true);
+        session.setMaxInactiveInterval(NumberUtils.convertNumberToTargetClass((jwtUtil.getExpireTime(token) / 1000), Integer.class));
+        map.put("message", "로그아웃 되었습니다.");
+        return new ResponseEntity<Object>(map, HttpStatus.OK);
     }
 }
