@@ -114,7 +114,8 @@ public class LocalAdminController {
     //         model.addAttribute("list", lmos);
     //         return "/localadmin/localadmin";
     // }
-
+    
+    //  지역관리자 로그인
     @GetMapping("/{seq}")
     public String getLocalList(@PathVariable("seq") Long seq, Model model,/*@PageableDefault(size=20)*/ Pageable pageable) {
             String marketName = marketRepo.findById(seq).get().getName();
@@ -135,6 +136,7 @@ public class LocalAdminController {
             return "/localadmin/localadmin";
     }
 
+    // 재고 목록보기
     @GetMapping("/stock")
     public String getLocalStock(@RequestParam Long stock_no, Model model) {
         MarketStockEntity marketStock = localService.getStockInfo(stock_no);
@@ -149,7 +151,8 @@ public class LocalAdminController {
         model.addAttribute("market_stock", ulmos);
         return "/localadmin/stock";
     }
-
+    
+    // 재고 수정
     @PostMapping("/stock")
     public String postLocalStock(@RequestParam Long stock_no, @RequestParam Integer stock, RedirectAttributes reat) {
         localService.updateStock(stock_no, stock);
