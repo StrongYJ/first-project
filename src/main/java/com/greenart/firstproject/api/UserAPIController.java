@@ -59,12 +59,7 @@ public class UserAPIController {
     @PostMapping("/login")
     public ResponseEntity<Object> userLogin(@RequestBody UserLoginVO data){
         Map<String, Object> resultMap = userService.loginUser(data);
-        UserEntity user = (UserEntity)resultMap.get("loginUser");
-        String jwt = JwtProperties.TOKEN_PREFIX + jwtUtil.create(user.getSeq());
-        resultMap.put("Authorization", jwt);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, jwt);
-        return new ResponseEntity<Object>(resultMap, headers, (HttpStatus)resultMap.get("code"));
+        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
     @PutMapping("/login/update")

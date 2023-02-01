@@ -3,6 +3,7 @@ package com.greenart.firstproject.entity;
 import java.time.LocalDateTime;
 
 import com.greenart.firstproject.vo.review.ReviewCreateVO;
+import com.greenart.firstproject.vo.review.ReviewUpdateVO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "review_info")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewEntity {
@@ -65,5 +67,10 @@ public class ReviewEntity {
 
     public void setUser(UserEntity user){
         this.user = user;
+    }
+    
+    public void setUpdateReview(ReviewUpdateVO data){
+        this.grade = data.getGrade();
+        this.content = data.getContent();
     }
 }
