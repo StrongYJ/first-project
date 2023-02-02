@@ -3,6 +3,7 @@ package com.greenart.firstproject.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.ReviewEntity;
@@ -49,7 +50,7 @@ public class ReviewService {
         ReviewEntity addReview = new ReviewEntity(data, user, product);
         reviewRepo.save(addReview);
         
-        if(data.getImg().length != 0) {
+        if(!ObjectUtils.isEmpty(data.getImg())) {
             List<UploadFile> imgs = fileStore.storeFiles("review", data.getImg());
             List<ReviewImgEntity> addReviewImages = imgs.stream().map(f -> new ReviewImgEntity(f.getStoreFilename(), addReview)).toList();
             imgRepository.saveAll(addReviewImages);

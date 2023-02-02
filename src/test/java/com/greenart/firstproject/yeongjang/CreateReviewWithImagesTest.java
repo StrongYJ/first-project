@@ -13,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +25,6 @@ import com.greenart.firstproject.vo.review.ReviewCreateVO;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@WebAppConfiguration
 public class CreateReviewWithImagesTest {
     
     @Autowired private MockMvc mockMvc;
