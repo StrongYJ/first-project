@@ -60,7 +60,7 @@
                 <td th:text="${o.optionPrice}">@mdo</td>
                 <td th:text="${o.stock} ?: _">0</td>
                 <td>
-                    <a th:href="@{/admin/local/stock(stock_no=${o.stockSeq})}"><button>재고수정</button></a>
+                    <a th:href="@{/admin/local/stock(stock_no=${o.stockSeq})}"><button style="background-color:dodgerblue;border-color: dodgerblue; border-radius: 15%; color: white;">재고수정</button></a>
                 </td>
             </tr>
             </tbody>

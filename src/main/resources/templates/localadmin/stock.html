@@ -5,7 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+    <style>
+        body {text-align: center;}
+        #input_form_table {margin: 0 auto; border-collapse: collapse;}
+        #input_form_table input {width: 70%;}
+        #input_form_table td {padding: 10px;}
+    </style>
 </head>
 <body>
     <h1>재고 상세정보</h1>
@@ -40,7 +45,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <button>변경하기</button>
+                        <button style="background-color:dodgerblue;border-color: dodgerblue; border-radius: 15%; color: white;">변경하기</button>
                         <a th:href="@{/admin/local/{seq}(seq=${marketSeq})}">메인으로</a>
                     </td>
                 </tr>
