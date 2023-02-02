@@ -18,5 +18,4 @@ public class ReviewCreateVO {
     private String optionName;
     private Double grade; // 평점
     private String content; // 리뷰 내용
-    private MultipartFile[] img;
 }
