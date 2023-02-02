@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.greenart.firstproject.config.MySessionkeys;
+import com.greenart.firstproject.config.security.LoginUserSeq;
 import com.greenart.firstproject.entity.ReviewEntity;
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.service.ReviewService;
@@ -51,7 +52,7 @@ public class ReviewAPIController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Object> postReview(@RequestParam Long userSeq, @RequestBody ReviewCreateVO data) {
+    public ResponseEntity<Object> postReview(@LoginUserSeq Long userSeq, @RequestBody ReviewCreateVO data) {
         /* 
          * Long seq를 회원 seq로 생각합시다.
          * 회원 주문 내역에서 제품 외래키를 가져옴
@@ -60,7 +61,7 @@ public class ReviewAPIController {
          * 외래키 회원 번호, 제품 번호 등록해야함
          */
         Map<String, Object> map = new LinkedHashMap<>();
-        ReviewCreateVO addReview = reviewService.addReivew(userSeq, data);
+        var addReview = reviewService.addReivew(userSeq, data);
         map.put("message", "리뷰 등록 완료");
         map.put("data", addReview);
         return new ResponseEntity<Object>(map, HttpStatus.CREATED);

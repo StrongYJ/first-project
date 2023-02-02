@@ -49,23 +49,17 @@ public class ReviewEntity {
     private ProductInfoEntity product;
 
     @Builder
-    public ReviewEntity(ReviewCreateVO data) {
+    public ReviewEntity(ReviewCreateVO data, UserEntity user, ProductInfoEntity product) {
         this.optionName = data.getOptionName();
         this.grade = data.getGrade();
         this.content = data.getContent();
         this.regDt = LocalDateTime.now();
+        this.user = user;
+        this.product = product;
     }
 
     public void setOptionName(String optionName) {
         this.optionName = optionName;
-    }
-
-    public void setProduct(ProductInfoEntity product) {
-        this.product = product;
-    }
-
-    public void setUser(UserEntity user){
-        this.user = user;
     }
     
     public void setUpdateReview(ReviewUpdateVO data){
