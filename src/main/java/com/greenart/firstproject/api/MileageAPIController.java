@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.greenart.firstproject.config.security.LoginUserSeq;
 import com.greenart.firstproject.config.MySessionkeys;
 import com.greenart.firstproject.repository.MilegePointRepository;
 import com.greenart.firstproject.service.MileageService;
@@ -38,8 +39,8 @@ public class MileageAPIController {
     // }
     
     // seq 번호로 받아서 출력
-    @GetMapping("/{seq}")
-    public ResponseEntity<Map<String, Object>> getUserMileage(@PathVariable("seq")Long uiSeq){
+    @GetMapping("")
+    public ResponseEntity<Map<String, Object>> getUserMileage(@LoginUserSeq Long uiSeq){
         Map<String, Object> map = new LinkedHashMap<>();
         List<MileageInfoVO> mileage =  mileageService.getUserMileage(uiSeq);
         map.put("data", mileage);

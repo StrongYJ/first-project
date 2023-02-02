@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.greenart.firstproject.config.security.LoginUserSeq;
 import com.greenart.firstproject.service.CouponService;
 import com.greenart.firstproject.vo.coupon.CouponInfoVO;
 
@@ -31,8 +32,8 @@ public class CouponAPIController {
         //     return new ResponseEntity<>(map, HttpStatus.OK);
         // }
         // seq 번호로 받아서 출력
-        @GetMapping("/{seq}")
-        public ResponseEntity<Map<String, Object>> getUserCoupon(@PathVariable("seq") Long uiSeq){
+        @GetMapping("")
+        public ResponseEntity<Map<String, Object>> getUserCoupon(@LoginUserSeq Long uiSeq){
             Map<String, Object> map = new LinkedHashMap<>();
             List<CouponInfoVO> coupon =  couponService.getUserCoupon(uiSeq);
             map.put("data", coupon);

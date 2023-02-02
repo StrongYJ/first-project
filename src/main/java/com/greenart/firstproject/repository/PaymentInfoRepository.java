@@ -22,6 +22,10 @@ public interface PaymentInfoRepository extends JpaRepository<PaymentInfoEntity, 
     //hy add
     @Query(value = "select c from PaymentInfoEntity c left join fetch c.user where c.user.seq = :uiSeq")
     List<PaymentInfoEntity> findByFetchByUserSeq(@Param("uiSeq") Long userSeq);
+
+    //hy add deliveryStatusCanceled
+    @Query(value = "select c from PaymentInfoEntity c left join fetch c.user where c.user.seq = :uiSeq")
+    List<PaymentInfoEntity> findByFetchByUserSeqAndDeliveryStatus(@Param("uiSeq") Long userSeq, @Param("deliveryStatus") Integer deliveryStatus);
 }
 
     // @Query

@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.greenart.firstproject.vo.pay.PaymentCanceledVO;
+import com.greenart.firstproject.vo.pay.PaymentDeliveryVO;
 
 @Entity
 @Table(name = "payment_info")
@@ -72,6 +73,9 @@ public class PaymentInfoEntity {
         this.canceled = data.getCanceled();
     }
 
+    public void setDeliveryStatus(PaymentDeliveryVO data){
+        this.deliveryStatus = data.getDeliveryStatus();
+    }
     // public PaymentInfoEntity(Long seq, UserEntity user, OrderHistoryEntity orderHistories) {
     //     this.seq = seq;
     //     this.user = user;
