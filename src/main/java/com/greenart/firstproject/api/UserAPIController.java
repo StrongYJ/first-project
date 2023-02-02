@@ -1,5 +1,6 @@
 package com.greenart.firstproject.api;
 
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -7,7 +8,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.NumberUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +44,9 @@ public class UserAPIController {
 
     @PostMapping("/join")
     public ResponseEntity<Object> userJoin(@Validated @RequestBody UserJoinVO data){
+        if((LocalDate.now().getYear() - data.getBirth().getYear() + 1) < 20) {
+            throw new IllegalArgumentException("성인만 가입가능합니다.");
+        }
         Map<String, Object> resultMap = new LinkedHashMap<>();
         UserResponseVO addUser = userService.addUser(data);
         if(addUser == null){

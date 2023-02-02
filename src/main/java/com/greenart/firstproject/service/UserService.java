@@ -1,5 +1,6 @@
 package com.greenart.firstproject.service;
 
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -51,6 +52,7 @@ public class UserService {
     public UserResponseVO addUser(UserJoinVO data) {
         if(isDuplicatedEmail(data.getEmail())) return null;
         if(isDuplicatedNickname(data.getNickname())) return null;
+
         data.setPwd(passwordEncoder.encode(data.getPwd()));
         UserEntity newUser = new UserEntity(data);
         uRepo.save(newUser);
