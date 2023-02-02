@@ -28,7 +28,6 @@ import com.greenart.firstproject.vo.review.ReviewCreateVO;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@WebAppConfiguration
 public class CreateReviewWithImagesTest {
     
     @Autowired private MockMvc mockMvc;
