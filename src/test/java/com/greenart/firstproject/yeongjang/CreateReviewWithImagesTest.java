@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,7 +56,7 @@ public class CreateReviewWithImagesTest {
         .andExpect(status().isCreated())
         .andDo(print());
     }
-
+    
     @Test
     void createReviewWithImages() throws Exception {
         final String filePath = "/testImages/"; // 파일경로
