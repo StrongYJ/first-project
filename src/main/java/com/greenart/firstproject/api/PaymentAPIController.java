@@ -72,5 +72,4 @@ public class PaymentAPIController {
     //     return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     // }
 
-
 }

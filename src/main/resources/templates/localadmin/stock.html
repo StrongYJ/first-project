@@ -24,18 +24,17 @@
     <tbody>
         <form th:action method="post">
         <!-- <form th:object="${market_stock}" action="/update" method="post"> -->
-
                 <tr>
-                    <td>제품이름</td>
-                    <td th:text ="${market_stock.productName}"></td><br>
+                    <td>제품이름 &nbsp;</td>
+                    <strong><td th:text ="${market_stock.productName}"></td><br></strong>
                 </tr>
                 <tr>
-                    <td>옵션이름</td>
-                    <td th:text ="${market_stock.optionName}"></td><br>
+                    <td>옵션이름 &nbsp;</td>
+                    <strong><td th:text ="${market_stock.optionName}"></td><br></strong>
                 </tr>
                 <tr>
-                    <td>옵션가격</td>
-                    <td th:text ="${market_stock.optionPrice}"></td><br>
+                    <td>옵션가격   &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
+                    <strong><td th:text ="${market_stock.optionPrice}"></td><br></strong>
                 </tr>
                 <tr>
                     <td>현재재고</td>
@@ -49,7 +48,6 @@
                         <a th:href="@{/admin/local/{seq}(seq=${marketSeq})}">메인으로</a>
                     </td>
                 </tr>
-
         </form>
     </tbody>
 </body>

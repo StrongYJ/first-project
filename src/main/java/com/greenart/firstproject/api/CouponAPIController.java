@@ -31,6 +31,7 @@ public class CouponAPIController {
         //     map.put("data", couponService.getUserCoupon((UserEntity)loginUser));
         //     return new ResponseEntity<>(map, HttpStatus.OK);
         // }
+
         // seq 번호로 받아서 출력
         @GetMapping("")
         public ResponseEntity<Map<String, Object>> getUserCoupon(@LoginUserSeq Long uiSeq){
