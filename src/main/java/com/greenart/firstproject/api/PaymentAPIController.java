@@ -52,14 +52,14 @@ public class PaymentAPIController {
     }
 
     // 취소 시도중 deliveryPayment
-    @PutMapping("")
-    public ResponseEntity<Object> patchPaymentInfo(@RequestBody PaymentDeliveryVO data,
-    @RequestParam Long paySeq) {
-        // Map<String, Object> map = new LinkedHashMap<>();
-        var deliveryPayment = payService.deliveryPayment(paySeq, data);
+    // @PutMapping("")
+    // public ResponseEntity<Object> patchPaymentInfo(@RequestBody PaymentDeliveryVO data,
+    // @RequestParam Long paySeq) {
+    //     // Map<String, Object> map = new LinkedHashMap<>();
+    //     var deliveryPayment = payService.deliveryPayment(paySeq, data);
 
-        return new ResponseEntity<>(deliveryPayment, HttpStatus.ACCEPTED);
-    }
+    //     return new ResponseEntity<>(deliveryPayment, HttpStatus.ACCEPTED);
+    // }
     
     // 취소 성공한거 canceledPayment
     // @PutMapping("")

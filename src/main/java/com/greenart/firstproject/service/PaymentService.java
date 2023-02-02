@@ -47,31 +47,31 @@ public class PaymentService {
     }
 
     // 배달상태값에 따라 취소
-    public Map<String, Object> deliveryPayment(Long paySeq, PaymentDeliveryVO data) {
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
-        PaymentInfoEntity entity = payRepo.findById(paySeq).orElseThrow();
-        if(entity.getDeliveryStatus() == 0) {
-            map.put("message", "주문 취소 완료");
-            map.put("data", entity);
-        }
-        else if(entity.getDeliveryStatus() == 1) {
-            map.put("message", "주문확인 되었으므로 취소가 불가능합니다");
-            map.put("data", entity);
-        }
-        else if(entity.getDeliveryStatus() == 2) {
-            map.put("message", "배달중에는 취소가 불가능합니다");
-            map.put("data", entity);
-        }
-        else if(entity.getDeliveryStatus() == 3) {
-            map.put("message", "배달완료인 상태는 취소가 불가능합니다");
-            map.put("data", entity);
-        }
-        else {
-            map.put("message", "수령확인 되었으므로 취소가 불가능합니다");
-            map.put("data", entity);
-        }
-        return map;
-    }
+    // public Map<String, Object> deliveryPayment(Long paySeq, PaymentDeliveryVO data) {
+    //     Map<String, Object> map = new LinkedHashMap<String, Object>();
+    //     PaymentInfoEntity entity = payRepo.findById(paySeq).orElseThrow();
+    //     if(entity.getDeliveryStatus() == 0) {
+    //         map.put("message", "주문 취소 완료");
+    //         map.put("data", entity);
+    //     }
+    //     else if(entity.getDeliveryStatus() == 1) {
+    //         map.put("message", "주문확인 되었으므로 취소가 불가능합니다");
+    //         map.put("data", entity);
+    //     }
+    //     else if(entity.getDeliveryStatus() == 2) {
+    //         map.put("message", "배달중에는 취소가 불가능합니다");
+    //         map.put("data", entity);
+    //     }
+    //     else if(entity.getDeliveryStatus() == 3) {
+    //         map.put("message", "배달완료인 상태는 취소가 불가능합니다");
+    //         map.put("data", entity);
+    //     }
+    //     else {
+    //         map.put("message", "수령확인 되었으므로 취소가 불가능합니다");
+    //         map.put("data", entity);
+    //     }
+    //     return map;
+    // }
 
     // public PaymentDeliveryVO deliveryPayment(Long paySeq, PaymentDeliveryVO data) {
     //     PaymentInfoEntity deliveryPayment = payRepo.findById(paySeq).orElseThrow();
