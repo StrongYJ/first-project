@@ -3,6 +3,9 @@ package com.greenart.firstproject.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.ReviewEntity;
@@ -41,7 +44,9 @@ public class ReviewService {
      * @param data dto
      * @return
      */
-    public ReviewResponseVO addReivew(Long userSeq, ReviewCreateVO data) {
+
+    @Transactional
+    public ReviewResponseVO addReivew(Long userSeq, ReviewCreateVO data, MultipartFile ...images) {
         // 사용자 정보를 불러오고 없으면 예외 발생
         UserEntity user = userRepo.findById(userSeq).orElseThrow();
         // 제품 정보를 불러오고 없으면 예외 발생
@@ -49,8 +54,8 @@ public class ReviewService {
         ReviewEntity addReview = new ReviewEntity(data, user, product);
         reviewRepo.save(addReview);
         
-        if(data.getImg().length != 0) {
-            List<UploadFile> imgs = fileStore.storeFiles("review", data.getImg());
+        if(!ObjectUtils.isEmpty(images)) {
+            List<UploadFile> imgs = fileStore.storeFiles("review", images);
             List<ReviewImgEntity> addReviewImages = imgs.stream().map(f -> new ReviewImgEntity(f.getStoreFilename(), addReview)).toList();
             imgRepository.saveAll(addReviewImages);
         }
