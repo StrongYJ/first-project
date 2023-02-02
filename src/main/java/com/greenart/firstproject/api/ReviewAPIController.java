@@ -70,8 +70,8 @@ public class ReviewAPIController {
         return new ResponseEntity<Object>(map, HttpStatus.CREATED);
     }
 
-    @PutMapping("")
-    public ResponseEntity<Object> updateReview(@RequestParam Long reviewSeq, @RequestBody ReviewUpdateVO data){
+    @PutMapping("/{reviewSeq}")
+    public ResponseEntity<Object> updateReview(@PathVariable("reviewSeq") Long reviewSeq, @RequestBody ReviewUpdateVO data){
         Map<String, Object> map = new LinkedHashMap<>();
         ReviewUpdateVO updateReview = reviewService.updateReview(reviewSeq, data);
         map.put("message", "리뷰 수정 완료");
@@ -79,8 +79,8 @@ public class ReviewAPIController {
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/{seq}")
-    public ResponseEntity<Map<String, Object>> deleteReview(@PathVariable("seq") Long seq){
+    @DeleteMapping("/{reviewSeq}")
+    public ResponseEntity<Map<String, Object>> deleteReview(@PathVariable("reviewSeq") Long seq){
         Map<String, Object> map = new LinkedHashMap<>();
         reviewService.delete(seq);
         map.put("message", "삭제 완료");
