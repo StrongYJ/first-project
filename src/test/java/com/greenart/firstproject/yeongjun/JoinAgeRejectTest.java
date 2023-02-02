@@ -29,7 +29,7 @@ public class JoinAgeRejectTest {
     
     @Test
     void joinNotAdultTest() throws JsonProcessingException, Exception {
-        UserJoinVO joinNotAdult = new UserJoinVO("fienfisw", "fsanfj@fjewnfj.com", "!dqwe234567", "fejfnbjakf", LocalDate.of(2005, 1, 1), "01025789878", "대구");
+        UserJoinVO joinNotAdult = new UserJoinVO("fienfisw", "fsanfj@fjewnfj.com", "!dqwe234567", "fejfnbjakf", LocalDate.of(2005, 1, 1), "11125789878", "대구");
         ObjectMapper objectMapper = new ObjectMapper();
         
         mockMvc.perform(post("/api/users/join").contentType(MediaType.APPLICATION_JSON).content(
@@ -38,7 +38,7 @@ public class JoinAgeRejectTest {
 
     @Test
     void joinAdultTest() throws JsonProcessingException, Exception {
-        UserJoinVO joinAdult = new UserJoinVO("fienfisw", "fsanfj@fjewnfj.com", "!dqwe234567", "fejfnbjakf", LocalDate.of(2004, 12, 31), "01025789878", "대구");
+        UserJoinVO joinAdult = new UserJoinVO("fienfisw", "fsanfj@fjewnfj.com", "!dqwe234567", "fejfnbjakf", LocalDate.of(2004, 12, 31), "11125789878", "대구");
         ObjectMapper objectMapper = new ObjectMapper();
         
         mockMvc.perform(post("/api/users/join").contentType(MediaType.APPLICATION_JSON).content(
