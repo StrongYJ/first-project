@@ -36,8 +36,8 @@ public class CouponInfoVO {
     
     //seq번호
     public CouponInfoVO(CouponInfoEntity entity) {
-        this.email = email;
-        this.nickname = nickname;
+        this.email = entity.getUser().getEmail();
+        this.nickname = entity.getUser().getNickname();
         this.couName = entity.getCouName();
         this.couValidDt = entity.getCouValidDt();
         this.couCode = entity.getCouCode();

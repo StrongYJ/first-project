@@ -30,8 +30,8 @@ public class MileageInfoVO {
 
     //seq번호
     public MileageInfoVO(MileagePointEntity entity) {
-        this.email = email;
-        this.nickname = nickname;
+        this.email = entity.getUser().getEmail();
+        this.nickname = entity.getUser().getNickname();
         this.mpPrice = entity.getMpPrice();
         this.mpExpirationDate = entity.getMpExpirationDate();
     }
