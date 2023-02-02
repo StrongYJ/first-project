@@ -6,12 +6,17 @@ import org.springframework.stereotype.Service;
 
 import com.greenart.firstproject.entity.ProductInfoEntity;
 import com.greenart.firstproject.entity.ReviewEntity;
+import com.greenart.firstproject.entity.ReviewImgEntity;
 import com.greenart.firstproject.entity.UserEntity;
 import com.greenart.firstproject.repository.OrderHistoryRepository;
 import com.greenart.firstproject.repository.ProductInfoRepository;
+import com.greenart.firstproject.repository.ReviewImgRepository;
 import com.greenart.firstproject.repository.ReviewRepository;
 import com.greenart.firstproject.repository.UserRepository;
+import com.greenart.firstproject.util.FileStore;
+import com.greenart.firstproject.util.UploadFile;
 import com.greenart.firstproject.vo.review.ReviewCreateVO;
+import com.greenart.firstproject.vo.review.ReviewResponseVO;
 import com.greenart.firstproject.vo.review.ReviewUpdateVO;
 import com.greenart.firstproject.vo.review.ReviewVO;
 
@@ -23,6 +28,8 @@ public class ReviewService {
     private final ReviewRepository reviewRepo;
     private final UserRepository userRepo;
     private final ProductInfoRepository productInfoRepo;
+    private final FileStore fileStore;
+    private final ReviewImgRepository imgRepository;
     
     public List<ReviewVO> getReview(Long piSeq){
         // return reviewRepo.findVOByProductSeq(piSeq);
@@ -34,18 +41,21 @@ public class ReviewService {
      * @param data dto
      * @return
      */
-    public ReviewCreateVO addReivew(Long userSeq, ReviewCreateVO data) {
+    public ReviewResponseVO addReivew(Long userSeq, ReviewCreateVO data) {
         // 사용자 정보를 불러오고 없으면 예외 발생
         UserEntity user = userRepo.findById(userSeq).orElseThrow();
         // 제품 정보를 불러오고 없으면 예외 발생
         ProductInfoEntity product = productInfoRepo.findById(data.getProductSeq()).orElseThrow();
-        
-        ReviewEntity addReview = new ReviewEntity(data);
-        addReview.setProduct(product);
-        addReview.setUser(user);
+        ReviewEntity addReview = new ReviewEntity(data, user, product);
         reviewRepo.save(addReview);
-        data.setRegDt(addReview.getRegDt());
-        return data;
+        
+        if(data.getImg().length != 0) {
+            List<UploadFile> imgs = fileStore.storeFiles("review", data.getImg());
+            List<ReviewImgEntity> addReviewImages = imgs.stream().map(f -> new ReviewImgEntity(f.getStoreFilename(), addReview)).toList();
+            imgRepository.saveAll(addReviewImages);
+        }
+        
+        return new ReviewResponseVO(addReview.getSeq(), addReview.getOptionName(), addReview.getGrade(), addReview.getContent(), addReview.getRegDt().toString());
     }
 
     public ReviewUpdateVO updateReview(Long reviewSeq, ReviewUpdateVO data){
