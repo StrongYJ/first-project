@@ -43,6 +43,8 @@ dependencies {
 	// implementation 'io.jsonwebtoken:jjwt-gson:0.10.7'
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.boot:spring-boot-starter-security'
+	// testImplementation 'org.springframework.boot:spring-boot-security-test'
 	implementation 'com.auth0:java-jwt:4.2.2'
 
     // Querydsl 추가
