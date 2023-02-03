@@ -101,8 +101,9 @@ public class CartService {
         
         if (discount.couponSeq() != null) {
             CouponInfoEntity coupon = couponRepo.findById(discount.couponSeq()).orElseThrow();
+            if(coupon.getCouStatus() == 2) throw new IllegalArgumentException("이미 사용된 쿠폰입니다.");
             finalPrice *= (1 - coupon.getDiscountRate());
-            couponRepo.deleteById(coupon.getCouSeq());
+            couponRepo.deleteInBatch(coupon);
         }
 
         List<MileagePointEntity> points = pointRepo.findByUserAndMpExpirationDateGreaterThanEqual(user, LocalDate.now());
@@ -148,5 +149,4 @@ public class CartService {
         cartRepo.deleteAllByUser(user);
         return new OrderResult(newPayment.getSeq(), "결제완료", finalPrice, orderedOptions);
     }
-
 }

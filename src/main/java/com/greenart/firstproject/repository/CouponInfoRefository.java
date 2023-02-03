@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,8 @@ public interface CouponInfoRefository extends JpaRepository<CouponInfoEntity, Lo
 
     @Query(value = "select c from CouponInfoEntity c left join fetch c.user where c.user.seq = :uiSeq")
     List<CouponInfoEntity> findByFetchByUserSeq(@Param("uiSeq") Long userSeq);
+
+    @Modifying(clearAutomatically = true)
+    @Query("delete from CouponInfoEntity c where c = :entity")
+    void deleteInBatch(@Param("entity") CouponInfoEntity coupon);
 }
