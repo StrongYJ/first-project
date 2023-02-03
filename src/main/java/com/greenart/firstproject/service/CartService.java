@@ -102,7 +102,7 @@ public class CartService {
         if (discount.couponSeq() != null) {
             CouponInfoEntity coupon = couponRepo.findById(discount.couponSeq()).orElseThrow();
             finalPrice *= (1 - coupon.getDiscountRate());
-            couponRepo.delete(coupon);
+            couponRepo.deleteById(coupon.getCouSeq());
         }
 
         List<MileagePointEntity> points = pointRepo.findByUserAndMpExpirationDateGreaterThanEqual(user, LocalDate.now());

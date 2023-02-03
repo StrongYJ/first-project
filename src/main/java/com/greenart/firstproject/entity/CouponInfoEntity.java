@@ -11,12 +11,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "coupon_info")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CouponInfoEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cou_seq")   
@@ -41,5 +43,8 @@ public class CouponInfoEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 
+    public void changeStatus(int status) {
+        this.couStatus = status;
+    }
 
 }
