@@ -92,7 +92,7 @@ public class UserService {
     public Map<String, Object> modifyUser(UserUpdateVO data, Long seq){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         UserEntity userEntity = uRepo.findById(seq).orElseThrow();
-        if(isDuplicatedNickname(data.getNickname()))
+        if(!userEntity.getNickname().equals(data.getNickname()) && isDuplicatedNickname(data.getNickname()))
             throw new IllegalArgumentException("중복된 닉네임입니다.");
         /*
          * 비밀번호를 바꿀꺼임
