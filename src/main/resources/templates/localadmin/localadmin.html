@@ -65,6 +65,12 @@
             </tr>
             </tbody>
         </table>
+        <div class="search_area">
+                <form th:action="@{/admin/local/{seq}(seq=${seq})}" method="get" id="search_form">
+                    <input type="text" name="keyword" placeholder="제품검색" th:value="${keyword}"> &nbsp;<button style="background-color:dodgerblue;border-color: dodgerblue; border-radius: 15%; color: white;">검색</button>
+                    <!-- Getmapping list에  @RequestParam @Nullable String keyword 를 넣어놔서 name = "keyword"-->
+                </form>
+        </div>
         <!-- <th:block th:each="page:${#numbers.sequence(startPage, endPage)}">
             <a th:if="${page != nowPage}" th:href="@{/admin/local/stock/{seq}(seq=${seq}, page=${page-1})}" th:text="${page}"></a>
             <strong th:if="${page == nowPage}" th:text="${page}" style="color:red"></strong>
