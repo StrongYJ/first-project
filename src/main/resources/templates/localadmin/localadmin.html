@@ -65,6 +65,11 @@
             </tr>
             </tbody>
         </table>
+        <div class="search_area">
+            <form action="/admin/local" method="get" id="search_form">
+                <input type="text" name="optionName" placeholder="제품 검색" th:value="${optionName}"><button>검색</button>
+            </form>
+        </div>
         <!-- <th:block th:each="page:${#numbers.sequence(startPage, endPage)}">
             <a th:if="${page != nowPage}" th:href="@{/admin/local/stock/{seq}(seq=${seq}, page=${page-1})}" th:text="${page}"></a>
             <strong th:if="${page == nowPage}" th:text="${page}" style="color:red"></strong>

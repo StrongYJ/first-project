@@ -115,7 +115,7 @@ public class LocalAdminController {
     //         return "/localadmin/localadmin";
     // }
     
-    //  지역관리자 로그인
+    //  지역관리자 로그인 및 검색
     @GetMapping("/{seq}")
     public String getLocalList(@PathVariable("seq") Long seq, Model model,/*@PageableDefault(size=20)*/ Pageable pageable) {
             String marketName = marketRepo.findById(seq).get().getName();

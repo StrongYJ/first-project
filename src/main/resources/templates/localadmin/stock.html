@@ -24,25 +24,25 @@
     <tbody>
         <form th:action method="post">
         <!-- <form th:object="${market_stock}" action="/update" method="post"> -->
-                <tr>
+                <tr style="padding: 10px; margin: 10px;"><br>
                     <td>제품이름 &nbsp;</td>
                     <strong><td th:text ="${market_stock.productName}"></td><br></strong>
                 </tr>
-                <tr>
+                <tr style="padding: 10px; margin: 10px;"><br>
                     <td>옵션이름 &nbsp;</td>
                     <strong><td th:text ="${market_stock.optionName}"></td><br></strong>
                 </tr>
-                <tr>
-                    <td>옵션가격   &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
+                <tr style="padding: 10px; margin: 10px;"><br>
+                    <td>옵션가격 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
                     <strong><td th:text ="${market_stock.optionPrice}"></td><br></strong>
                 </tr>
-                <tr>
+                <tr style="padding: 10px; margin: 10px;"><br>
                     <td>현재재고</td>
                     <input type="text" th:value="${market_stock.stock}" name="stock">
                     <span th:if="${param.updated}" th:text="수정됨" style="color:red"></span>
                     <br>
                 </tr>
-                <tr>
+                <tr style="padding: 10px; margin: 10px;"><br>
                     <td colspan="2">
                         <button style="background-color:dodgerblue;border-color: dodgerblue; border-radius: 15%; color: white;">변경하기</button>
                         <a th:href="@{/admin/local/{seq}(seq=${marketSeq})}">메인으로</a>
