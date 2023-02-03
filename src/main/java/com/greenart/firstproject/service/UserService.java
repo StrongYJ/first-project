@@ -117,7 +117,7 @@ public class UserService {
         } else if(user.getStatus() == 3) {
             throw new IllegalArgumentException("이미 탈퇴한 회원입니다.");
         }
-        uRepo.delete(user);
+        user.changeStatus(3);
     }
 
     @Transactional
