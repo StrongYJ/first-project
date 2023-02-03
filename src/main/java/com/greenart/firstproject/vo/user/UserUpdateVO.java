@@ -11,10 +11,7 @@ public class UserUpdateVO {
     @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$") // 8~20 영문+숫자+특수문자
     private String pwd;
 
-    @NotBlank
     private String nickname;
-
-    @NotBlank
     private String address;
     
     public UserUpdateVO(String pwd, String nickname, String address) {

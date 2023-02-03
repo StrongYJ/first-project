@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,8 +15,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.greenart.firstproject.config.security.JwtProperties;
 import com.greenart.firstproject.config.security.JwtUtil;
+import com.greenart.firstproject.entity.CouponInfoEntity;
+import com.greenart.firstproject.entity.MileagePointEntity;
 import com.greenart.firstproject.entity.TokenBlackList;
 import com.greenart.firstproject.entity.UserEntity;
+import com.greenart.firstproject.repository.CouponInfoRefository;
+import com.greenart.firstproject.repository.MilegePointRepository;
 import com.greenart.firstproject.repository.TokenBlackListRepository;
 import com.greenart.firstproject.repository.UserRepository;
 import com.greenart.firstproject.vo.user.UserJoinVO;
@@ -33,6 +38,8 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final TokenBlackListRepository tokenBlackListRepo;
+    private final CouponInfoRefository couponRepo;
+    private final MilegePointRepository milegePointRepo;
 
     public Boolean isDuplicatedEmail(String email){
         if(uRepo.countByEmail(email) > 0) {
@@ -56,6 +63,8 @@ public class UserService {
         data.setPwd(passwordEncoder.encode(data.getPwd()));
         UserEntity newUser = new UserEntity(data);
         uRepo.save(newUser);
+        couponRepo.save(new CouponInfoEntity("신규가입쿠폰", "coupon_" + UUID.randomUUID().toString(), LocalDate.now().plusMonths(1L), 0.1, newUser));
+        milegePointRepo.save(new MileagePointEntity(1000, newUser));
         return new UserResponseVO(newUser);
     }
 
@@ -81,9 +90,7 @@ public class UserService {
                 resultMap.put("data", new UserResponseVO(loginUser));
             }
         } else {
-            resultMap.put("status", false);
-            resultMap.put("message", "passwordEncoder Error");
-            resultMap.put("code", HttpStatus.BAD_GATEWAY);
+            throw new NoSuchElementException("이메일이나 비밀번호가 잘못되었습니다.");
         }
         return resultMap;
     }
@@ -92,16 +99,20 @@ public class UserService {
     public Map<String, Object> modifyUser(UserUpdateVO data, Long seq){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         UserEntity userEntity = uRepo.findById(seq).orElseThrow();
+        if(data.getNickname().isBlank()) {
+            data.setNickname(userEntity.getNickname());
+        }
+        if(data.getAddress().isBlank()) {
+            data.setAddress(userEntity.getAddress());
+        }
         if(!userEntity.getNickname().equals(data.getNickname()) && isDuplicatedNickname(data.getNickname()))
             throw new IllegalArgumentException("중복된 닉네임입니다.");
-        /*
-         * 비밀번호를 바꿀꺼임
-         * seq로 회원의 데이터를 받아옴
-         * JSON 형식으로 VO로 바꿀꺼 다 받아옴
-         * 그러면 pwd가 암호화 걸려있을거임 matches를 통해 비밀번호를 비교를 해야함
-         * 근데 지금은 바로 입력으로 pwd를 바꾸는거라 대체하려면 바로 바꾸면 되긴 함
-         */
-        data.setPwd(passwordEncoder.encode(data.getPwd()));
+
+        if(data.getPwd().isBlank()) {
+            data.setPwd(userEntity.getPwd());
+        } else {
+            data.setPwd(passwordEncoder.encode(data.getPwd()));
+        }
         userEntity.updateUser(data);
         
         resultMap.put("status", true);
