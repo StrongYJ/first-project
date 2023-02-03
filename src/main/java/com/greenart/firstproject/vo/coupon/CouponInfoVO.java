@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CouponInfoVO {
+    private Long couponSeq;
     private String email;
     private String nickname;
     private String couName;
@@ -36,6 +37,7 @@ public class CouponInfoVO {
     
     //seq번호
     public CouponInfoVO(CouponInfoEntity entity) {
+        this.couponSeq = entity.getCouSeq();
         this.email = entity.getUser().getEmail();
         this.nickname = entity.getUser().getNickname();
         this.couName = entity.getCouName();
