@@ -35,6 +35,7 @@ import com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO;
 import com.greenart.firstproject.vo.localadmin.MarketOptionStockVO;
 import com.greenart.firstproject.vo.localadmin.UpdateLocalMarketOptionStockVO;
 
+import io.micrometer.common.lang.Nullable;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -115,9 +116,9 @@ public class LocalAdminController {
     //         return "/localadmin/localadmin";
     // }
     
-    //  지역관리자 로그인 및 검색
+    //  지역관리자 로그인
     @GetMapping("/{seq}")
-    public String getLocalList(@PathVariable("seq") Long seq, Model model,/*@PageableDefault(size=20)*/ Pageable pageable) {
+    public String getLocalList(@PathVariable("seq") Long seq,@RequestParam @Nullable String keyword, Model model,/*@PageableDefault(size=20)*/ Pageable pageable) {
             String marketName = marketRepo.findById(seq).get().getName();
             model.addAttribute("marketName", marketName); // html로 내보내기위한 이름 저장
             model.addAttribute("seq", seq);
@@ -125,9 +126,11 @@ public class LocalAdminController {
             // int nowPage = lmos.getPageable().getPageNumber()+1;
             // int startPage = Math.max(nowPage -4, 1);
             // int endPage = Math.min(nowPage +5, lmos.getTotalPages());
-
+            
+            if(keyword == null) keyword = "";
             model.addAttribute("list", lmos.getContent());
             model.addAttribute("pages", lmos);
+            model.addAttribute("keyword", keyword);
 
             // model.addAttribute("nowPage", nowPage);
             // model.addAttribute("startPage", startPage);
