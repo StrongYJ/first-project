@@ -35,7 +35,7 @@ import com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO;
 import com.greenart.firstproject.vo.localadmin.MarketOptionStockVO;
 import com.greenart.firstproject.vo.localadmin.UpdateLocalMarketOptionStockVO;
 
-import io.micrometer.common.lang.Nullable;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
