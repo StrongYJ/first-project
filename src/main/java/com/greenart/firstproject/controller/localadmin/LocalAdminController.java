@@ -133,7 +133,7 @@ public class LocalAdminController {
             // model.addAttribute("startPage", startPage);
             // model.addAttribute("endPage", endPage);
 
-            return "/localadmin/localadmin";
+            return "localadmin/localadmin";
     }
 
     // 재고 목록보기
@@ -149,7 +149,7 @@ public class LocalAdminController {
 
         model.addAttribute("marketSeq", marketStock.getMarket().getSeq());
         model.addAttribute("market_stock", ulmos);
-        return "/localadmin/stock";
+        return "localadmin/stock";
     }
     
     // 재고 수정
