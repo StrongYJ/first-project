@@ -33,8 +33,8 @@ public class LocalAdminService {
         return optionList;
     }
 
-    public Page<LocalMarketOptionStockVO> getOptionList(Long seq, Pageable pageable) {
-        Page<LocalMarketOptionStockVO> optionList = optionRepo.getOptionList(seq, pageable);
+    public Page<LocalMarketOptionStockVO> getOptionList(Long seq, String keyword, Pageable pageable) {
+        Page<LocalMarketOptionStockVO> optionList = optionRepo.getOptionList(seq, keyword,pageable);
         return optionList;
     }
 

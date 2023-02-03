@@ -118,25 +118,26 @@ public class LocalAdminController {
     
     //  지역관리자 로그인
     @GetMapping("/{seq}")
-    public String getLocalList(@PathVariable("seq") Long seq,@RequestParam @Nullable String keyword, Model model,/*@PageableDefault(size=20)*/ Pageable pageable) {
+    public String getLocalList(@PathVariable("seq") Long seq, @RequestParam @Nullable String keyword, Model model,/*@PageableDefault(size=20)*/ Pageable pageable) {
+            if(keyword == null) keyword = "";
             String marketName = marketRepo.findById(seq).get().getName();
             model.addAttribute("marketName", marketName); // html로 내보내기위한 이름 저장
             model.addAttribute("seq", seq);
-            Page<LocalMarketOptionStockVO> lmos = localService.getOptionList(seq, pageable);
+            Page<LocalMarketOptionStockVO> lmos = localService.getOptionList(seq,keyword, pageable);
+
             // int nowPage = lmos.getPageable().getPageNumber()+1;
             // int startPage = Math.max(nowPage -4, 1);
             // int endPage = Math.min(nowPage +5, lmos.getTotalPages());
             
-            if(keyword == null) keyword = "";
-            model.addAttribute("list", lmos.getContent());
             model.addAttribute("pages", lmos);
             model.addAttribute("keyword", keyword);
-
+            model.addAttribute("list", lmos.getContent());
+            
             // model.addAttribute("nowPage", nowPage);
             // model.addAttribute("startPage", startPage);
             // model.addAttribute("endPage", endPage);
 
-            return "/localadmin/localadmin";
+            return "localadmin/localadmin";
     }
 
     // 재고 목록보기
@@ -152,7 +153,7 @@ public class LocalAdminController {
 
         model.addAttribute("marketSeq", marketStock.getMarket().getSeq());
         model.addAttribute("market_stock", ulmos);
-        return "/localadmin/stock";
+        return "localadmin/stock";
     }
     
     // 재고 수정

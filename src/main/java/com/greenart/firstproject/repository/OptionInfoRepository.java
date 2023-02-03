@@ -26,7 +26,7 @@ public interface OptionInfoRepository extends JpaRepository<OptionInfoEntity, Lo
     List<LocalMarketOptionStockVO> getOptionList(@Param("marketInfoSeq") Long marketInfoSeq);
 
     @Query(
-        value = "select new com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO(ms.seq, oi.product.name, oi.option, oi.price, ms.stock) from OptionInfoEntity oi left join MarketStockEntity ms on ms.option.seq = oi.seq and ms.market.seq = :marketInfoSeq"
+        value = "select new com.greenart.firstproject.vo.localadmin.LocalMarketOptionStockVO(ms.seq, oi.product.name, oi.option, oi.price, ms.stock) from OptionInfoEntity oi left join MarketStockEntity ms on ms.option.seq = oi.seq and ms.market.seq = :marketInfoSeq where oi.option like %:keyword%"
         )
-	Page<LocalMarketOptionStockVO> getOptionList(@Param("marketInfoSeq") Long seq, Pageable pageable);
+	Page<LocalMarketOptionStockVO> getOptionList(@Param("marketInfoSeq") Long seq,@Param("keyword") String keyword, Pageable pageable);
 }
