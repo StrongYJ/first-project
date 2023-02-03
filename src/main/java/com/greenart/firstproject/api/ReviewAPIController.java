@@ -56,13 +56,6 @@ public class ReviewAPIController {
         @RequestPart(name = "body") ReviewCreateVO data,
         @RequestPart(name = "file", required = false) MultipartFile ...images
     ) {
-        /* 
-         * Long seq를 회원 seq로 생각합시다.
-         * 회원 주문 내역에서 제품 외래키를 가져옴
-         * 그 제품 seq를 받아와서 주문내역 번호 가져옴
-         * 그에 해당하는 제품에 리뷰 등록
-         * 외래키 회원 번호, 제품 번호 등록해야함
-         */
         Map<String, Object> map = new LinkedHashMap<>();
         var addReview = reviewService.addReivew(userSeq, data, images);
         map.put("message", "리뷰 등록 완료");
