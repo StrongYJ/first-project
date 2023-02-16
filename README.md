@@ -1,6 +1,6 @@
 # First project
 
-<a href="https://www.sooldamhwa.com/damhwaMarket" target="_blank">담화마켓</a>을 벤치마킹했읍니다..
+<a href="https://www.sooldamhwa.com/damhwaMarket" target="_blank">담화마켓</a>을 벤치마킹 했습니다.
 
 ## < Back >
 ### 사용 프로그램
